@@ -9,10 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postsDB = exports.blogsDB = exports.runDb = exports.postsCollection = exports.blogsCollection = void 0;
+exports.runDb = exports.postsCollection = exports.blogsCollection = void 0;
 const mongodb_1 = require("mongodb");
 const mongoURI = process.env.MONGO_URI || 'mongodb://0.0.0.0:27017';
-const port = 3003;
 const client = new mongodb_1.MongoClient(mongoURI);
 const db = client.db('blogs-db');
 exports.blogsCollection = db.collection('blogs');
@@ -20,8 +19,8 @@ exports.postsCollection = db.collection('posts');
 const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield client.connect();
+        yield client.db("blogs-db").command({ ping: 1 });
         console.log("Connected to DB");
-        console.log(`Example app listening on port ${port}`);
     }
     catch (e) {
         console.log(e);
@@ -29,14 +28,15 @@ const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.runDb = runDb;
-exports.blogsDB = [
+//old db
+/*export const blogsDB: BlogsType[] = [
     {
         id: "1",
         name: "First blog",
         description: "First description",
         websiteUrl: "First-blog.com"
     }
-], exports.postsDB = [
+], postsDB: PostsType[] = [
     {
         id: "1234892487",
         title: "First post",
@@ -46,3 +46,4 @@ exports.blogsDB = [
         blogName: "First blog"
     }
 ];
+*/
