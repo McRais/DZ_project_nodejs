@@ -28,22 +28,3 @@ const runDb = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.runDb = runDb;
-//old db
-/*export const blogsDB: BlogsType[] = [
-    {
-        id: "1",
-        name: "First blog",
-        description: "First description",
-        websiteUrl: "First-blog.com"
-    }
-], postsDB: PostsType[] = [
-    {
-        id: "1234892487",
-        title: "First post",
-        shortDescription: "Short description for the first post",
-        content: "Content",
-        blogId: "1",
-        blogName: "First blog"
-    }
-];
-*/

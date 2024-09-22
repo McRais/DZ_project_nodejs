@@ -1,13 +1,26 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepo = void 0;
 const DB_1 = require("../database/DB");
+const blogs_mapper_1 = require("../mappers/blogs-mapper");
 class blogsRepo {
     static getAllBlogs() {
-        return DB_1.blogsDB;
-    }
+        return __awaiter(this, void 0, void 0, function* () {
+            const blogs = yield DB_1.blogsCollection.find({}).toArray();
+            return blogs.map(blogs_mapper_1.blogsMapper);
+        });
+    } //done
     static getBlogById(id) {
-        const blog = DB_1.blogsDB.find((blog) => blog.id === id);
+        const blog = blogsDB.find((blog) => blog.id === id);
         if (!blog) {
             return false;
         }
@@ -20,33 +33,33 @@ class blogsRepo {
             description: description,
             websiteUrl: websiteUrl
         };
-        DB_1.blogsDB.push(newBlog);
+        blogsDB.push(newBlog);
         return newBlog;
     }
     static deleteBlog(id) {
-        const blog = DB_1.blogsDB.find((blog) => blog.id === id);
+        const blog = blogsDB.find((blog) => blog.id === id);
         if (!blog) {
             return false;
         }
-        const index = DB_1.blogsDB.findIndex(blog => blog.id === id);
-        DB_1.blogsDB.splice(index, 1);
+        const index = blogsDB.findIndex(blog => blog.id === id);
+        blogsDB.splice(index, 1);
         return true;
     }
     static updateBlog(id, name, description, websiteUrl) {
-        const blog = DB_1.blogsDB.find((blog) => blog.id === id);
+        const blog = blogsDB.find((blog) => blog.id === id);
         if (!blog) {
             return false;
         }
-        const index = DB_1.blogsDB.findIndex(blog => blog.id === id);
-        DB_1.blogsDB[index].name = name;
-        DB_1.blogsDB[index].description = description;
-        DB_1.blogsDB[index].websiteUrl = websiteUrl;
-        DB_1.postsDB.forEach((posts_inThatBlog) => {
+        const index = blogsDB.findIndex(blog => blog.id === id);
+        blogsDB[index].name = name;
+        blogsDB[index].description = description;
+        blogsDB[index].websiteUrl = websiteUrl;
+        postsDB.forEach((posts_inThatBlog) => {
             if (posts_inThatBlog.blogId === id) {
                 posts_inThatBlog.blogName = name;
             }
         });
-        return DB_1.blogsDB[index];
+        return blogsDB[index];
     }
 }
 exports.blogsRepo = blogsRepo;
