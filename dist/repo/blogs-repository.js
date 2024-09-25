@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepo = void 0;
 const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
+const mongodb_1 = require("mongodb");
 class blogsRepo {
     static getAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -20,11 +21,13 @@ class blogsRepo {
         });
     } //done
     static getBlogById(id) {
-        const blog = blogsDB.find((blog) => blog.id === id);
-        if (!blog) {
-            return false;
-        }
-        return blog;
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) }).toArray();
+            if (!blog) {
+                return false;
+            }
+            return blog.map(blogs_mapper_1.blogsMapper);
+        });
     }
     static createNewBlog(name, description, websiteUrl) {
         const newBlog = {
