@@ -20,50 +20,46 @@ class blogsRepo {
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
     } //done
+    static getBlogById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) }).toArray();
+            if (!blog) {
+                return false;
+            }
+            return blog.map(blogs_mapper_1.blogsMapper);
+        });
+    }
+    static createNewBlog(name, description, websiteUrl) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield DB_1.blogsCollection.insertOne();
+            return res.insertedId;
+        });
+    }
+} /*
+    static deleteBlog(id:string) {
+        const blog = blogsDB.find((blog) => blog.id === id)
+        if (!blog){return false}
+        const index = blogsDB.findIndex(blog => blog.id === id);
+        blogsDB.splice(index, 1);
+        return true
+    }
+
+    static updateBlog(id: string, name:string, description:string, websiteUrl:string) {
+        const blog = blogsDB.find((blog) => blog.id === id)
+        if (!blog){return false}
+        const index = blogsDB.findIndex(blog => blog.id === id);
+        blogsDB[index].name = name
+        blogsDB[index].description = description
+        blogsDB[index].websiteUrl = websiteUrl
+
+        postsDB.forEach((posts_inThatBlog) => {
+            if(posts_inThatBlog.blogId === id){posts_inThatBlog.blogName = name}
+        })
+
+        return blogsDB[index]
+    }
+
 }
+
+*/
 exports.blogsRepo = blogsRepo;
- || boolean;
-{
-    const blog = await DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) }).toArray();
-    if (!blog) {
-        return false;
-    }
-    return blog.map(blogs_mapper_1.blogsMapper);
-}
-/*static createNewBlog(name:string, description:string, websiteUrl:string) {
-    const newBlog: BlogsType = {
-        id: Date.now().toString(),
-        name: name,
-        description: description,
-        websiteUrl: websiteUrl
-    }
-    blogsDB.push(newBlog)
-    return newBlog
-}
-
-static deleteBlog(id:string) {
-    const blog = blogsDB.find((blog) => blog.id === id)
-    if (!blog){return false}
-    const index = blogsDB.findIndex(blog => blog.id === id);
-    blogsDB.splice(index, 1);
-    return true
-}
-
-static updateBlog(id: string, name:string, description:string, websiteUrl:string) {
-    const blog = blogsDB.find((blog) => blog.id === id)
-    if (!blog){return false}
-    const index = blogsDB.findIndex(blog => blog.id === id);
-    blogsDB[index].name = name
-    blogsDB[index].description = description
-    blogsDB[index].websiteUrl = websiteUrl
-
-    postsDB.forEach((posts_inThatBlog) => {
-        if(posts_inThatBlog.blogId === id){posts_inThatBlog.blogName = name}
-    })
-
-    return blogsDB[index]
-}
-
-}
-
-*/ 
