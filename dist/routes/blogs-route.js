@@ -10,7 +10,7 @@ exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => {
     const blog = blogs_repository_1.blogsRepo.getAllBlogs();
     return res.send(blog);
-});
+}); //done
 //get blog by id
 exports.blogsRoute.get('/:id', (req, res) => {
     const blog = blogs_repository_1.blogsRepo.getBlogById(req.params.id);
@@ -20,7 +20,7 @@ exports.blogsRoute.get('/:id', (req, res) => {
     else {
         return res.send(blog);
     }
-});
+}); //done
 //delete blog by id, auth
 exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => {
     const blog = blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
@@ -33,13 +33,9 @@ exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) =
 });
 //post blog, auth and validation
 exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => {
-    const blog = blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
-    if (!blog) {
-        return res.sendStatus(404);
-    }
-    else {
-        return res.status(201).send(blog);
-    }
+    const blogId = blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
+    const blog = blogs_repository_1.blogsRepo.getBlogById(blogId);
+    return res.status(201).send(blog);
 });
 //put new values into existing blog, auth and validation
 exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => {
