@@ -19,7 +19,7 @@ class blogsRepo {
             const blogs = yield DB_1.blogsCollection.find({}).toArray();
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
-    } //done
+    }
     static getBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) }).toArray();
@@ -31,8 +31,8 @@ class blogsRepo {
     }
     static createNewBlog(name, description, websiteUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield DB_1.blogsCollection.insertOne();
-            return res.insertedId;
+            const res = yield DB_1.blogsCollection.insertOne({ name, description, websiteUrl });
+            return res.insertedId.toString();
         });
     }
 } /*
