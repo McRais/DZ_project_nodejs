@@ -19,7 +19,7 @@ blogsRoute.get('/', async (req,res) =>{
 blogsRoute.get('/:id', async (req: Request, res: Response) => {
 const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)} else{return res.send(blog)}
-}) //done
+})
 
 //delete blog by id, auth
 blogsRoute.delete('/:id',authMiddleware ,(req:Request, res:Response) =>{

@@ -15,7 +15,7 @@ export class blogsRepo {
         if (!blog) {
             return false
         }
-        return blog.map(blogsMapper)
+        return blog.toArray().map(blogsMapper)[0]
     }
 
 

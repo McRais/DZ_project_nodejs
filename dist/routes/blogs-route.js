@@ -29,7 +29,7 @@ exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     else {
         return res.send(blog);
     }
-})); //done
+}));
 //delete blog by id, auth
 exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => {
     const blog = blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
