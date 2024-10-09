@@ -9,15 +9,15 @@ import {RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../m
 export const blogsRoute = Router({})
 
 //get all blogs
-blogsRoute.get('/', (req,res) =>{
-    const blog = blogsRepo.getAllBlogs()
+blogsRoute.get('/', async (req,res) =>{
+    const blog = await blogsRepo.getAllBlogs()
     return res.send(blog)
 }) //done
 
 
 //get blog by id
-blogsRoute.get('/:id',(req: Request, res: Response) => {
-const blog = blogsRepo.getBlogById(req.params.id)
+blogsRoute.get('/:id', async (req: Request, res: Response) => {
+const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)} else{return res.send(blog)}
 }) //done
 
