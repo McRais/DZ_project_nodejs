@@ -19,7 +19,7 @@ blogsRoute.get('/', async (req,res) =>{
 blogsRoute.get('/:id', async (req: Request, res: Response) => {
 const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)} else{return res.send(blog)}
-})
+})//done
 
 //delete blog by id, auth
 blogsRoute.delete('/:id',authMiddleware ,(req:Request, res:Response) =>{
@@ -28,11 +28,11 @@ blogsRoute.delete('/:id',authMiddleware ,(req:Request, res:Response) =>{
 })
 
 //post blog, auth and validation
-blogsRoute.post("/",authMiddleware, blogValidation(), (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
-    const blogId = blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl)
-    const blog = blogsRepo.getBlogById(blogId)
+blogsRoute.post("/",authMiddleware, blogValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+    const blogId = await blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl)
+    const blog = await blogsRepo.getBlogById(blogId)
     return res.status(201).send(blog)
-})
+})//done
 
 //put new values into existing blog, auth and validation
 blogsRoute.put("/:id",authMiddleware, blogValidation(), (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>,res:Response) =>{

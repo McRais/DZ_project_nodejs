@@ -29,7 +29,7 @@ exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     else {
         return res.send(blog);
     }
-}));
+})); //done
 //delete blog by id, auth
 exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => {
     const blog = blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
@@ -41,11 +41,11 @@ exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) =
     }
 });
 //post blog, auth and validation
-exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => {
-    const blogId = blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
-    const blog = blogs_repository_1.blogsRepo.getBlogById(blogId);
+exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
+    const blog = yield blogs_repository_1.blogsRepo.getBlogById(blogId);
     return res.status(201).send(blog);
-});
+})); //done
 //put new values into existing blog, auth and validation
 exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => {
     const blog = blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
