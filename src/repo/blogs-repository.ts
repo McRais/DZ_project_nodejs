@@ -15,7 +15,8 @@ export class blogsRepo {
         if (!blog) {
             return false
         }
-        return blog.toArray().map(blogsMapper)[0]
+        let blogArr = Array.of(blog)
+        return blogArr.map(blogsMapper)[0]
     }
 
 

@@ -26,7 +26,8 @@ class blogsRepo {
             if (!blog) {
                 return false;
             }
-            return blog.toArray().map(blogs_mapper_1.blogsMapper)[0];
+            let blogArr = Array.of(blog);
+            return blogArr.map(blogs_mapper_1.blogsMapper)[0];
         });
     }
     static createNewBlog(name, description, websiteUrl) {
