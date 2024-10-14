@@ -37,6 +37,13 @@ class blogsRepo {
         });
     }
     static deleteBlog(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!blog) {
+                return false;
+            }
+            return yield DB_1.blogsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+        });
     }
     static updateBlog(id, name, description, websiteUrl) {
     }

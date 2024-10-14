@@ -1,4 +1,4 @@
-import {BlogsType, OutputBlogType} from "../models/types";
+import {OutputBlogType} from "../models/types";
 import {blogsCollection} from "../database/DB";
 import {blogsMapper} from "../mappers/blogs-mapper";
 import {ObjectId} from "mongodb";
@@ -25,8 +25,12 @@ export class blogsRepo {
         return res.insertedId.toString()
     }
 
-    static deleteBlog(id:string) {
-
+    static async deleteBlog(id:string) {
+        const blog = await blogsCollection.findOne({_id: new ObjectId(id)})
+        if (!blog) {
+            return false
+        }
+        return await blogsCollection.deleteOne({_id: new ObjectId(id)})
     }
 
     static updateBlog(id: string, name:string, description:string, websiteUrl:string) {
