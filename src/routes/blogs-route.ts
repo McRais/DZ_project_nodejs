@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
-import {blogsDB} from "../database/DB";
+
 import {blogsRepo} from "../repo/blogs-repository";
 import {blogValidation} from "../validators/validator-blogs";
 import {RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../models/types";
@@ -22,10 +22,10 @@ const blog = await blogsRepo.getBlogById(req.params.id)
 })//done
 
 //delete blog by id, auth
-blogsRoute.delete('/:id',authMiddleware ,(req:Request, res:Response) =>{
-    const blog = blogsRepo.deleteBlog(req.params.id)
-    if (!blog){return res.sendStatus(404)} else {return res.sendStatus(204)}
-})
+blogsRoute.delete('/:id',authMiddleware ,async (req:Request, res:Response) =>{
+    const result = await blogsRepo.deleteBlog(req.params.id)
+    if (!result){return res.sendStatus(404)} else {return res.sendStatus(204)}
+})//done
 
 //post blog, auth and validation
 blogsRoute.post("/",authMiddleware, blogValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
