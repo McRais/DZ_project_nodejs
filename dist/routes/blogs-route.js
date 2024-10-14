@@ -31,15 +31,15 @@ exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 })); //done
 //delete blog by id, auth
-exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => {
-    const blog = blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
-    if (!blog) {
+exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
+    if (!result) {
         return res.sendStatus(404);
     }
     else {
         return res.sendStatus(204);
     }
-});
+})); //done
 //post blog, auth and validation
 exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
