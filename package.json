@@ -21,7 +21,7 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "dev": "nodemon --inspect dist/index.js",
+    "dev": "nodemon --inspect src/index.ts",
     "watch": "tsc -w"
   }
 }
