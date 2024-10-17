@@ -28,7 +28,7 @@ blogsRoute.delete('/:id',authMiddleware ,async (req:Request, res:Response) =>{
 })//done
 
 //post blog, auth and validation
-blogsRoute.post("/",authMiddleware, blogValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+blogsRoute.post("/",authMiddleware, async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const blogId = await blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl)
     const blog = await blogsRepo.getBlogById(blogId)
     return res.status(201).send(blog)

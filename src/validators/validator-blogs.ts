@@ -12,7 +12,7 @@ const nameValidator = body('name')
     max: 15
     }).withMessage('incorrect name')
 
-const descriptionValidator = body('description')
+/*const descriptionValidator = body('description')
     .isString().withMessage('description must be a string')
     .trim()
     .isLength({
@@ -34,9 +34,9 @@ export const blogIdValidator = body('id')
     const blog = blogsRepo.getBlogById(id)
     if (blog === false){
         throw Error('incorrect id')}
-})
+})*/
 
 
-export const blogValidation = () =>[nameValidator, descriptionValidator, websiteValidator, validatorErrorsCatcher]
+export const blogValidation = () =>[nameValidator]
 
 
