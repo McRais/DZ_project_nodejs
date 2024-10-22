@@ -41,18 +41,13 @@ exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) =
     }
 })); //done
 //post blog, auth and validation
-exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, validator_blogs_1.blogValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(blogId);
     return res.status(201).send(blog);
 })); //done
 //put new values into existing blog, auth and validation
-exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogValidation)(), (req, res) => {
-    const blog = blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
-    if (!blog) {
-        return res.sendStatus(404);
-    }
-    else {
-        return res.status(204).send(blog);
-    }
-});
+exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, validator_blogs_1.blogIdValidator, validator_blogs_1.blogValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
+    return res.status(204).send(blog);
+})); //done
