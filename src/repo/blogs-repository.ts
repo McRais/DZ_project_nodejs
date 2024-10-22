@@ -33,8 +33,14 @@ export class blogsRepo {
         return await blogsCollection.deleteOne({_id: new ObjectId(id)})
     }
 
-    static updateBlog(id: string, name:string, description:string, websiteUrl:string) {
-
+    static async updateBlog(id: string, name:string, description:string, websiteUrl:string) {
+        await blogsCollection.updateOne(
+            {_id: new ObjectId(id)},
+            {
+                name: name,
+                description: description,
+                websiteUrl: websiteUrl
+            })
+        return await blogsRepo.getBlogById(id)
     }
-
 }

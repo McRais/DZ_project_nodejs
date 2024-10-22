@@ -29,8 +29,8 @@ const websiteValidator = body('websiteUrl')
 
 
 export const blogIdValidator = body('id')
-    .custom( (id:string) =>{
-    const blog = blogsRepo.getBlogById(id)
+    .custom( async (id:string) =>{
+    const blog = await blogsRepo.getBlogById(id)
     if (blog === false){
         throw Error('incorrect id')}
 })
