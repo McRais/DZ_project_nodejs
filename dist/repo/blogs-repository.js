@@ -32,7 +32,8 @@ class blogsRepo {
     }
     static createNewBlog(name, description, websiteUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield DB_1.blogsCollection.insertOne({ name, description, websiteUrl });
+            const date = new Date().toString();
+            const res = yield DB_1.blogsCollection.insertOne({ name, description, websiteUrl, createdAt: date, isMembership: true });
             return res.insertedId.toString();
         });
     }
