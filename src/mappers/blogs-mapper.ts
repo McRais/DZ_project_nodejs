@@ -6,6 +6,8 @@ export const blogsMapper = (blog: WithId<BlogsType>) =>{
         id: blog._id.toString(),
         name: blog.name,
         description: blog.description,
-        websiteUrl: blog.websiteUrl
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership
     }
 }
