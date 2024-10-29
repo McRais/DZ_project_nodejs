@@ -1,10 +1,12 @@
-/*import {postsDB, blogsDB} from "../database/DB";
-import {PostsType} from "../models/types";
+import {blogsCollection, postsCollection} from "../database/DB";
+import {OutputPostType, PostsType} from "../models/types";
+import {postsMapper} from "../mappers/blogs-mapper";
 
 export class postsRepo {
 
-    static getAllPosts(){
-        return postsDB
+    static async getAllPosts(): Promise<OutputPostType[]>{
+        const posts = await postsCollection.find({}).toArray()
+        return posts.map(postsMapper)
     }
 
     static getPostById(id:string){
@@ -55,4 +57,3 @@ export class postsRepo {
 
 }
 
-*/

@@ -9,10 +9,10 @@ export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', (req,res) =>{
-    const post = postsRepo.getAllPosts()
+postsRoute.get('/', async (req,res) =>{
+    const post = await postsRepo.getAllPosts()
     return res.send(post)
-})
+})//done
 
 
 //get post by id
