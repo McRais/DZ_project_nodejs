@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsMapper = void 0;
+exports.postsMapper = exports.blogsMapper = void 0;
 const blogsMapper = (blog) => {
     return {
         id: blog._id.toString(),
@@ -12,3 +12,15 @@ const blogsMapper = (blog) => {
     };
 };
 exports.blogsMapper = blogsMapper;
+const postsMapper = (post) => {
+    return {
+        id: post._id.toString(),
+        title: post.title,
+        shortDescription: post.shortDescription,
+        content: post.content,
+        blogId: post.blogId,
+        blogName: post.blogName,
+        createdAt: post.createdAt
+    };
+};
+exports.postsMapper = postsMapper;
