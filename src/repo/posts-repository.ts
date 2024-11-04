@@ -1,6 +1,7 @@
 import {blogsCollection, postsCollection} from "../database/DB";
 import {OutputPostType, PostsType} from "../models/types";
 import {postsMapper} from "../mappers/blogs-mapper";
+import {ObjectId} from "mongodb";
 
 export class postsRepo {
 
@@ -9,12 +10,14 @@ export class postsRepo {
         return posts.map(postsMapper)
     }
 
-    static getPostById(id:string){
-        const post = postsDB.find((post) => post.id === id)
+    static async getPostById(id:string): Promise<OutputPostType | false>{
+        const post = await postsCollection.findOne({_id: new ObjectId(id)})
         if (!post){return false}
-        return post
+        let postArr = Array.of(post)
+        return postArr.map(postsMapper)[0]
     }
-
+}
+/*
     static createNewPost(title:string, shortDescription:string, content:string, blogId: string) {
         //find the name of the blog
         const blog = blogsDB.find((blog) => blog.id === blogId)
@@ -56,4 +59,5 @@ export class postsRepo {
     }
 
 }
+*/
 

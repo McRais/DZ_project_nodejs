@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRepo = void 0;
 const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
+const mongodb_1 = require("mongodb");
 class postsRepo {
     static getAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -20,51 +21,57 @@ class postsRepo {
         });
     }
     static getPostById(id) {
-        const post = postsDB.find((post) => post.id === id);
-        if (!post) {
-            return false;
-        }
-        return post;
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!post) {
+                return false;
+            }
+            let postArr = Array.of(post);
+            return postArr.map(blogs_mapper_1.postsMapper)[0];
+        });
     }
-    static createNewPost(title, shortDescription, content, blogId) {
+}
+exports.postsRepo = postsRepo;
+/*
+    static createNewPost(title:string, shortDescription:string, content:string, blogId: string) {
         //find the name of the blog
-        const blog = blogsDB.find((blog) => blog.id === blogId);
-        if (!blog) {
-            throw new Error("No Blog");
-        }
-        const newPost = {
+        const blog = blogsDB.find((blog) => blog.id === blogId)
+        if(!blog){throw new Error("No Blog")}
+
+        const newPost: PostsType = {
             id: Date.now().toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
             blogName: blog.name
-        };
-        postsDB.push(newPost);
-        return newPost;
-    }
-    static deletePost(id) {
-        const post = postsDB.find((post) => post.id === id);
-        if (!post) {
-            return false;
         }
+        postsDB.push(newPost)
+        return newPost
+    }
+
+    static deletePost(id:string) {
+        const post = postsDB.find((post) => post.id === id)
+        if (!post){return false}
         const index = postsDB.findIndex(post => post.id === id);
         postsDB.splice(index, 1);
-        return true;
+        return true
     }
-    static updatePost(id, title, shortDescription, content, blogId) {
+
+    static updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
         const index = postsDB.findIndex(post => post.id === id);
         //find the name of new blog
-        const blog = blogsDB.find((blog) => blog.id === blogId);
-        if (!blog) {
-            throw new Error("No Blog");
-        }
-        postsDB[index].title = title;
-        postsDB[index].shortDescription = shortDescription;
-        postsDB[index].content = content;
-        postsDB[index].blogId = blogId;
-        postsDB[index].blogName = blog.name;
-        return postsDB[index];
+        const blog = blogsDB.find((blog) => blog.id === blogId)
+        if(!blog){throw new Error("No Blog")}
+
+        postsDB[index].title = title
+        postsDB[index].shortDescription = shortDescription
+        postsDB[index].content = content
+        postsDB[index].blogId = blogId
+        postsDB[index].blogName=blog.name
+
+        return postsDB[index]
     }
+
 }
-exports.postsRepo = postsRepo;
+*/

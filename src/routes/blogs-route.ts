@@ -1,6 +1,5 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
-
 import {blogsRepo} from "../repo/blogs-repository";
 import {blogIdValidator, blogValidation} from "../validators/validator-blogs";
 import {RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../models/types";
