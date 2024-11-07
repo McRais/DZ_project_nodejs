@@ -30,26 +30,28 @@ class postsRepo {
             return postArr.map(blogs_mapper_1.postsMapper)[0];
         });
     }
+    static createNewPost(title, shortDescription, content, blogId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //find the name of the blog
+            const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!blog) {
+                throw new Error("No blog");
+            }
+            const newPost = {
+                title: title,
+                shortDescription: shortDescription,
+                content: content,
+                blogId: blogId,
+                blogName: blog.name,
+                createdAt: Date.now().toString()
+            };
+            const res = yield DB_1.postsCollection.insertOne(newPost);
+            return res.insertedId.toString();
+        });
+    }
 }
 exports.postsRepo = postsRepo;
 /*
-    static createNewPost(title:string, shortDescription:string, content:string, blogId: string) {
-        //find the name of the blog
-        const blog = blogsDB.find((blog) => blog.id === blogId)
-        if(!blog){throw new Error("No Blog")}
-
-        const newPost: PostsType = {
-            id: Date.now().toString(),
-            title: title,
-            shortDescription: shortDescription,
-            content: content,
-            blogId: blogId,
-            blogName: blog.name
-        }
-        postsDB.push(newPost)
-        return newPost
-    }
-
     static deletePost(id:string) {
         const post = postsDB.find((post) => post.id === id)
         if (!post){return false}
