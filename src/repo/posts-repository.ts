@@ -5,36 +5,41 @@ import {ObjectId} from "mongodb";
 
 export class postsRepo {
 
-    static async getAllPosts(): Promise<OutputPostType[]>{
+    static async getAllPosts(): Promise<OutputPostType[]> {
         const posts = await postsCollection.find({}).toArray()
         return posts.map(postsMapper)
     }
 
-    static async getPostById(id:string): Promise<OutputPostType | false>{
+    static async getPostById(id: string): Promise<OutputPostType | false> {
         const post = await postsCollection.findOne({_id: new ObjectId(id)})
-        if (!post){return false}
+        if (!post) {
+            return false
+        }
         let postArr = Array.of(post)
         return postArr.map(postsMapper)[0]
     }
-}
-/*
-    static createNewPost(title:string, shortDescription:string, content:string, blogId: string) {
+
+
+    static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<string> {
         //find the name of the blog
-        const blog = blogsDB.find((blog) => blog.id === blogId)
-        if(!blog){throw new Error("No Blog")}
+        const blog = await blogsCollection.findOne({_id: new ObjectId(id)})
+        if (!blog) {
+            throw new Error("No blog")
+        }
 
         const newPost: PostsType = {
-            id: Date.now().toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: blog.name
+            blogName: blog.name,
+            createdAt: Date.now().toString()
         }
-        postsDB.push(newPost)
-        return newPost
+        const res = await postsCollection.insertOne(newPost)
+        return res.insertedId.toString()
     }
-
+}
+/*
     static deletePost(id:string) {
         const post = postsDB.find((post) => post.id === id)
         if (!post){return false}
