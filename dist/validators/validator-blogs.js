@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogValidation = exports.blogIdValidator = void 0;
 const express_validator_1 = require("express-validator");
 const blogs_repository_1 = require("../repo/blogs-repository");
-const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
 const nameValidator = (0, express_validator_1.body)('name')
     .isString().withMessage('name must be a string')
     .trim()
@@ -41,5 +40,5 @@ exports.blogIdValidator = (0, express_validator_1.body)('id')
         throw Error('incorrect id');
     }
 }));
-const blogValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+const blogValidation = () => [ /*nameValidator, descriptionValidator, websiteValidator, validatorErrorsCatcher*/];
 exports.blogValidation = blogValidation;
