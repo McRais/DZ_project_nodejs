@@ -2,13 +2,13 @@ import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
 import {blogIdValidator, blogValidation} from "../validators/validator-blogs";
-import {RequestWithBody, RequestWithBodyAndParams} from "../models/types";
+import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
 
 
 export const blogsRoute = Router({})
 
 
-blogsRoute.get('/', async (req, res) =>{
+blogsRoute.get('/', async (req: Request, res: Response) : Promise<OutputBlogType> => {
     const blog = await blogsRepo.getAllBlogs()
     return res.send(blog)
 })
