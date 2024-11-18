@@ -49,17 +49,18 @@ class postsRepo {
             return res.insertedId.toString();
         });
     }
+    static deletePost(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!post) {
+                return false;
+            }
+            return yield DB_1.postsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+        });
+    }
 }
 exports.postsRepo = postsRepo;
 /*
-    static deletePost(id:string) {
-        const post = postsDB.find((post) => post.id === id)
-        if (!post){return false}
-        const index = postsDB.findIndex(post => post.id === id);
-        postsDB.splice(index, 1);
-        return true
-    }
-
     static updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
         const index = postsDB.findIndex(post => post.id === id);
         //find the name of new blog
@@ -76,4 +77,6 @@ exports.postsRepo = postsRepo;
     }
 
 }
-*/
+
+
+ 
