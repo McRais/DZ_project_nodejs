@@ -2,28 +2,28 @@ import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {postsRepo} from "../repo/posts-repository";
 import {postValidation} from "../validators/validator-posts";
-import {RequestWithBody, RequestWithBodyAndParams} from "../models/types";
+import {OutputPostType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
 
 export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', async (req,res) =>{
+postsRoute.get('/', async (req,res) Promise<OutputPostType[]> =>{
     const post = await postsRepo.getAllPosts()
     return res.send(post)
 })//done
 
 
 //get post by id
-postsRoute.get('/:id',(req: Request, res: Response) => {
-    const post = postsRepo.getPostById(req.params.id)
+postsRoute.get('/:id', async (req: Request, res: Response) => {
+    const post = await postsRepo.getPostById(req.params.id)
     if(post === false){return res.sendStatus(404)} else{return res.send(post)}
 })
 
 //delete post by id, auth
-postsRoute.delete('/:id',authMiddleware ,(req:Request, res:Response) =>{
-    const post = postsRepo.deletePost(req.params.id)
-    if (!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
+postsRoute.delete('/:id',authMiddleware , async (req:Request, res:Response) =>{
+    const post =await postsRepo.deletePost(req.params.id)
+    if (!post){return res.sendStatus(404)} else {return res.sendStatus(204)} //not done
 })
 
 //post a post, auth and validation
