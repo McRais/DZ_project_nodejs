@@ -38,16 +38,16 @@ export class postsRepo {
         const res = await postsCollection.insertOne(newPost)
         return res.insertedId.toString()
     }
+
+    static async deletePost(id: string) {
+        const post = await postsCollection.findOne({_id: new ObjectId(id)})
+        if (!post) {
+            return false
+        }
+        return await postsCollection.deleteOne({_id: new ObjectId(id)})
+    }
 }
 /*
-    static deletePost(id:string) {
-        const post = postsDB.find((post) => post.id === id)
-        if (!post){return false}
-        const index = postsDB.findIndex(post => post.id === id);
-        postsDB.splice(index, 1);
-        return true
-    }
-
     static updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
         const index = postsDB.findIndex(post => post.id === id);
         //find the name of new blog
@@ -64,5 +64,5 @@ export class postsRepo {
     }
 
 }
-*/
+
 
