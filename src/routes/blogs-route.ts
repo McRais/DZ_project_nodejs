@@ -10,7 +10,7 @@ export const blogsRoute = Router({})
 
 blogsRoute.get('/', async (req: Request, res: Response) : Promise<OutputBlogType[]> => {
     const blog = await blogsRepo.getAllBlogs()
-    return res.send(blog)
+    res.send(blog)
 })
 
 blogsRoute.get('/:id', async (req: Request, res: Response) => {
