@@ -8,9 +8,9 @@ import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams} from "../mode
 export const blogsRoute = Router({})
 
 
-blogsRoute.get('/', async (req: Request, res: Response) : Promise<OutputBlogType[]> => {
+blogsRoute.get('/', async (req: Request, res: Response): Promise<Response<OutputBlogType[]>> => {
     const blog = await blogsRepo.getAllBlogs()
-    res.send(blog)
+    return res.send(blog)
 })
 
 blogsRoute.get('/:id', async (req: Request, res: Response) => {
