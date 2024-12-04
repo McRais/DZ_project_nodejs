@@ -22,7 +22,7 @@ export class postsRepo {
 
     static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<string> {
         //find the name of the blog
-        const blog = await blogsCollection.findOne({_id: new ObjectId(id)})
+        const blog = await blogsCollection.findOne({_id: new ObjectId(blogId)})
         if (!blog) {
             throw new Error("No blog")
         }

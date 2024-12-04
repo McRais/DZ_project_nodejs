@@ -8,7 +8,7 @@ export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', async (req,res) Promise<OutputPostType[]> =>{
+postsRoute.get('/', async (req,res): Promise<OutputPostType[]> =>{
     const post = await postsRepo.getAllPosts()
     return res.send(post)
 })//done
