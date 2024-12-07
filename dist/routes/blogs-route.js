@@ -17,7 +17,7 @@ const validator_blogs_1 = require("../validators/validator-blogs");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getAllBlogs();
-    res.send(blog);
+    return res.send(blog);
 }));
 exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);

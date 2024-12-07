@@ -16,10 +16,10 @@ const posts_repository_1 = require("../repo/posts-repository");
 const validator_posts_1 = require("../validators/validator-posts");
 exports.postsRoute = (0, express_1.Router)({});
 //get all posts
-exports.postsRoute.get('/', async(req, res), (Promise), {
-    const: post = await posts_repository_1.postsRepo.getAllPosts(),
-    return: res.send(post)
-}); //done
+exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_repository_1.postsRepo.getAllPosts();
+    return res.send(post);
+})); //done
 //get post by id
 exports.postsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.getPostById(req.params.id);
@@ -29,7 +29,7 @@ exports.postsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     else {
         return res.send(post);
     }
-}));
+})); //done
 //delete post by id, auth
 exports.postsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.deletePost(req.params.id);

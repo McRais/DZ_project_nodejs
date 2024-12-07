@@ -33,7 +33,7 @@ class postsRepo {
     static createNewPost(title, shortDescription, content, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
             //find the name of the blog
-            const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(blogId) });
             if (!blog) {
                 throw new Error("No blog");
             }
