@@ -8,17 +8,17 @@ export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', async (req,res): Promise<OutputPostType[]> =>{
+postsRoute.get('/', async (req:Request,res:Response): Promise<Response<OutputPostType[]>> =>{
     const post = await postsRepo.getAllPosts()
     return res.send(post)
 })//done
 
 
 //get post by id
-postsRoute.get('/:id', async (req: Request, res: Response) => {
+postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<OutputPostType | 404>> => {
     const post = await postsRepo.getPostById(req.params.id)
     if(post === false){return res.sendStatus(404)} else{return res.send(post)}
-})
+}) //done
 
 //delete post by id, auth
 postsRoute.delete('/:id',authMiddleware , async (req:Request, res:Response) =>{
