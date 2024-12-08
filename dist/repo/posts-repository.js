@@ -32,7 +32,6 @@ class postsRepo {
     }
     static createNewPost(title, shortDescription, content, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
-            //find the name of the blog
             const blog = yield DB_1.blogsCollection.findOne({ _id: new mongodb_1.ObjectId(blogId) });
             if (!blog) {
                 throw new Error("No blog");
@@ -58,23 +57,13 @@ class postsRepo {
             return yield DB_1.postsCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
         });
     }
+    static updatePost(id, title, shortDescription, content, blogId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const post = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!post) {
+                throw new Error("No post");
+            }
+        });
+    }
 }
 exports.postsRepo = postsRepo;
-/*
-    static updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
-        const index = postsDB.findIndex(post => post.id === id);
-        //find the name of new blog
-        const blog = blogsDB.find((blog) => blog.id === blogId)
-        if(!blog){throw new Error("No Blog")}
-
-        postsDB[index].title = title
-        postsDB[index].shortDescription = shortDescription
-        postsDB[index].content = content
-        postsDB[index].blogId = blogId
-        postsDB[index].blogName=blog.name
-
-        return postsDB[index]
-    }
-
-}
-*/
