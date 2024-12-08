@@ -21,7 +21,6 @@ export class postsRepo {
 
 
     static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<string> {
-        //find the name of the blog
         const blog = await blogsCollection.findOne({_id: new ObjectId(blogId)})
         if (!blog) {
             throw new Error("No blog")
@@ -46,23 +45,17 @@ export class postsRepo {
         }
         return await postsCollection.deleteOne({_id: new ObjectId(id)})
     }
-}
-/*
-    static updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
-        const index = postsDB.findIndex(post => post.id === id);
-        //find the name of new blog
-        const blog = blogsDB.find((blog) => blog.id === blogId)
-        if(!blog){throw new Error("No Blog")}
 
-        postsDB[index].title = title
-        postsDB[index].shortDescription = shortDescription
-        postsDB[index].content = content
-        postsDB[index].blogId = blogId
-        postsDB[index].blogName=blog.name
 
-        return postsDB[index]
+    static async updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
+        const post = await postsCollection.findOne({_id: new ObjectId(id)})
+        if (!post) {
+            throw new Error("No post")
+        }
+
+
     }
 
 }
-*/
+
 
