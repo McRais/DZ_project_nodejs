@@ -59,8 +59,22 @@ class postsRepo {
     }
     static updatePost(id, title, shortDescription, content, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const post = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
-            if (!post) {
+            const postCheck = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!postCheck) {
+                throw new Error("No post");
+            }
+            const { upsertedId } = yield DB_1.postsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
+                title,
+                shortDescription,
+                content,
+                blogId
+            });
+            const post = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(upsertedId === null || upsertedId === void 0 ? void 0 : upsertedId.toString()) });
+            if (post) {
+                let postArr = Array.of(post);
+                return postArr.map(blogs_mapper_1.postsMapper)[0];
+            }
+            else {
                 throw new Error("No post");
             }
         });

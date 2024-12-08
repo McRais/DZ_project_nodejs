@@ -33,9 +33,7 @@ postsRoute.post("/",authMiddleware, postValidation(), (req:RequestWithBody<{titl
 })
 
 //put new values into existing blog, auth and validation
-postsRoute.put("/:id",authMiddleware, postValidation(), (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
-    const postCheck = postsRepo.getPostById(req.params.id)
-    if(postCheck === false){return res.sendStatus(404)}
-    const post = postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
+postsRoute.put("/:id",authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
+    const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(204).send(post)
 })

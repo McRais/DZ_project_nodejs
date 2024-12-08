@@ -47,11 +47,22 @@ export class postsRepo {
     }
 
 
-    static async updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string) {
-        const post = await postsCollection.findOne({_id: new ObjectId(id)})
-        if (!post) {
+    static async updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string):Promise<OutputPostType> {
+        const postCheck = await postsCollection.findOne({_id: new ObjectId(id)})
+        if (!postCheck) {
             throw new Error("No post")
         }
+        const {upsertedId} = await postsCollection.updateOne({_id: new ObjectId(id)}, {
+            title,
+            shortDescription,
+            content,
+            blogId
+        })
+        const post = await postsCollection.findOne({_id: new ObjectId(upsertedId?.toString())})
+        if (post) {
+            let postArr = Array.of(post)
+            return postArr.map(postsMapper)[0]
+        } else {throw new Error("No post")}
 
 
     }

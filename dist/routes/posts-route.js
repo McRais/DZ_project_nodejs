@@ -46,11 +46,7 @@ exports.postsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_pos
     return res.status(201).send(post);
 });
 //put new values into existing blog, auth and validation
-exports.postsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => {
-    const postCheck = posts_repository_1.postsRepo.getPostById(req.params.id);
-    if (postCheck === false) {
-        return res.sendStatus(404);
-    }
-    const post = posts_repository_1.postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
+exports.postsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_repository_1.postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     return res.status(204).send(post);
-});
+}));

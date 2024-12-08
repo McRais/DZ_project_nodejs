@@ -16,8 +16,8 @@ const blogs_repository_1 = require("../repo/blogs-repository");
 const validator_blogs_1 = require("../validators/validator-blogs");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blogs_repository_1.blogsRepo.getAllBlogs();
-    return res.send(blog);
+    const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs();
+    return res.send(blogs);
 }));
 exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);
@@ -30,7 +30,7 @@ exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
 }));
 exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
-    if (!result) {
+    if (result === false) {
         return res.sendStatus(404);
     }
     else {
@@ -40,9 +40,19 @@ exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) =
 exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, validator_blogs_1.blogValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl);
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(blogId);
-    return res.status(201).send(blog);
+    if (blog === false) {
+        return res.sendStatus(404);
+    }
+    else {
+        return res.status(201).send(blog);
+    }
 }));
 exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, validator_blogs_1.blogIdValidator, validator_blogs_1.blogValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
-    return res.status(204).send(blog);
+    if (blog === false) {
+        return res.sendStatus(404);
+    }
+    else {
+        return res.status(204).send(blog);
+    }
 }));
