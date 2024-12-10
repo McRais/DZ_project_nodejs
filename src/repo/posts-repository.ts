@@ -20,7 +20,7 @@ export class postsRepo {
     }
 
 
-    static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<string> {
+    static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostType | false> {
         const blog = await blogsCollection.findOne({_id: new ObjectId(blogId)})
         if (!blog) {
             throw new Error("No blog")
@@ -34,8 +34,8 @@ export class postsRepo {
             blogName: blog.name,
             createdAt: Date.now().toString()
         }
-        const res = await postsCollection.insertOne(newPost)
-        return res.insertedId.toString()
+        const result = await postsCollection.insertOne(newPost)
+        return postsRepo.getPostById(result.insertedId.toString())
     }
 
     static async deletePost(id: string) {
