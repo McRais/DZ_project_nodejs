@@ -21,16 +21,16 @@ postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<Out
 }) //done
 
 //delete post by id, auth
-postsRoute.delete('/:id',authMiddleware , async (req:Request, res:Response) =>{
+postsRoute.delete('/:id',authMiddleware , async (req:Request, res:Response): Promise<Response<404|204>> =>{
     const post =await postsRepo.deletePost(req.params.id)
-    if (!post){return res.sendStatus(404)} else {return res.sendStatus(204)} //not done
-})
+    if (post===false){return res.sendStatus(404)} else {return res.sendStatus(204)} //done
+})//done, need to do enum for the http codes because this is horrendous
 
 //post a post, auth and validation
-postsRoute.post("/",authMiddleware, postValidation(), (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
-    const post = postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
+postsRoute.post("/",authMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+    const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(201).send(post)
-})
+}) //done
 
 //put new values into existing blog, auth and validation
 postsRoute.put("/:id",authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
