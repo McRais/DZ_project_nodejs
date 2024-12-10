@@ -33,18 +33,18 @@ exports.postsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
 //delete post by id, auth
 exports.postsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.deletePost(req.params.id);
-    if (!post) {
+    if (post === false) {
         return res.sendStatus(404);
     }
     else {
         return res.sendStatus(204);
-    } //not done
-}));
+    } //done
+})); //done, need to do enum for the http codes because this is horrendous
 //post a post, auth and validation
-exports.postsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => {
-    const post = posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
+exports.postsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     return res.status(201).send(post);
-});
+})); //done
 //put new values into existing blog, auth and validation
 exports.postsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);

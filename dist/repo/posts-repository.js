@@ -44,8 +44,8 @@ class postsRepo {
                 blogName: blog.name,
                 createdAt: Date.now().toString()
             };
-            const res = yield DB_1.postsCollection.insertOne(newPost);
-            return res.insertedId.toString();
+            const result = yield DB_1.postsCollection.insertOne(newPost);
+            return postsRepo.getPostById(result.insertedId.toString());
         });
     }
     static deletePost(id) {
