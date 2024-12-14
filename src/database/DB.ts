@@ -1,5 +1,7 @@
 import {MongoClient} from "mongodb";
 import {BlogsType, PostsType} from "../models/types";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://0.0.0.0:27017'
 
