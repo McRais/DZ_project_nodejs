@@ -35,5 +35,5 @@ postsRoute.post("/",authMiddleware, postValidation(), async (req:RequestWithBody
 //put new values into existing blog, auth and validation
 postsRoute.put("/:id",authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
-    return res.status(204).send(post) //done?
+    return res.status(204).send(post) //done
 })
