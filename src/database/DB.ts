@@ -3,7 +3,8 @@ import {BlogsType, PostsType} from "../models/types";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const mongoURI = process.env.MONGO_URI || 'mongodb://0.0.0.0:27017'
+const mongoURI = process.env.MONGO_URI
+if (!mongoURI) {throw new Error("no db connection")}
 
 const client = new MongoClient(mongoURI)
 

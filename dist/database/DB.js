@@ -46,7 +46,10 @@ exports.runDb = exports.postsCollection = exports.blogsCollection = void 0;
 const mongodb_1 = require("mongodb");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-const mongoURI = process.env.MONGO_URI || 'mongodb://0.0.0.0:27017';
+const mongoURI = process.env.MONGO_URI;
+if (!mongoURI) {
+    throw new Error("no db connection");
+}
 const client = new mongodb_1.MongoClient(mongoURI);
 const db = client.db('blogs-db');
 exports.blogsCollection = db.collection('blogs');
