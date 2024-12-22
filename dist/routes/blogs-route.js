@@ -13,7 +13,6 @@ exports.blogsRoute = void 0;
 const express_1 = require("express");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const blogs_repository_1 = require("../repo/blogs-repository");
-const validator_blogs_1 = require("../validators/validator-blogs");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs();
@@ -47,7 +46,7 @@ exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (req, res) => __a
         return res.status(201).send(blog);
     }
 }));
-exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, validator_blogs_1.blogIdValidator, validator_blogs_1.blogValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (blog === false) {
         return res.sendStatus(404);
