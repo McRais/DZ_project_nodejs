@@ -1,5 +1,4 @@
 import {body} from "express-validator";
-import request from "supertest";
 import {blogsRepo} from "../repo/blogs-repository";
 import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
 
