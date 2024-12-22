@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {postsRepo} from "../repo/posts-repository";
-import {postValidation} from "../validators/validator-posts";
+//import {postValidation} from "../validators/validator-posts";
 import {OutputPostType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
 
 export const postsRoute = Router({})
@@ -27,13 +27,13 @@ postsRoute.delete('/:id',authMiddleware , async (req:Request, res:Response): Pro
 })//done, need to do enum for the http codes because this is horrendous
 
 //post a post, auth and validation
-postsRoute.post("/",authMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.post("/",authMiddleware, async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(201).send(post)
 }) //done
 
 //put new values into existing blog, auth and validation
-postsRoute.put("/:id",authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
+postsRoute.put("/:id",authMiddleware, async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(204).send(post) //done
 })

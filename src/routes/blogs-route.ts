@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
-import {blogIdValidator, blogValidation} from "../validators/validator-blogs";
+//import {blogIdValidator, blogValidation} from "../validators/validator-blogs";
 import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
 
 
@@ -29,7 +29,7 @@ blogsRoute.post("/",authMiddleware, async (req:RequestWithBody<{name:string, des
     if (blog === false){return res.sendStatus(404)} else {return res.status(201).send(blog)}
 })
 
-blogsRoute.put("/:id",authMiddleware, blogIdValidator, blogValidation, async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>,res:Response) =>{
+blogsRoute.put("/:id",authMiddleware, async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>,res:Response) =>{
     const blog = await blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
     if (blog === false){return res.sendStatus(404)} else {return res.status(204).send(blog)}
 })
