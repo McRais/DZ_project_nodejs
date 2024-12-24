@@ -22,7 +22,7 @@ export class blogsRepo {
 
     static async createNewBlog(name: string, description: string, websiteUrl: string): Promise<string> {
         const date = new Date().toString()
-        const res = await blogsCollection.insertOne({name, description, websiteUrl, createdAt: date, isMembership:true})
+        const res = await blogsCollection.insertOne({name, description, websiteUrl, createdAt: date.toString(), isMembership:true})
         return res.insertedId.toString()
     }
 
