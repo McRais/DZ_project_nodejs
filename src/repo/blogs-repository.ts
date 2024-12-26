@@ -15,7 +15,7 @@ export class blogsRepo {
         if (!blog) {
             return false
         }
-        let blogArr = Array.of(blog)
+        const blogArr = Array.of(blog)
         return blogArr.map(blogsMapper)[0]
     }
 

@@ -27,9 +27,9 @@ const contentValidator = body('content')
     }).withMessage('incorrect content')
 
 
-export const blogIdValidator = body('blogId').isString().trim()
+/*export const blogIdValidator = body('blogId').isString().trim()
     .custom((blogId) =>{
         return blogsRepo.getBlogById(blogId);
     }).withMessage("incorrect blogId")
-
-export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator,blogIdValidator, validatorErrorsCatcher]
+*/
+export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, validatorErrorsCatcher]
