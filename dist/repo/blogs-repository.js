@@ -26,7 +26,7 @@ class blogsRepo {
             if (!blog) {
                 return false;
             }
-            let blogArr = Array.of(blog);
+            const blogArr = Array.of(blog);
             return blogArr.map(blogs_mapper_1.blogsMapper)[0];
         });
     }

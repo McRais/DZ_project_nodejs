@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogValidation = exports.blogIdValidator = void 0;
+exports.blogIdValidation = exports.blogParamsValidation = void 0;
 const express_validator_1 = require("express-validator");
 const blogs_repository_1 = require("../repo/blogs-repository");
 const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
@@ -34,12 +34,14 @@ const websiteValidator = (0, express_validator_1.body)('websiteUrl')
     min: 0,
     max: 100
 }).matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$').withMessage('incorrect website URL');
-exports.blogIdValidator = (0, express_validator_1.body)('id')
+const blogIdValidator = (0, express_validator_1.param)('id')
     .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
     if (blog === false) {
-        throw Error('incorrect id');
+        throw new Error('incorrect id');
     }
 }));
-const blogValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
-exports.blogValidation = blogValidation;
+const blogParamsValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+exports.blogParamsValidation = blogParamsValidation;
+const blogIdValidation = () => [blogIdValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+exports.blogIdValidation = blogIdValidation;
