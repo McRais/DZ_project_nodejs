@@ -1,6 +1,6 @@
-import {body, param} from "express-validator";
 import {blogsRepo} from "../repo/blogs-repository";
 import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
+import {body, param} from "express-validator";
 
 const nameValidator = body('name')
     .isString().withMessage('name must be a string')
@@ -14,7 +14,7 @@ const descriptionValidator = body('description')
     .isString().withMessage('description must be a string')
     .trim()
     .isLength({
-    min:0,
+    min:1,
     max: 500
     }).withMessage('incorrect description')
 
@@ -25,7 +25,7 @@ const websiteValidator = body('websiteUrl')
     min:0,
     max: 100
     }).matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$').withMessage('incorrect website URL')
-
+/*
 
 const blogIdValidator = param('id')
     .custom(async (id) =>{
@@ -33,8 +33,8 @@ const blogIdValidator = param('id')
     if (blog === false){
         throw new Error('incorrect id')}
 })
+*/
 
-
-export const blogBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator, validatorErrorsCatcher]
-export const blogIdValidation = () => [blogIdValidator, validatorErrorsCatcher]
+export const blogBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
+//export const blogIdValidation = () => [blogIdValidator, validatorErrorsCatcher]
 
