@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from "express";
+import {Request, Response, NextFunction} from "express"
 import {validationResult} from "express-validator";
 
 export const validatorErrorsCatcher = (req:Request,res:Response,next:NextFunction) =>{
