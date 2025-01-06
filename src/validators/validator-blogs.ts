@@ -25,16 +25,16 @@ const websiteValidator = body('websiteUrl')
     min:0,
     max: 100
     }).matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$').withMessage('incorrect website URL')
-/*
 
-const blogIdValidator = param('id')
+
+const blogIdValidator = param('blogId')
     .custom(async (id) =>{
     const blog = await blogsRepo.getBlogById(id)
     if (blog === false){
-        throw new Error('incorrect id')}
+        throw new Error('incorrect id of blog')}
 })
-*/
+
 
 export const blogBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
-//export const blogIdValidation = () => [blogIdValidator, validatorErrorsCatcher]
+export const blogIdValidation = () => [blogIdValidator, validatorErrorsCatcher]
 

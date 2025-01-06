@@ -63,10 +63,7 @@ export class postsRepo {
             let postArr = Array.of(post)
             return postArr.map(postsMapper)[0]
         } else {throw new Error("No post")}
-
-
     }
-
 }
 
 

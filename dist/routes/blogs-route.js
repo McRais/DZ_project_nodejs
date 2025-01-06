@@ -47,7 +47,7 @@ exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blo
         return res.status(201).send(blog);
     }
 }));
-exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (blog === false) {
         return res.sendStatus(404);

@@ -24,10 +24,5 @@ const contentValidator = (0, express_validator_1.body)('content')
     min: 1,
     max: 1000
 }).withMessage('incorrect content');
-/*export const blogIdValidator = body('blogId').isString().trim()
-    .custom((blogId) =>{
-        return blogsRepo.getBlogById(blogId);
-    }).withMessage("incorrect blogId")
-*/
 const postValidation = () => [titleValidator, shortDescValidator, contentValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postValidation = postValidation;
