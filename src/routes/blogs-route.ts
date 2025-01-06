@@ -27,12 +27,12 @@ blogsRoute.delete('/:id',authMiddleware, async (req:Request, res:Response) =>{
 blogsRoute.post("/",authMiddleware, blogBodyValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const blogId = await blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl)
     const blog = await blogsRepo.getBlogById(blogId)
-    if (blog === false){return res.sendStatus(404)} else {return res.status(201).send(blog)}
+    return res.status(201).send(blog)
 })
 
 blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>,res:Response) =>{
     const blog = await blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
-    if (blog === false){return res.sendStatus(404)} else {return res.status(204).send(blog)}
+    if(blog === false){return res.sendStatus(404)}else{return res.status(204).send(blog)}
 })
 
 
