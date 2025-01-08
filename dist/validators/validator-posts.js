@@ -1,9 +1,18 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postValidation = void 0;
 const express_validator_1 = require("express-validator");
 const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
-const validator_blogs_1 = require("./validator-blogs");
+const blogs_repository_1 = require("../repo/blogs-repository");
 const titleValidator = (0, express_validator_1.body)('title')
     .isString().withMessage('title must be a string')
     .trim()
@@ -25,5 +34,12 @@ const contentValidator = (0, express_validator_1.body)('content')
     min: 1,
     max: 1000
 }).withMessage('incorrect content');
-const postValidation = () => [titleValidator, shortDescValidator, contentValidator, validator_blogs_1.blogIdValidation, validator_errors_catcher_1.validatorErrorsCatcher];
+const blogIdValidator = (0, express_validator_1.param)('blogId')
+    .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
+    if (blog === false) {
+        throw new Error('incorrect id of blog');
+    }
+}));
+const postValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postValidation = postValidation;
