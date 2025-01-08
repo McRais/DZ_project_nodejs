@@ -48,11 +48,11 @@ class blogsRepo {
     }
     static updateBlog(id, name, description, websiteUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield DB_1.blogsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
-                name: name,
-                description: description,
-                websiteUrl: websiteUrl
-            });
+            yield DB_1.blogsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
+                    name: name,
+                    description: description,
+                    websiteUrl: websiteUrl
+                } }, { upsert: true });
             return yield blogsRepo.getBlogById(id);
         });
     }

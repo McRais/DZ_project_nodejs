@@ -37,11 +37,11 @@ export class blogsRepo {
     static async updateBlog(id: string, name:string, description:string, websiteUrl:string) {
         await blogsCollection.updateOne(
             {_id: new ObjectId(id)},
-            {
+            {$set: {
                 name: name,
                 description: description,
                 websiteUrl: websiteUrl
-            })
+            }},{upsert: true})
         return await blogsRepo.getBlogById(id)
     }
 }

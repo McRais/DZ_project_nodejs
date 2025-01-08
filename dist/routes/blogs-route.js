@@ -48,6 +48,6 @@ exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_b
         return res.sendStatus(404);
     }
     else {
-        return res.status(204).send(blog);
+        return res.sendStatus(204);
     }
 }));
