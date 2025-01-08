@@ -25,6 +25,7 @@ export class postsRepo {
         if (!blog) {
             throw new Error("No blog")
         }
+        const date = new Date()
 
         const newPost: PostsType = {
             title: title,
@@ -32,7 +33,7 @@ export class postsRepo {
             content: content,
             blogId: blogId,
             blogName: blog.name,
-            createdAt: Date.now().toString()
+            createdAt: date.toISOString()
         }
         const result = await postsCollection.insertOne(newPost)
         return postsRepo.getPostById(result.insertedId.toString())
@@ -47,22 +48,19 @@ export class postsRepo {
     }
 
 
-    static async updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string):Promise<OutputPostType> {
+    static async updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string):Promise<boolean> {
         const postCheck = await postsCollection.findOne({_id: new ObjectId(id)})
         if (!postCheck) {
-            throw new Error("No post")
+            return false
         }
-        const {upsertedId} = await postsCollection.updateOne({_id: new ObjectId(id)}, {
-            title,
-            shortDescription,
-            content,
-            blogId
-        })
-        const post = await postsCollection.findOne({_id: new ObjectId(upsertedId?.toString())})
-        if (post) {
-            let postArr = Array.of(post)
-            return postArr.map(postsMapper)[0]
-        } else {throw new Error("No post")}
+        await postsCollection.updateOne({_id: new ObjectId(id)},
+            {$set: {
+                    title: title,
+                    shortDescription: shortDescription,
+                    content: content,
+                    blogId: blogId
+                }},{upsert: true})
+        return true
     }
 }
 

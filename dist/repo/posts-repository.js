@@ -36,13 +36,14 @@ class postsRepo {
             if (!blog) {
                 throw new Error("No blog");
             }
+            const date = new Date();
             const newPost = {
                 title: title,
                 shortDescription: shortDescription,
                 content: content,
                 blogId: blogId,
                 blogName: blog.name,
-                createdAt: Date.now().toString()
+                createdAt: date.toISOString()
             };
             const result = yield DB_1.postsCollection.insertOne(newPost);
             return postsRepo.getPostById(result.insertedId.toString());
@@ -61,22 +62,15 @@ class postsRepo {
         return __awaiter(this, void 0, void 0, function* () {
             const postCheck = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
             if (!postCheck) {
-                throw new Error("No post");
+                return false;
             }
-            const { upsertedId } = yield DB_1.postsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, {
-                title,
-                shortDescription,
-                content,
-                blogId
-            });
-            const post = yield DB_1.postsCollection.findOne({ _id: new mongodb_1.ObjectId(upsertedId === null || upsertedId === void 0 ? void 0 : upsertedId.toString()) });
-            if (post) {
-                let postArr = Array.of(post);
-                return postArr.map(blogs_mapper_1.postsMapper)[0];
-            }
-            else {
-                throw new Error("No post");
-            }
+            yield DB_1.postsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
+                    title: title,
+                    shortDescription: shortDescription,
+                    content: content,
+                    blogId: blogId
+                } }, { upsert: true });
+            return true;
         });
     }
 }

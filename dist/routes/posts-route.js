@@ -48,5 +48,10 @@ exports.postsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_pos
 //put new values into existing blog, auth and validation
 exports.postsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
-    return res.status(204).send(post);
+    if (!post) {
+        return res.sendStatus(404);
+    }
+    else {
+        return res.sendStatus(204);
+    }
 }));
