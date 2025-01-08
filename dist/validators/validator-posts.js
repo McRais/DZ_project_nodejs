@@ -34,7 +34,7 @@ const contentValidator = (0, express_validator_1.body)('content')
     min: 1,
     max: 1000
 }).withMessage('incorrect content');
-const blogIdValidator = (0, express_validator_1.param)('blogId')
+const blogIdValidator = (0, express_validator_1.body)('blogId')
     .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
     if (blog === false) {

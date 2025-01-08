@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
 import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
-import {blogBodyValidation, blogIdValidation} from "../validators/validator-blogs";
+import {blogBodyValidation} from "../validators/validator-blogs";
 
 
 

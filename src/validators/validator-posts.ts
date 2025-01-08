@@ -26,7 +26,7 @@ const contentValidator = body('content')
         max: 1000
     }).withMessage('incorrect content')
 
-const blogIdValidator = param('blogId')
+const blogIdValidator = body('blogId')
     .custom(async (id) =>{
         const blog = await blogsRepo.getBlogById(id)
         if (blog === false){
