@@ -1,6 +1,6 @@
-import {body} from "express-validator";
+import {body, param} from "express-validator";
 import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
-import {blogIdValidation} from "./validator-blogs";
+import {blogsRepo} from "../repo/blogs-repository";
 
 const titleValidator = body('title')
     .isString().withMessage('title must be a string')
@@ -26,5 +26,12 @@ const contentValidator = body('content')
         max: 1000
     }).withMessage('incorrect content')
 
+const blogIdValidator = param('blogId')
+    .custom(async (id) =>{
+        const blog = await blogsRepo.getBlogById(id)
+        if (blog === false){
+            throw new Error('incorrect id of blog')}
+    })
 
-export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdValidation, validatorErrorsCatcher]
+
+export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdValidator, validatorErrorsCatcher]
