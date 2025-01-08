@@ -44,7 +44,7 @@ exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blo
 }));
 exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
-    if (blog === false) {
+    if (!blog) {
         return res.sendStatus(404);
     }
     else {

@@ -35,6 +35,8 @@ export class blogsRepo {
     }
 
     static async updateBlog(id: string, name:string, description:string, websiteUrl:string) {
+        const blog = await blogsRepo.getBlogById(id)
+        if (!blog) {return false}
         await blogsCollection.updateOne(
             {_id: new ObjectId(id)},
             {$set: {
@@ -42,6 +44,6 @@ export class blogsRepo {
                 description: description,
                 websiteUrl: websiteUrl
             }},{upsert: true})
-        return await blogsRepo.getBlogById(id)
+        return true
     }
 }
