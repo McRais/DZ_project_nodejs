@@ -29,7 +29,7 @@ postsRoute.delete('/:id', authMiddleware, async (req:Request, res:Response): Pro
 })
 
 //post a post, auth and validation
-postsRoute.post("/",authMiddleware, postValidation(), blogIdValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.post("/",authMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(201).send(post)
 })

@@ -42,7 +42,7 @@ exports.postsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) =
     } //done
 }));
 //post a post, auth and validation
-exports.postsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (0, validator_blogs_1.blogIdValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.postsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     return res.status(201).send(post);
 }));

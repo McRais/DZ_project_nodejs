@@ -1,5 +1,6 @@
 import {body} from "express-validator";
 import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
+import {blogIdValidation} from "./validator-blogs";
 
 const titleValidator = body('title')
     .isString().withMessage('title must be a string')
@@ -26,4 +27,4 @@ const contentValidator = body('content')
     }).withMessage('incorrect content')
 
 
-export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, validatorErrorsCatcher]
+export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdValidation, validatorErrorsCatcher]
