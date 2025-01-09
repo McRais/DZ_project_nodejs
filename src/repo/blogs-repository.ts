@@ -1,6 +1,6 @@
-import {OutputBlogType} from "../models/types";
-import {blogsCollection} from "../database/DB";
-import {blogsMapper} from "../mappers/blogs-mapper";
+import {OutputBlogType, OutputPostType, PostsType} from "../models/types";
+import {blogsCollection, postsCollection} from "../database/DB";
+import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
 import {ObjectId} from "mongodb";
 
 export class blogsRepo {
@@ -45,5 +45,10 @@ export class blogsRepo {
                 websiteUrl: websiteUrl
             }},{upsert: true})
         return true
+    }
+
+    static async getPostsFromBlog(id:string):Promise<OutputPostType[]> {
+        const posts = await postsCollection.find({blogId:id}).toArray()
+        return posts.map(postsMapper)
     }
 }

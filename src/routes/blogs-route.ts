@@ -35,4 +35,11 @@ blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWi
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
+blogsRoute.get('/:id/posts', async (req: Request, res: Response)=>{
+    const blog = await blogsRepo.getBlogById(req.params.id)
+    if(blog === false){return res.sendStatus(404)}
+    const posts = await blogsRepo.getPostsFromBlog(req.params.id)
+    return res.status(200).send(posts)
+})
+
 
