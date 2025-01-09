@@ -3,6 +3,9 @@ import {authMiddleware} from "../middlewares/auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
 import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
 import {blogBodyValidation} from "../validators/validator-blogs";
+import {postValidation} from "../validators/validator-posts";
+import {postsRepo} from "../repo/posts-repository";
+import {postsRoute} from "./posts-route";
 
 
 
@@ -40,6 +43,11 @@ blogsRoute.get('/:id/posts', async (req: Request, res: Response)=>{
     if(blog === false){return res.sendStatus(404)}
     const posts = await blogsRepo.getPostsFromBlog(req.params.id)
     return res.status(200).send(posts)
+})
+
+blogsRoute.post("/:id/posts", authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+    const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
+    return res.status(201).send(post)
 })
 
 

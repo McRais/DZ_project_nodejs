@@ -14,6 +14,8 @@ const express_1 = require("express");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
 const blogs_repository_1 = require("../repo/blogs-repository");
 const validator_blogs_1 = require("../validators/validator-blogs");
+const validator_posts_1 = require("../validators/validator-posts");
+const posts_repository_1 = require("../repo/posts-repository");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs();
@@ -58,4 +60,8 @@ exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, voi
     }
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id);
     return res.status(200).send(posts);
+}));
+exports.blogsRoute.post("/:id/posts", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
+    return res.status(201).send(post);
 }));
