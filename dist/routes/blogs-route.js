@@ -51,3 +51,11 @@ exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_b
         return res.sendStatus(204);
     }
 }));
+exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);
+    if (blog === false) {
+        return res.sendStatus(404);
+    }
+    const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id);
+    return res.status(200).send(posts);
+}));

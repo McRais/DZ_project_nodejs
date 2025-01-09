@@ -60,5 +60,11 @@ class blogsRepo {
             return true;
         });
     }
+    static getPostsFromBlog(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const posts = yield DB_1.postsCollection.find({ blogId: id }).toArray();
+            return posts.map(blogs_mapper_1.postsMapper);
+        });
+    }
 }
 exports.blogsRepo = blogsRepo;
