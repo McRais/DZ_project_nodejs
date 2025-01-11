@@ -19,7 +19,13 @@ const posts_repository_1 = require("../repo/posts-repository");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs();
-    return res.send(blogs);
+    return res.send({
+        "pagesCount": Math.ceil(blogs.length / req.params.pageSize),
+        "page": req.params.pageNumber,
+        "pageSize": req.params.pageSize,
+        "totalCount": 0,
+        "items": blogs
+    });
 }));
 exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);
