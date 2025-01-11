@@ -13,7 +13,14 @@ export const blogsRoute = Router({})
 
 blogsRoute.get('/', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string, sortDirection:string}>, res: Response): Promise<Response<OutputBlogType[]>> => {
     const blogs = await blogsRepo.getAllBlogs()
-    return res.send(blogs)
+
+    return res.send({
+        "pagesCount": Math.ceil(blogs.length/req.params.pageSize),
+        "page": req.params.pageNumber,
+        "pageSize": req.params.pageSize,
+        "totalCount": 0,
+        "items": blogs
+    })
 })
 
 blogsRoute.get('/:id', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string, sortDirection:string, id:string}>, res: Response) => {
