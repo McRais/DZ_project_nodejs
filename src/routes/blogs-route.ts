@@ -1,23 +1,22 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
-import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
+import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../models/types";
 import {blogBodyValidation} from "../validators/validator-blogs";
 import {postValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
-import {postsRoute} from "./posts-route";
 
 
 
 export const blogsRoute = Router({})
 
 
-blogsRoute.get('/', async (req: Request, res: Response): Promise<Response<OutputBlogType[]>> => {
+blogsRoute.get('/', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string, sortDirection:string}>, res: Response): Promise<Response<OutputBlogType[]>> => {
     const blogs = await blogsRepo.getAllBlogs()
     return res.send(blogs)
 })
 
-blogsRoute.get('/:id', async (req: Request, res: Response) => {
+blogsRoute.get('/:id', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string, sortDirection:string, id:string}>, res: Response) => {
 const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)} else{return res.send(blog)}
 })
