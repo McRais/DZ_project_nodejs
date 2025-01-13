@@ -14,9 +14,14 @@ const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
 const mongodb_1 = require("mongodb");
 class blogsRepo {
-    static getAllBlogs() {
+    static getCount() {
         return __awaiter(this, void 0, void 0, function* () {
-            const blogs = yield DB_1.blogsCollection.find({}).toArray();
+            return yield DB_1.blogsCollection.countDocuments({});
+        });
+    }
+    static getAllBlogs(pageNumber, pageSize) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const blogs = yield DB_1.blogsCollection.find({}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
     }
