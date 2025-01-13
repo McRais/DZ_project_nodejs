@@ -1,12 +1,16 @@
-import {OutputBlogType, OutputPostType, PostsType} from "../models/types";
+import {OutputBlogType, OutputPostType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
 import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
 import {ObjectId} from "mongodb";
 
 export class blogsRepo {
 
-    static async getAllBlogs(): Promise<OutputBlogType[]> {
-        const blogs = await blogsCollection.find({}).toArray()
+    static async getCount(): Promise<number> {
+        return await blogsCollection.countDocuments({})
+    }
+
+    static async getAllBlogs(pageNumber:number, pageSize:number): Promise<OutputBlogType[]> {
+        const blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         return blogs.map(blogsMapper)
     }
 
