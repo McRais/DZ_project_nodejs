@@ -11,8 +11,8 @@ import {postsRepo} from "../repo/posts-repository";
 export const blogsRoute = Router({})
 
 
-blogsRoute.get('/', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string, sortDirection:string}>, res: Response): Promise<Response<OutputBlogType[]>> => {
-    const blogs = await blogsRepo.getAllBlogs(req.params.pageNumber, req.params.pageSize)
+blogsRoute.get('/', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null}>, res: Response): Promise<Response<OutputBlogType[]>> => {
+    const blogs = await blogsRepo.getAllBlogs(req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection)
 
     return res.send({
         "pagesCount": Math.ceil(blogs.length/req.params.pageSize),
