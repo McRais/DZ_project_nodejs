@@ -19,9 +19,17 @@ class blogsRepo {
             return yield DB_1.blogsCollection.countDocuments({});
         });
     }
-    static getAllBlogs(pageNumber, pageSize) {
+    static getAllBlogs(pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            const blogs = yield DB_1.blogsCollection.find({}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+            let dir = -1;
+            if (sortDirection == "asc") {
+                dir = 1;
+            }
+            let field = "createdAt";
+            if (sortBy != null) {
+                field = sortBy;
+            }
+            const blogs = yield DB_1.blogsCollection.find({}).skip((pageNumber - 1) * pageSize).limit(pageSize).sort({ field: dir }).toArray();
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
     }
