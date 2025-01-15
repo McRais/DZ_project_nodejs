@@ -10,11 +10,14 @@ export class blogsRepo {
     }
 
     static async getAllBlogs(pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null): Promise<OutputBlogType[]> {
-        let dir = -1
-        if(sortDirection=="asc"){dir = 1}
         let field = "createdAt"
         if(sortBy!=null){field = sortBy}
-        const blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).limit(pageSize).sort({field:dir}).toArray()
+        let blogs
+        if(sortDirection=="asc"){
+            blogs = await blogsCollection.find({}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        } else {
+            blogs = await blogsCollection.find({}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        }
         return blogs.map(blogsMapper)
     }
 
