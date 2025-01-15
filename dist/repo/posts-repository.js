@@ -14,9 +14,19 @@ const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
 const mongodb_1 = require("mongodb");
 class postsRepo {
-    static getAllPosts() {
+    static getAllPosts(pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            const posts = yield DB_1.postsCollection.find({}).toArray();
+            let field = "createdAt";
+            if (sortBy != null) {
+                field = sortBy;
+            }
+            let posts;
+            if (sortDirection == "asc") {
+                posts = yield DB_1.postsCollection.find({}).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+            }
+            else {
+                posts = yield DB_1.postsCollection.find({}).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+            }
             return posts.map(blogs_mapper_1.postsMapper);
         });
     }
