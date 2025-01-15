@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {postsRepo} from "../repo/posts-repository";
-import {OutputPostType, RequestWithBody, RequestWithBodyAndParams} from "../models/types";
+import {OutputPostType, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../models/types";
 import {postValidation} from "../validators/validator-posts";
 
 
@@ -9,8 +9,8 @@ export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', async (req:Request,res:Response): Promise<Response<OutputPostType[]>> =>{
-    const post = await postsRepo.getAllPosts()
+postsRoute.get('/', async (req:RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null}>,res:Response): Promise<Response<OutputPostType[]>> =>{
+    const post = await postsRepo.getAllPosts(req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection)
     return res.send(post)
 })
 

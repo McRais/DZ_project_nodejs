@@ -5,8 +5,16 @@ import {ObjectId} from "mongodb";
 
 export class postsRepo {
 
-    static async getAllPosts(): Promise<OutputPostType[]> {
-        const posts = await postsCollection.find({}).toArray()
+    static async getAllPosts(pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null): Promise<OutputPostType[]> {
+        let field = "createdAt"
+        if(sortBy!=null){field = sortBy}
+        let posts
+        if(sortDirection=="asc"){
+            posts = await postsCollection.find({}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        } else {
+            posts = await postsCollection.find({}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        }
+
         return posts.map(postsMapper)
     }
 
