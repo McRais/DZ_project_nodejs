@@ -21,15 +21,17 @@ class blogsRepo {
     }
     static getAllBlogs(pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let dir = -1;
-            if (sortDirection == "asc") {
-                dir = 1;
-            }
             let field = "createdAt";
             if (sortBy != null) {
                 field = sortBy;
             }
-            const blogs = yield DB_1.blogsCollection.find({}).skip((pageNumber - 1) * pageSize).limit(pageSize).sort({ field: dir }).toArray();
+            let blogs;
+            if (sortDirection == "asc") {
+                blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+            }
+            else {
+                blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+            }
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
     }
