@@ -18,11 +18,12 @@ const validator_posts_1 = require("../validators/validator-posts");
 const posts_repository_1 = require("../repo/posts-repository");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection);
+    const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.params.searchNameTerm, req.params.pageNumber || 1, req.params.pageSize || 10, req.params.sortBy || "createdAt", req.params.sortDirection];
+    const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
     return res.send({
-        "pagesCount": Math.ceil(blogs.length / req.params.pageSize),
-        "page": req.params.pageNumber,
-        "pageSize": req.params.pageSize,
+        "pagesCount": Math.ceil(blogs.length / pageSize),
+        "page": pageNumber,
+        "pageSize": pageSize,
         "totalCount": yield blogs_repository_1.blogsRepo.getCount(),
         "items": blogs
     });
