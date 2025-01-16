@@ -9,10 +9,21 @@ export class blogsRepo {
         return await blogsCollection.countDocuments({})
     }
 
-    static async getAllBlogs(pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null): Promise<OutputBlogType[]> {
+    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string|null): Promise<OutputBlogType[]> {
         let field = "createdAt"
         if(sortBy!=null){field = sortBy}
         let blogs
+
+        if(searchNameTerm!=null){
+            const regexp = new RegExp(searchNameTerm, "i");
+            if(sortDirection=="asc"){
+                blogs = await blogsCollection.find({name:regexp}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            } else {
+                blogs = await blogsCollection.find({name:regexp}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            }
+            return blogs.map(blogsMapper)
+        }
+
         if(sortDirection=="asc"){
             blogs = await blogsCollection.find({}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         } else {
