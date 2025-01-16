@@ -19,13 +19,23 @@ class blogsRepo {
             return yield DB_1.blogsCollection.countDocuments({});
         });
     }
-    static getAllBlogs(pageNumber, pageSize, sortBy, sortDirection) {
+    static getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             let field = "createdAt";
             if (sortBy != null) {
                 field = sortBy;
             }
             let blogs;
+            if (searchNameTerm != null) {
+                const regexp = new RegExp(searchNameTerm, "i");
+                if (sortDirection == "asc") {
+                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                }
+                else {
+                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                }
+                return blogs.map(blogs_mapper_1.blogsMapper);
+            }
             if (sortDirection == "asc") {
                 blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
