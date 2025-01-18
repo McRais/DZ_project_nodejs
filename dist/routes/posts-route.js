@@ -17,7 +17,7 @@ const validator_posts_1 = require("../validators/validator-posts");
 exports.postsRoute = (0, express_1.Router)({});
 //get all posts
 exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield posts_repository_1.postsRepo.getAllPosts(req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection);
+    const post = yield posts_repository_1.postsRepo.getAllPosts(req.params.searchNameTerm, req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection);
     return res.send(post);
 }));
 //get post by id
