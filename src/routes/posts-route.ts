@@ -9,8 +9,8 @@ export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', async (req:RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null}>,res:Response): Promise<Response<OutputPostType[]>> =>{
-    const post = await postsRepo.getAllPosts(req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection)
+postsRoute.get('/', async (req:RequestWithParams<{searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null}>,res:Response): Promise<Response<OutputPostType[]>> =>{
+    const post = await postsRepo.getAllPosts(req.params.searchNameTerm, req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection)
     return res.send(post)
 })
 
