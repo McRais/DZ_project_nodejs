@@ -9,7 +9,7 @@ export class blogsRepo {
         return await blogsCollection.countDocuments({})
     }
 
-    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string|null): Promise<OutputBlogType[]> {
+    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null): Promise<OutputBlogType[]> {
         let field = "createdAt"
         if(sortBy!=null){field = sortBy}
         let blogs
