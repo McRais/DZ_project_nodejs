@@ -5,16 +5,27 @@ import {ObjectId} from "mongodb";
 
 export class postsRepo {
 
-    static async getAllPosts(pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null): Promise<OutputPostType[]> {
+    static async getAllPosts(searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null): Promise<OutputPostType[]> {
         let field = "createdAt"
-        if(sortBy!=null){field = sortBy}
+        if (sortBy != null) {
+            field = sortBy
+        }
         let posts
-        if(sortDirection=="asc"){
-            posts = await postsCollection.find({}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
-        } else {
-            posts = await postsCollection.find({}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        if (searchNameTerm != null) {
+            const regexp = new RegExp(searchNameTerm, "i");
+            if (sortDirection == "asc") {
+                posts = await postsCollection.find({name: regexp}).sort({[field]: 1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
+            } else {
+                posts = await postsCollection.find({name: regexp}).sort({[field]: -1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
+            }
+            return posts.map(postsMapper)
         }
 
+        if (sortDirection == "asc") {
+            posts = await postsCollection.find({}).sort({[field]: 1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
+        } else {
+            posts = await postsCollection.find({}).sort({[field]: -1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
+        }
         return posts.map(postsMapper)
     }
 
