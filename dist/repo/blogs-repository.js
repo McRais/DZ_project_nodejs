@@ -26,21 +26,23 @@ class blogsRepo {
                 field = sortBy;
             }
             let blogs;
+            const pagesiz = pageSize || 10; //please redo this bit later, it looks horrendous
+            const pagenum = pageNumber || 1;
             if (searchNameTerm != null) {
                 const regexp = new RegExp(searchNameTerm, "i");
                 if (sortDirection == "asc") {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [field]: 1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
                 }
                 else {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [field]: -1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
                 }
                 return blogs.map(blogs_mapper_1.blogsMapper);
             }
             if (sortDirection == "asc") {
-                blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: 1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
             }
             else {
-                blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                blogs = yield DB_1.blogsCollection.find({}).sort({ [field]: -1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
             }
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
