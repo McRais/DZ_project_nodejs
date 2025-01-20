@@ -15,7 +15,6 @@ export class blogsRepo {
         let blogs
         const pagesiz = pageSize || 10    //please redo this bit later, it looks horrendous
         const pagenum = pageNumber || 1
-
         if(searchNameTerm!=null){
             const regexp = new RegExp(searchNameTerm, "i");
             if(sortDirection=="asc"){
@@ -71,8 +70,18 @@ export class blogsRepo {
         return true
     }
 
-    static async getPostsFromBlog(id:string):Promise<OutputPostType[]> {
-        const posts = await postsCollection.find({blogId:id}).toArray()
+    static async getPostsFromBlog(id:string, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null):Promise<OutputPostType[]> {
+        let field = "createdAt"
+        if(sortBy!=null){field = sortBy}
+        let posts
+        const pagesiz = pageSize || 10    //please redo this bit later, it looks horrendous
+        const pagenum = pageNumber || 1
+
+        if(sortDirection=="asc"){
+            posts = await postsCollection.find({blogId: id}).sort({[field]:1}).skip((pagenum-1)*pagesiz).limit(pagesiz).toArray()
+        } else {
+            posts = await postsCollection.find({blogId: id}).sort({[field]:-1}).skip((pagenum-1)*pagesiz).limit(pagesiz).toArray()
+        }
         return posts.map(postsMapper)
     }
 }
