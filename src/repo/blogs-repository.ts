@@ -70,17 +70,15 @@ export class blogsRepo {
         return true
     }
 
-    static async getPostsFromBlog(id:string, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null):Promise<OutputPostType[]> {
+    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null):Promise<OutputPostType[]> {
         let field = "createdAt"
         if(sortBy!=null){field = sortBy}
         let posts
-        const pagesiz = pageSize || 10    //please redo this bit later, it looks horrendous
-        const pagenum = pageNumber || 1
 
         if(sortDirection=="asc"){
-            posts = await postsCollection.find({blogId: id}).sort({[field]:1}).skip((pagenum-1)*pagesiz).limit(pagesiz).toArray()
+            posts = await postsCollection.find({blogId: id}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         } else {
-            posts = await postsCollection.find({blogId: id}).sort({[field]:-1}).skip((pagenum-1)*pagesiz).limit(pagesiz).toArray()
+            posts = await postsCollection.find({blogId: id}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         }
         return posts.map(postsMapper)
     }
