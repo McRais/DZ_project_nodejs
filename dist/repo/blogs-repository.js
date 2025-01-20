@@ -94,13 +94,11 @@ class blogsRepo {
                 field = sortBy;
             }
             let posts;
-            const pagesiz = pageSize || 10; //please redo this bit later, it looks horrendous
-            const pagenum = pageNumber || 1;
             if (sortDirection == "asc") {
-                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: 1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             else {
-                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: -1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             return posts.map(blogs_mapper_1.postsMapper);
         });
