@@ -87,9 +87,21 @@ class blogsRepo {
             return true;
         });
     }
-    static getPostsFromBlog(id) {
+    static getPostsFromBlog(id, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            const posts = yield DB_1.postsCollection.find({ blogId: id }).toArray();
+            let field = "createdAt";
+            if (sortBy != null) {
+                field = sortBy;
+            }
+            let posts;
+            const pagesiz = pageSize || 10; //please redo this bit later, it looks horrendous
+            const pagenum = pageNumber || 1;
+            if (sortDirection == "asc") {
+                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: 1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+            }
+            else {
+                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: -1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+            }
             return posts.map(blogs_mapper_1.postsMapper);
         });
     }
