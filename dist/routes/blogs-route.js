@@ -20,11 +20,12 @@ exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.params.searchNameTerm, req.params.pageNumber || 1, req.params.pageSize || 10, req.params.sortBy || "createdAt", req.params.sortDirection];
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
+    const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCount();
     return res.send({
-        "pagesCount": Math.ceil(blogs.length / pageSize),
+        "pagesCount": Math.ceil(blogsRepoCount / pageSize),
         "page": pageNumber,
         "pageSize": pageSize,
-        "totalCount": yield blogs_repository_1.blogsRepo.getCount(),
+        "totalCount": blogsRepoCount,
         "items": blogs
     });
 }));
