@@ -18,7 +18,7 @@ const validator_posts_1 = require("../validators/validator-posts");
 const posts_repository_1 = require("../repo/posts-repository");
 exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.params.searchNameTerm, req.params.pageNumber || 1, req.params.pageSize || 10, req.params.sortBy || "createdAt", req.params.sortDirection];
+    const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchNameTerm, req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection];
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
     const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCount();
     return res.send({
@@ -66,7 +66,7 @@ exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, voi
     if (blog === false) {
         return res.sendStatus(404);
     }
-    const [pageNumber, pageSize, sortBy, sortDirection] = [req.params.pageNumber || 1, req.params.pageSize || 10, req.params.sortBy || "createdAt", req.params.sortDirection];
+    const [pageNumber, pageSize, sortBy, sortDirection] = [req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection];
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection);
     return res.status(200).send(posts);
 }));
