@@ -1,7 +1,13 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
-import {OutputBlogType, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../models/types";
+import {
+    OutputBlogType,
+    RequestWithBody,
+    RequestWithBodyAndParams,
+    RequestWithParamAndQuery,
+    RequestWithParams, RequestWithQuery
+} from "../models/types";
 import {blogBodyValidation} from "../validators/validator-blogs";
 import {postValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
@@ -11,8 +17,8 @@ import {postsRepo} from "../repo/posts-repository";
 export const blogsRoute = Router({})
 
 
-blogsRoute.get('/', async (req: RequestWithParams<{searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null}>, res: Response): Promise<Response<OutputBlogType[]>> => {
-    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.params.searchNameTerm, req.params.pageNumber||1, req.params.pageSize||10, req.params.sortBy||"createdAt", req.params.sortDirection];
+blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null}>, res: Response): Promise<Response<OutputBlogType[]>> => {
+    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection];
     const blogs = await blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     const blogsRepoCount = await blogsRepo.getCount()
 
@@ -46,10 +52,10 @@ blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWi
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
-blogsRoute.get('/:id/posts', async (req: RequestWithParams<{id:string, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null }>, res: Response)=>{
+blogsRoute.get('/:id/posts', async (req: RequestWithParamAndQuery<{id:string}, {pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null }>, res: Response)=>{
     const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)}
-    const [pageNumber,pageSize,sortBy,sortDirection] = [req.params.pageNumber||1, req.params.pageSize||10, req.params.sortBy||"createdAt", req.params.sortDirection]
+    const [pageNumber,pageSize,sortBy,sortDirection] = [req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
     return res.status(200).send(posts)
 })
