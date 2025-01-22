@@ -17,10 +17,11 @@ export type PostsType = {
     createdAt: string
 }
 
-export type RequestWithParamAndQuery<P, Q> = Request<P, Q, {}, {}>
+export type RequestWithParamAndQuery<P, Q> = Request<P, {}, {}, Q>
 export type RequestWithParams<P> = Request<P, {}, {}, {}>;
 export type RequestWithBody<B> = Request<{}, {}, B, {}>
 export type RequestWithBodyAndParams<P, B> = Request<P, {}, B, {}>
+export type RequestWithQuery<Q> = Request<{},{},{},Q>
 
 export type OutputBlogType = {
     id: string,
