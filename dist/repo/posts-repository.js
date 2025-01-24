@@ -14,6 +14,11 @@ const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
 const mongodb_1 = require("mongodb");
 class postsRepo {
+    static getCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield DB_1.postsCollection.countDocuments({});
+        });
+    }
     static getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             let field = "createdAt";
