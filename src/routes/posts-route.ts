@@ -1,17 +1,32 @@
 import {Request, Response, Router} from "express";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {postsRepo} from "../repo/posts-repository";
-import {OutputPostType, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../models/types";
+import {
+    OutputPostType,
+    RequestWithBody,
+    RequestWithBodyAndParams,
+    RequestWithQuery
+} from "../models/types";
 import {postValidation} from "../validators/validator-posts";
+
 
 
 export const postsRoute = Router({})
 
 
 //get all posts
-postsRoute.get('/', async (req:RequestWithParams<{searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null}>,res:Response): Promise<Response<OutputPostType[]>> =>{
-    const post = await postsRepo.getAllPosts(req.params.searchNameTerm, req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection)
-    return res.send(post)
+postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>,res:Response): Promise<Response<OutputPostType[]>> =>{
+    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm||null, req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection||"asc"];
+    const posts = await postsRepo.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
+    const postsRepoCount = await postsRepo.getCount()
+
+    return res.send({
+        "pagesCount": Math.ceil(postsRepoCount/pageSize),
+        "page": pageNumber,
+        "pageSize": pageSize,
+        "totalCount": postsRepoCount,
+        "items": posts
+    })
 })
 
 
