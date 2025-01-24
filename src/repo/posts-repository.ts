@@ -5,6 +5,10 @@ import {ObjectId} from "mongodb";
 
 export class postsRepo {
 
+    static async getCount(): Promise<number> {
+        return await postsCollection.countDocuments({})
+    }
+
     static async getAllPosts(searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null): Promise<OutputPostType[]> {
         let field = "createdAt"
         if (sortBy != null) {
