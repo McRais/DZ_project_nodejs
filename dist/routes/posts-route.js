@@ -17,8 +17,16 @@ const validator_posts_1 = require("../validators/validator-posts");
 exports.postsRoute = (0, express_1.Router)({});
 //get all posts
 exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const post = yield posts_repository_1.postsRepo.getAllPosts(req.params.searchNameTerm, req.params.pageNumber, req.params.pageSize, req.params.sortBy, req.params.sortDirection);
-    return res.send(post);
+    const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchNameTerm || null, req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection || "asc"];
+    const posts = yield posts_repository_1.postsRepo.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
+    const postsRepoCount = yield posts_repository_1.postsRepo.getCount();
+    return res.send({
+        "pagesCount": Math.ceil(postsRepoCount / pageSize),
+        "page": pageNumber,
+        "pageSize": pageSize,
+        "totalCount": postsRepoCount,
+        "items": posts
+    });
 }));
 //get post by id
 exports.postsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
