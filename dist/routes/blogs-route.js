@@ -66,9 +66,16 @@ exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, voi
     if (blog === false) {
         return res.sendStatus(404);
     }
-    const [pageNumber, pageSize, sortBy, sortDirection] = [req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection];
+    const [pageNumber, pageSize, sortBy, sortDirection] = [req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection || "asc"];
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection);
-    return res.status(200).send(posts);
+    const postsRepoCount = yield posts_repository_1.postsRepo.getCountFromBlog(req.params.id);
+    return res.status(200).send({
+        "pagesCount": Math.ceil(postsRepoCount / pageSize),
+        "page": pageNumber,
+        "pageSize": pageSize,
+        "totalCount": postsRepoCount,
+        "items": posts
+    });
 }));
 exports.blogsRoute.post("/:id/posts", auth_middleware_1.authMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
