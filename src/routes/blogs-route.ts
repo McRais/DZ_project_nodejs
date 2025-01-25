@@ -52,12 +52,20 @@ blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWi
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
-blogsRoute.get('/:id/posts', async (req: RequestWithParamAndQuery<{id:string}, {pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null }>, res: Response)=>{
+blogsRoute.get('/:id/posts', async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>, res: Response)=>{
     const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)}
-    const [pageNumber,pageSize,sortBy,sortDirection] = [req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection]
+    const [pageNumber,pageSize,sortBy,sortDirection] = [req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection||"asc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
-    return res.status(200).send(posts)
+
+    const postsRepoCount = await postsRepo.getCountFromBlog(req.params.id)
+    return res.status(200).send({
+        "pagesCount": Math.ceil(postsRepoCount/pageSize),
+        "page": pageNumber,
+        "pageSize": pageSize,
+        "totalCount": postsRepoCount,
+        "items": posts
+    })
 })
 
 blogsRoute.post("/:id/posts", authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
