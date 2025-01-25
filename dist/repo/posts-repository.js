@@ -19,30 +19,29 @@ class postsRepo {
             return yield DB_1.postsCollection.countDocuments({});
         });
     }
+    static getCountFromBlog(blogId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield DB_1.postsCollection.countDocuments({ blogId: blogId });
+        });
+    }
     static getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let field = "createdAt";
-            if (sortBy != null) {
-                field = sortBy;
-            }
             let posts;
-            const pagesiz = pageSize || 10; //please redo this bit later, it looks horrendous
-            const pagenum = pageNumber || 1;
             if (searchNameTerm != null) {
                 const regexp = new RegExp(searchNameTerm, "i");
                 if (sortDirection == "asc") {
-                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [field]: 1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 }
                 else {
-                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [field]: -1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 }
                 return posts.map(blogs_mapper_1.postsMapper);
             }
             if (sortDirection == "asc") {
-                posts = yield DB_1.postsCollection.find({}).sort({ [field]: 1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             else {
-                posts = yield DB_1.postsCollection.find({}).sort({ [field]: -1 }).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray();
+                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             return posts.map(blogs_mapper_1.postsMapper);
         });
