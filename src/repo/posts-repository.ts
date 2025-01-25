@@ -8,29 +8,27 @@ export class postsRepo {
     static async getCount(): Promise<number> {
         return await postsCollection.countDocuments({})
     }
+    static async getCountFromBlog(blogId:string): Promise<number> {
+        return await postsCollection.countDocuments({blogId: blogId})
+    }
 
-    static async getAllPosts(searchNameTerm: string|null, pageNumber:number|null, pageSize:number|null, sortBy:string|null, sortDirection:string|null): Promise<OutputPostType[]> {
-        let field = "createdAt"
-        if (sortBy != null) {
-            field = sortBy
-        }
+    static async getAllPosts(searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputPostType[]> {
+
         let posts
-        const pagesiz = pageSize || 10    //please redo this bit later, it looks horrendous
-        const pagenum = pageNumber || 1
         if (searchNameTerm != null) {
             const regexp = new RegExp(searchNameTerm, "i");
             if (sortDirection == "asc") {
-                posts = await postsCollection.find({name: regexp}).sort({[field]: 1}).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray()
+                posts = await postsCollection.find({name: regexp}).sort({[sortBy]: 1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
             } else {
-                posts = await postsCollection.find({name: regexp}).sort({[field]: -1}).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray()
+                posts = await postsCollection.find({name: regexp}).sort({[sortBy]: -1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
             }
             return posts.map(postsMapper)
         }
 
         if (sortDirection == "asc") {
-            posts = await postsCollection.find({}).sort({[field]: 1}).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray()
+            posts = await postsCollection.find({}).sort({[sortBy]: 1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
         } else {
-            posts = await postsCollection.find({}).sort({[field]: -1}).skip((pagenum - 1) * pagesiz).limit(pagesiz).toArray()
+            posts = await postsCollection.find({}).sort({[sortBy]: -1}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
         }
         return posts.map(postsMapper)
     }
