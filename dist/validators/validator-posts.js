@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postValidation = void 0;
+exports.postInBlogRouteValidation = exports.postValidation = void 0;
 const express_validator_1 = require("express-validator");
 const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
 const blogs_repository_1 = require("../repo/blogs-repository");
@@ -34,12 +34,21 @@ const contentValidator = (0, express_validator_1.body)('content')
     min: 1,
     max: 1000
 }).withMessage('incorrect content');
-const blogIdValidator = (0, express_validator_1.body)('blogId')
+const blogIdBodyValidator = (0, express_validator_1.body)('blogId')
     .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
     if (blog === false) {
         throw new Error('incorrect id of blog');
     }
 }));
-const postValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+const blogIdParamValidator = (0, express_validator_1.param)('blogId')
+    .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
+    const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
+    if (blog === false) {
+        throw new Error('incorrect id of blog');
+    }
+}));
+const postValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postValidation = postValidation;
+const postInBlogRouteValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdParamValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+exports.postInBlogRouteValidation = postInBlogRouteValidation;
