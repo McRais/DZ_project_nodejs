@@ -26,7 +26,14 @@ const contentValidator = body('content')
         max: 1000
     }).withMessage('incorrect content')
 
-const blogIdValidator = body('blogId')
+const blogIdBodyValidator = body('blogId')
+    .custom(async (id) =>{
+        const blog = await blogsRepo.getBlogById(id)
+        if (blog === false){
+            throw new Error('incorrect id of blog')}
+    })
+
+const blogIdParamValidator = param('blogId')
     .custom(async (id) =>{
         const blog = await blogsRepo.getBlogById(id)
         if (blog === false){
@@ -34,4 +41,5 @@ const blogIdValidator = body('blogId')
     })
 
 
-export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdValidator, validatorErrorsCatcher]
+export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validatorErrorsCatcher]
+export const postInBlogRouteValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdParamValidator, validatorErrorsCatcher]
