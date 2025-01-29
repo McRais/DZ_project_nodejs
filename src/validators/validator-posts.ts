@@ -33,7 +33,7 @@ const blogIdBodyValidator = body('blogId')
             throw new Error('incorrect id of blog')}
     })
 
-const blogIdParamValidator = param('blogId')
+const blogIdParamValidator = param('id')
     .custom(async (id) =>{
         const blog = await blogsRepo.getBlogById(id)
         if (blog === false){
