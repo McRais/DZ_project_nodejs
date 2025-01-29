@@ -8,7 +8,11 @@ export const validatorErrorsCatcher = (req:Request,res:Response,next:NextFunctio
     }))
 
     if (!validationErrors.isEmpty()){
-        if(validationErrors.array().includes({message: "incorrect id of blog", field: "blogId"})){
+        if(validationErrors.array().includes({message: "incorrect id of blog", field: "id"})) {
+            const errorMessage = validationErrors.array({onlyFirstError:true})
+            return res.status(404).json({errorsMessages: errorMessage})
+        }
+        if(validationErrors.array().includes({message: "incorrect id of blog", field: "blogId"})) {
             const errorMessage = validationErrors.array({onlyFirstError:true})
             return res.status(404).json({errorsMessages: errorMessage})
         }

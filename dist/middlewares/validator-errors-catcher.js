@@ -8,6 +8,10 @@ const validatorErrorsCatcher = (req, res, next) => {
         field: error.type === "field" ? error.path : "field is not found"
     }));
     if (!validationErrors.isEmpty()) {
+        if (validationErrors.array().includes({ message: "incorrect id of blog", field: "id" })) {
+            const errorMessage = validationErrors.array({ onlyFirstError: true });
+            return res.status(404).json({ errorsMessages: errorMessage });
+        }
         if (validationErrors.array().includes({ message: "incorrect id of blog", field: "blogId" })) {
             const errorMessage = validationErrors.array({ onlyFirstError: true });
             return res.status(404).json({ errorsMessages: errorMessage });
