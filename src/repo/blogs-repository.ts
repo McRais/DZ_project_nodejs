@@ -15,17 +15,17 @@ export class blogsRepo {
             const regexp = new RegExp(searchNameTerm, "i");
 
             if(sortDirection=="asc"){
-                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+                blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
             } else {
-                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+                blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:-1}).limit(pageSize).toArray()
             }
             return blogs.map(blogsMapper)
         }
 
         if(sortDirection=="asc"){
-            blogs = await blogsCollection.find({}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
         } else {
-            blogs = await blogsCollection.find({}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:-1}).limit(pageSize).toArray()
         }
         return blogs.map(blogsMapper)
     }
