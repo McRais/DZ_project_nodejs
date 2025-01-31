@@ -51,10 +51,9 @@ class blogsRepo {
             return blogArr.map(blogs_mapper_1.blogsMapper)[0];
         });
     }
-    static createNewBlog(name, description, websiteUrl) {
+    static createNewBlog(name, description, websiteUrl, createdAt) {
         return __awaiter(this, void 0, void 0, function* () {
-            const date = new Date();
-            const res = yield DB_1.blogsCollection.insertOne({ name, description, websiteUrl, createdAt: date.toISOString(), isMembership: false });
+            const res = yield DB_1.blogsCollection.insertOne({ name, description, websiteUrl, createdAt: createdAt, isMembership: false });
             return res.insertedId.toString();
         });
     }

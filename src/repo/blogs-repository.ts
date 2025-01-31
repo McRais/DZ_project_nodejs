@@ -40,9 +40,8 @@ export class blogsRepo {
     }
 
 
-    static async createNewBlog(name: string, description: string, websiteUrl: string): Promise<string> {
-        const date = new Date()
-        const res = await blogsCollection.insertOne({name, description, websiteUrl, createdAt: date.toISOString(), isMembership:false})
+    static async createNewBlog(name: string, description: string, websiteUrl: string, createdAt:string): Promise<string> {
+        const res = await blogsCollection.insertOne({name, description, websiteUrl, createdAt: createdAt, isMembership:false})
         return res.insertedId.toString()
     }
 
