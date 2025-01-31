@@ -7,7 +7,7 @@ import {
     RequestWithBodyAndParams,
     RequestWithQuery
 } from "../models/types";
-import {postValidation} from "../validators/validator-posts";
+import {blogIdBodyValidation, postValidation} from "../validators/validator-posts";
 
 
 
@@ -43,13 +43,13 @@ postsRoute.delete('/:id', authMiddleware, async (req:Request, res:Response): Pro
 })
 
 //post a post, auth and validation
-postsRoute.post("/", authMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.post("/", authMiddleware, postValidation(), blogIdBodyValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(201).send(post)
 })
 
 //put new values into existing blog, auth and validation
-postsRoute.put("/:id", authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
+postsRoute.put("/:id", authMiddleware, postValidation(), blogIdBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })

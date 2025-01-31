@@ -9,7 +9,7 @@ import {
     RequestWithParams, RequestWithQuery
 } from "../models/types";
 import {blogBodyValidation} from "../validators/validator-blogs";
-import {postInBlogRouteValidation, postValidation} from "../validators/validator-posts";
+import {blogIdParamValidation, postValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
 
 
@@ -70,7 +70,7 @@ blogsRoute.get('/:id/posts', async (req: RequestWithParamAndQuery<{id:string}, {
     })
 })
 
-blogsRoute.post("/:id/posts", authMiddleware, postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+blogsRoute.post("/:id/posts", authMiddleware, postValidation(), blogIdParamValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
 })
