@@ -14,18 +14,17 @@ export class blogsRepo {
         if(searchNameTerm!=null){
             const regexp = new RegExp(searchNameTerm, "i");
 
-            if(sortDirection=="asc"){
-                blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
-            } else {
+            if(sortDirection=="desc"){
                 blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:-1}).limit(pageSize).toArray()
+            } else {
+                blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
             }
             return blogs.map(blogsMapper)
         }
-
-        if(sortDirection=="asc"){
-            blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
-        } else {
+        if(sortDirection=="desc"){
             blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:-1}).limit(pageSize).toArray()
+        } else {
+            blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
         }
         return blogs.map(blogsMapper)
     }
@@ -71,10 +70,10 @@ export class blogsRepo {
         if(sortBy!=null){field = sortBy}
         let posts
 
-        if(sortDirection=="asc"){
-            posts = await postsCollection.find({blogId: id}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
-        } else {
+        if(sortDirection=="desc"){
             posts = await postsCollection.find({blogId: id}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        } else {
+            posts = await postsCollection.find({blogId: id}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         }
         return posts.map(postsMapper)
     }

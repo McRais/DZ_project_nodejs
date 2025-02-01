@@ -41,14 +41,7 @@ const blogIdBodyValidator = (0, express_validator_1.body)('blogId')
         throw new Error('incorrect id of blog');
     }
 }));
-const blogIdParamValidator = (0, express_validator_1.param)('id')
-    .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
-    if (blog === false) {
-        throw new Error('incorrect id of blog');
-    }
-}));
 const postValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postValidation = postValidation;
-const postInBlogRouteValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdParamValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+const postInBlogRouteValidation = () => [titleValidator, shortDescValidator, contentValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postInBlogRouteValidation = postInBlogRouteValidation;
