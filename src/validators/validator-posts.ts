@@ -1,5 +1,5 @@
 import {body, param} from "express-validator";
-import {blogIdParamValidatorCatcher, validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
+import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
 import {blogsRepo} from "../repo/blogs-repository";
 
 const titleValidator = body('title')
@@ -37,10 +37,9 @@ const blogIdParamValidator = param('id')
     .custom(async (id) =>{
         const blog = await blogsRepo.getBlogById(id)
         if (blog === false){
-            throw new Error('blog not found')}
+            throw new Error('incorrect id of blog')}
     })
 
 
-export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, validatorErrorsCatcher]
-export const blogIdParamValidation = () => [blogIdParamValidator, blogIdParamValidatorCatcher]
-export const blogIdBodyValidation = () => [blogIdBodyValidator, validatorErrorsCatcher]
+export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validatorErrorsCatcher]
+export const postInBlogRouteValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdParamValidator, validatorErrorsCatcher]
