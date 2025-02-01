@@ -16,7 +16,7 @@ export const postsRoute = Router({})
 
 //get all posts
 postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>,res:Response): Promise<Response<OutputPostType[]>> =>{
-    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm||"", req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection||"asc"];
+    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm||"", req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection||"desc"];
     const posts = await postsRepo.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     const postsRepoCount = await postsRepo.getCount()
 
