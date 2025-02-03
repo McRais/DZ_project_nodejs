@@ -25,18 +25,18 @@ class blogsRepo {
             if (searchNameTerm != null) {
                 const regexp = new RegExp(searchNameTerm, "i");
                 if (sortDirection == "desc") {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).skip((pageNumber - 1) * pageSize).sort({ [sortBy]: -1 }).limit(pageSize).toArray();
+                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 }
                 else {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).skip((pageNumber - 1) * pageSize).sort({ [sortBy]: 1 }).limit(pageSize).toArray();
+                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 }
                 return blogs.map(blogs_mapper_1.blogsMapper);
             }
             if (sortDirection == "desc") {
-                blogs = yield DB_1.blogsCollection.find({}).skip((pageNumber - 1) * pageSize).sort({ [sortBy]: -1 }).limit(pageSize).toArray();
+                blogs = yield DB_1.blogsCollection.find({}).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             else {
-                blogs = yield DB_1.blogsCollection.find({}).skip((pageNumber - 1) * pageSize).sort({ [sortBy]: 1 }).limit(pageSize).toArray();
+                blogs = yield DB_1.blogsCollection.find({}).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
@@ -82,10 +82,7 @@ class blogsRepo {
     }
     static getPostsFromBlog(id, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let field = "createdAt";
-            if (sortBy != null) {
-                field = sortBy;
-            }
+            let field = sortBy;
             let posts;
             if (sortDirection == "desc") {
                 posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
