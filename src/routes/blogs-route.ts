@@ -53,9 +53,7 @@ blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWi
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
-blogsRoute.get('/:id/posts', /*paramBlogIdValidation(),*/ async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>, res: Response)=>{
-    const blog = await blogsRepo.getBlogById(req.params.id)
-    if(blog === false){return res.sendStatus(404)}
+blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
