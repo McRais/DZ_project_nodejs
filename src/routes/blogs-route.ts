@@ -53,7 +53,7 @@ blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWi
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
-blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>, res: Response)=>{
+blogsRoute.get('/:id/posts', /*paramBlogIdValidation(),*/ async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:string}>, res: Response)=>{
     const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)}
 

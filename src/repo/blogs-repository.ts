@@ -15,16 +15,16 @@ export class blogsRepo {
             const regexp = new RegExp(searchNameTerm, "i");
 
             if(sortDirection=="desc"){
-                blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:-1}).limit(pageSize).toArray()
+                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
             } else {
-                blogs = await blogsCollection.find({name:regexp}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
+                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
             }
             return blogs.map(blogsMapper)
         }
         if(sortDirection=="desc"){
-            blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:-1}).limit(pageSize).toArray()
+            blogs = await blogsCollection.find({}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         } else {
-            blogs = await blogsCollection.find({}).skip((pageNumber-1)*pageSize).sort({[sortBy]:1}).limit(pageSize).toArray()
+            blogs = await blogsCollection.find({}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         }
         return blogs.map(blogsMapper)
     }
@@ -65,9 +65,8 @@ export class blogsRepo {
         return true
     }
 
-    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string|null, sortDirection:string|null):Promise<OutputPostType[]> {
-        let field = "createdAt"
-        if(sortBy!=null){field = sortBy}
+    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string):Promise<OutputPostType[]> {
+        let field = sortBy
         let posts
 
         if(sortDirection=="desc"){
