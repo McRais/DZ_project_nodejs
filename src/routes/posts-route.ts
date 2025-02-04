@@ -25,7 +25,7 @@ postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNu
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": postsRepoCount,
-        "items": posts
+        "items": []//posts
     })
 })
 

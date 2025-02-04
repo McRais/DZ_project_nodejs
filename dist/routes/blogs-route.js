@@ -26,7 +26,7 @@ exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": blogsRepoCount,
-        "items": blogs
+        "items": [] //blogs
     });
 }));
 exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -71,7 +71,7 @@ exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.paramBlogIdValidation
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": postsRepoCount,
-        "items": posts
+        "items": [] //posts
     });
 }));
 exports.blogsRoute.post("/:id/posts", auth_middleware_1.authMiddleware, (0, validator_blogs_1.paramBlogIdValidation)(), (0, validator_posts_1.postInBlogRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
