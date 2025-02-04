@@ -12,7 +12,7 @@ export class postsRepo {
         return await postsCollection.countDocuments({blogId: blogId})
     }
 
-    static async getAllPosts(searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputPostType[]> {
+    static async getAllPosts(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputPostType[]> {
 
         let posts
         if (searchNameTerm != null) {
