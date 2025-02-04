@@ -25,7 +25,7 @@ exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": postsRepoCount,
-        "items": [] //posts
+        "items": posts
     });
 }));
 //get post by id

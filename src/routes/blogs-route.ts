@@ -27,7 +27,7 @@ blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageN
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": blogsRepoCount,
-        "items": []//blogs
+        "items": blogs
     })
 })
 
@@ -64,7 +64,7 @@ blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithPar
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": postsRepoCount,
-        "items": []//posts
+        "items": posts
     })
 })
 
