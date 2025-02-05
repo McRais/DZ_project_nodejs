@@ -21,24 +21,27 @@ class blogsRepo {
     }
     static getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let blogs;
-            if (searchNameTerm != null) {
-                const regexp = new RegExp(searchNameTerm, "i");
-                if (sortDirection == "desc") {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-                }
-                else {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-                }
+            if (sortDirection === "asc") {
+                const blogs = yield DB_1.blogsCollection.find({ searchNameTerm }).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 return blogs.map(blogs_mapper_1.blogsMapper);
             }
-            if (sortDirection == "desc") {
-                blogs = yield DB_1.blogsCollection.find({}).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
-            else {
-                blogs = yield DB_1.blogsCollection.find({}).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
+            const blogs = yield DB_1.blogsCollection.find({ searchNameTerm }).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             return blogs.map(blogs_mapper_1.blogsMapper);
+            /*if(searchNameTerm!=null){
+                const regexp = new RegExp(searchNameTerm, "i");
+    
+                if(sortDirection=="desc"){
+                    blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+                } else {
+                    blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+                }
+                return blogs.map(blogsMapper)
+            }
+            if(sortDirection=="desc"){
+                blogs = await blogsCollection.find({}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            } else {
+                blogs = await blogsCollection.find({}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            }*/
         });
     }
     static getBlogById(id) {
