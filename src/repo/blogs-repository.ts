@@ -9,9 +9,17 @@ export class blogsRepo {
         return await blogsCollection.countDocuments({})
     }
 
-    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputBlogType[]> {
-        let blogs
-        if(searchNameTerm!=null){
+    static async getAllBlogs(searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputBlogType[]> {
+        if(sortDirection === "asc"){
+            const blogs = await blogsCollection.find({searchNameTerm}).sort({[sortBy]:"asc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
+            return blogs.map(blogsMapper)
+        }
+
+
+        const blogs = await blogsCollection.find({searchNameTerm}).sort({[sortBy]:"desc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
+        return blogs.map(blogsMapper)
+
+        /*if(searchNameTerm!=null){
             const regexp = new RegExp(searchNameTerm, "i");
 
             if(sortDirection=="desc"){
@@ -25,8 +33,8 @@ export class blogsRepo {
             blogs = await blogsCollection.find({}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         } else {
             blogs = await blogsCollection.find({}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
-        }
-        return blogs.map(blogsMapper)
+        }*/
+
     }
 
     static async getBlogById(id: string): Promise<OutputBlogType | false> {
