@@ -10,31 +10,23 @@ export class blogsRepo {
     }
 
     static async getAllBlogs(searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputBlogType[]> {
-        if(sortDirection === "asc"){
-            const blogs = await blogsCollection.find({searchNameTerm}).sort({[sortBy]:"asc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
-            return blogs.map(blogsMapper)
-        }
-
-
-        const blogs = await blogsCollection.find({searchNameTerm}).sort({[sortBy]:"desc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
-        return blogs.map(blogsMapper)
-
-        /*if(searchNameTerm!=null){
+        let blogs
+        if(searchNameTerm!=null){
             const regexp = new RegExp(searchNameTerm, "i");
 
             if(sortDirection=="desc"){
-                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:"desc"}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
             } else {
-                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+                blogs = await blogsCollection.find({name:regexp}).sort({[sortBy]:"asc"}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
             }
             return blogs.map(blogsMapper)
         }
         if(sortDirection=="desc"){
-            blogs = await blogsCollection.find({}).sort({[sortBy]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+            blogs = await blogsCollection.find({}).sort({[sortBy]:"desc"}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
         } else {
-            blogs = await blogsCollection.find({}).sort({[sortBy]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
-        }*/
-
+            blogs = await blogsCollection.find({}).sort({[sortBy]:"asc"}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
+        }
+        return blogs.map(blogsMapper)
     }
 
     static async getBlogById(id: string): Promise<OutputBlogType | false> {
