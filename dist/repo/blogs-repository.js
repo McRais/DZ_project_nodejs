@@ -22,23 +22,12 @@ class blogsRepo {
     static getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             let blogs;
-            if (searchNameTerm != null) {
-                const regexp = new RegExp(searchNameTerm, "i");
-                if (sortDirection == "desc") {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-                }
-                else {
-                    blogs = yield DB_1.blogsCollection.find({ name: regexp }).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-                }
-                return blogs.map(blogs_mapper_1.blogsMapper);
-            }
-            if (sortDirection == "desc") {
-                blogs = yield DB_1.blogsCollection.find({}).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
-            else {
-                blogs = yield DB_1.blogsCollection.find({}).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
-            return blogs.map(blogs_mapper_1.blogsMapper);
+            return DB_1.blogsCollection.aggregate([
+                { '$search': { name: searchNameTerm } },
+                { '$sortBy': { [sortBy]: sortDirection } },
+                { '$limit': pageSize },
+                { '$pageNumber': pageNumber - 1 },
+            ]);
         });
     }
     static getBlogById(id) {

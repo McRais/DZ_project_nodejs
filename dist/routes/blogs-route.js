@@ -21,13 +21,14 @@ exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
     const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchNameTerm || null, req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection == "asc" ? "asc" : "desc"];
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
     const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCount();
-    return res.send({
-        "pagesCount": Math.ceil(blogsRepoCount / pageSize),
+    return res.send({ blogs });
+    /*return res.send({
+        "pagesCount": Math.ceil(blogsRepoCount/pageSize),
         "page": pageNumber,
         "pageSize": pageSize,
         "totalCount": blogsRepoCount,
         "items": blogs
-    });
+    })*/
 }));
 exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);
