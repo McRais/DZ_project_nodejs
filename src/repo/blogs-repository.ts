@@ -9,7 +9,7 @@ export class blogsRepo {
         return await blogsCollection.countDocuments({})
     }
 
-    static async getAllBlogs(searchNameTerm: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputBlogType[]> {
+    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputBlogType[]> {
         let blogs
         if(searchNameTerm!=null){
             const regexp = new RegExp(searchNameTerm, "i");
