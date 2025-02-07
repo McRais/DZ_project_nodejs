@@ -29,19 +29,19 @@ class postsRepo {
             let posts;
             if (searchNameTerm != null) {
                 const regexp = new RegExp(searchNameTerm, "i");
-                if (sortDirection == "asc") {
-                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                if (sortDirection == "desc") {
+                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 }
                 else {
-                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
                 }
                 return posts.map(blogs_mapper_1.postsMapper);
             }
-            if (sortDirection == "asc") {
-                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+            if (sortDirection == "desc") {
+                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             else {
-                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
+                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
             }
             return posts.map(blogs_mapper_1.postsMapper);
         });
