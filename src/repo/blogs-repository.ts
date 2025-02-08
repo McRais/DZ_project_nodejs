@@ -14,7 +14,7 @@ export class blogsRepo {
         const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
 
         const blogs = await blogsCollection
-            .find({regex})
+            .find(regex)
             .sort(sortBy, sortDirection)
             .limit(pageSize)
             .skip((pageNumber - 1) * pageSize)

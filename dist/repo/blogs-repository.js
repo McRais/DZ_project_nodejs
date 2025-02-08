@@ -23,7 +23,7 @@ class blogsRepo {
         return __awaiter(this, void 0, void 0, function* () {
             const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
             const blogs = yield DB_1.blogsCollection
-                .find({ regex })
+                .find(regex)
                 .sort(sortBy, sortDirection)
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
