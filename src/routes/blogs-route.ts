@@ -19,10 +19,9 @@ export const blogsRoute = Router({})
 
 
 blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputBlogType[]>> => {
-    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm||null, req.query.pageNumber||1, req.query.pageSize||10, req.query.sortBy||"createdAt", req.query.sortDirection||"desc"];
+    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm||null, req.query.pageNumber||1, Number(req.query.pageSize||10), req.query.sortBy||"createdAt", req.query.sortDirection||"desc"];
     const blogs = await blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     const blogsRepoCount = await blogsRepo.getCount()
-
 
     return res.send({
         "pagesCount": Math.ceil(blogsRepoCount/pageSize),

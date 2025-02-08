@@ -22,12 +22,11 @@ class blogsRepo {
     static getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
-            const size = Number(pageSize);
             const blogs = yield DB_1.blogsCollection
                 .find(regex)
                 .sort(sortBy, sortDirection)
-                .limit(size)
-                .skip((pageNumber - 1) * size)
+                .limit(pageSize)
+                .skip((pageNumber - 1) * pageSize)
                 .toArray();
             return blogs.map(blogs_mapper_1.blogsMapper);
         });
