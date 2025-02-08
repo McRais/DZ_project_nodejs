@@ -63,7 +63,7 @@ exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_b
     }
 }));
 exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.paramBlogIdValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const [pageNumber, pageSize, sortBy, sortDirection] = [req.query.pageNumber || 1, req.query.pageSize || 10, req.query.sortBy || "createdAt", req.query.sortDirection || "desc"];
+    const [pageNumber, pageSize, sortBy, sortDirection] = [req.query.pageNumber || 1, Number(req.query.pageSize || 10), req.query.sortBy || "createdAt", req.query.sortDirection || "desc"];
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection);
     const postsRepoCount = yield posts_repository_1.postsRepo.getCountFromBlog(req.params.id);
     return res.status(200).send({

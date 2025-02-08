@@ -1,7 +1,7 @@
 import {blogsCollection, postsCollection} from "../database/DB";
 import {OutputPostType, PostsType} from "../models/types";
-import {postsMapper} from "../mappers/blogs-mapper";
-import {ObjectId} from "mongodb";
+import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
+import {ObjectId, SortDirection} from "mongodb";
 
 export class postsRepo {
 
@@ -12,24 +12,16 @@ export class postsRepo {
         return await postsCollection.countDocuments({blogId: blogId})
     }
 
-    static async getAllPosts(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<OutputPostType[]> {
+    static async getAllPosts(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputPostType[]> {
+        const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
 
-        let posts
-        if (searchNameTerm != null) {
-            const regexp = new RegExp(searchNameTerm, "i");
-            if (sortDirection == "desc") {
-                posts = await postsCollection.find({name: regexp}).sort({[sortBy]: "desc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
-            } else {
-                posts = await postsCollection.find({name: regexp}).sort({[sortBy]: "asc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
-            }
-            return posts.map(postsMapper)
-        }
+        const posts = await postsCollection
+            .find(regex)
+            .sort(sortBy, sortDirection)
+            .limit(pageSize)
+            .skip((pageNumber - 1) * pageSize)
+            .toArray()
 
-        if (sortDirection == "desc") {
-            posts = await postsCollection.find({}).sort({[sortBy]: "desc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
-        } else {
-            posts = await postsCollection.find({}).sort({[sortBy]: "asc"}).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray()
-        }
         return posts.map(postsMapper)
     }
 

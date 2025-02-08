@@ -2,6 +2,7 @@ import {OutputBlogType, OutputPostType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
 import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
 import {ObjectId, SortDirection} from "mongodb";
+import {postsRepo} from "./posts-repository";
 
 export class blogsRepo {
 
@@ -59,15 +60,15 @@ export class blogsRepo {
         return true
     }
 
-    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string):Promise<OutputPostType[]> {
-        let field = sortBy
-        let posts
+    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection):Promise<OutputPostType[]> {
 
-        if(sortDirection=="desc"){
-            posts = await postsCollection.find({blogId: id}).sort({[field]:-1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
-        } else {
-            posts = await postsCollection.find({blogId: id}).sort({[field]:1}).skip((pageNumber-1)*pageSize).limit(pageSize).toArray()
-        }
+        const posts = await postsCollection
+            .find({blogId: id})
+            .sort(sortBy, sortDirection)
+            .limit(pageSize)
+            .skip((pageNumber - 1) * pageSize)
+            .toArray()
+
         return posts.map(postsMapper)
     }
 }

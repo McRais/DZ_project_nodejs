@@ -72,14 +72,12 @@ class blogsRepo {
     }
     static getPostsFromBlog(id, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let field = sortBy;
-            let posts;
-            if (sortDirection == "desc") {
-                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: -1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
-            else {
-                posts = yield DB_1.postsCollection.find({ blogId: id }).sort({ [field]: 1 }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
+            const posts = yield DB_1.postsCollection
+                .find({ blogId: id })
+                .sort(sortBy, sortDirection)
+                .limit(pageSize)
+                .skip((pageNumber - 1) * pageSize)
+                .toArray();
             return posts.map(blogs_mapper_1.postsMapper);
         });
     }

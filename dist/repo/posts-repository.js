@@ -26,23 +26,13 @@ class postsRepo {
     }
     static getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let posts;
-            if (searchNameTerm != null) {
-                const regexp = new RegExp(searchNameTerm, "i");
-                if (sortDirection == "desc") {
-                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-                }
-                else {
-                    posts = yield DB_1.postsCollection.find({ name: regexp }).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-                }
-                return posts.map(blogs_mapper_1.postsMapper);
-            }
-            if (sortDirection == "desc") {
-                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: "desc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
-            else {
-                posts = yield DB_1.postsCollection.find({}).sort({ [sortBy]: "asc" }).skip((pageNumber - 1) * pageSize).limit(pageSize).toArray();
-            }
+            const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
+            const posts = yield DB_1.postsCollection
+                .find(regex)
+                .sort(sortBy, sortDirection)
+                .limit(pageSize)
+                .skip((pageNumber - 1) * pageSize)
+                .toArray();
             return posts.map(blogs_mapper_1.postsMapper);
         });
     }
