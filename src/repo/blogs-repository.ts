@@ -1,7 +1,7 @@
 import {OutputBlogType, OutputPostType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
 import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
-import {ObjectId} from "mongodb";
+import {ObjectId, SortDirection} from "mongodb";
 
 export class blogsRepo {
 
@@ -9,14 +9,18 @@ export class blogsRepo {
         return await blogsCollection.countDocuments({})
     }
 
-    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:string): Promise<any> {
-        let blogs
-        return blogsCollection.aggregate([
-            {'$search': {name: searchNameTerm}},
-            {'$sortBy': {[sortBy]: sortDirection}},
-            {'$limit': pageSize},
-            {'$pageNumber': pageNumber - 1},
-        ])
+    static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputBlogType[]> {
+
+        const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
+
+        const blogs = await blogsCollection
+            .find({regex})
+            .sort(sortBy, sortDirection)
+            .limit(pageSize)
+            .skip((pageNumber - 1) * pageSize)
+            .toArray()
+
+        return blogs.map(blogsMapper)
     }
 
     static async getBlogById(id: string): Promise<OutputBlogType | false> {

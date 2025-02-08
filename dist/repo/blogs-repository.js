@@ -21,13 +21,14 @@ class blogsRepo {
     }
     static getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            let blogs;
-            return DB_1.blogsCollection.aggregate([
-                { '$search': { name: searchNameTerm } },
-                { '$sortBy': { [sortBy]: sortDirection } },
-                { '$limit': pageSize },
-                { '$pageNumber': pageNumber - 1 },
-            ]);
+            const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
+            const blogs = yield DB_1.blogsCollection
+                .find({ regex })
+                .sort(sortBy, sortDirection)
+                .limit(pageSize)
+                .skip((pageNumber - 1) * pageSize)
+                .toArray();
+            return blogs.map(blogs_mapper_1.blogsMapper);
         });
     }
     static getBlogById(id) {
