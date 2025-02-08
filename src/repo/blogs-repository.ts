@@ -12,12 +12,13 @@ export class blogsRepo {
     static async getAllBlogs(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputBlogType[]> {
 
         const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
+        const size = Number(pageSize);
 
         const blogs = await blogsCollection
             .find(regex)
             .sort(sortBy, sortDirection)
-            .limit(pageSize)
-            .skip((pageNumber - 1) * pageSize)
+            .limit(size)
+            .skip((pageNumber - 1) * size)
             .toArray()
 
         return blogs.map(blogsMapper)
