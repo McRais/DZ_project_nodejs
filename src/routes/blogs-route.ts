@@ -19,7 +19,7 @@ export const blogsRoute = Router({})
 
 
 blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputBlogType[]>> => {
-    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm||null, req.query.pageNumber||1, Number(req.query.pageSize||10), req.query.sortBy||"createdAt", req.query.sortDirection||"desc"];
+    const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const blogs = await blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     const blogsRepoCount = await blogsRepo.getCount()
 
@@ -56,7 +56,7 @@ blogsRoute.put("/:id",authMiddleware, blogBodyValidation(), async (req:RequestWi
 
 blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
-    const [pageNumber,pageSize,sortBy,sortDirection] = [req.query.pageNumber||1, Number(req.query.pageSize||10), req.query.sortBy||"createdAt", req.query.sortDirection||"desc"]
+    const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
 
     const postsRepoCount = await postsRepo.getCountFromBlog(req.params.id)
