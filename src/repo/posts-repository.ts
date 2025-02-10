@@ -12,7 +12,7 @@ export class postsRepo {
         return await postsCollection.countDocuments({blogId: blogId})
     }
 
-    static async getAllPosts(searchNameTerm: string|null, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputPostType[]> {
+    static async getAllPosts(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputPostType[]> {
         const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
 
         const posts = await postsCollection
