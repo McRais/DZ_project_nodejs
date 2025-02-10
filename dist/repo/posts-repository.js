@@ -14,9 +14,10 @@ const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
 const mongodb_1 = require("mongodb");
 class postsRepo {
-    static getCount() {
+    static getCount(searchNameTerm) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield DB_1.postsCollection.countDocuments({});
+            const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
+            return yield DB_1.postsCollection.countDocuments(regex);
         });
     }
     static getCountFromBlog(blogId) {

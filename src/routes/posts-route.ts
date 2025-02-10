@@ -19,7 +19,7 @@ export const postsRoute = Router({})
 postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>,res:Response): Promise<Response<OutputPostType[]>> =>{
     const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const posts = await postsRepo.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
-    const postsRepoCount = await postsRepo.getCount()
+    const postsRepoCount = await postsRepo.getCount(searchNameTerm)
 
     return res.send({
         "pagesCount": Math.ceil(postsRepoCount/pageSize),

@@ -20,7 +20,7 @@ exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
-    const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCount();
+    const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCount(searchNameTerm);
     return res.send({
         "pagesCount": Math.ceil(blogsRepoCount / pageSize),
         "page": pageNumber,

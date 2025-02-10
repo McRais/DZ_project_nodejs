@@ -5,8 +5,9 @@ import {ObjectId, SortDirection} from "mongodb";
 
 export class blogsRepo {
 
-    static async getCount(): Promise<number> {
-        return await blogsCollection.countDocuments({})
+    static async getCount(searchNameTerm:string|undefined): Promise<number> {
+        const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
+        return await blogsCollection.countDocuments(regex)
     }
 
     static async getAllBlogs(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputBlogType[]> {
