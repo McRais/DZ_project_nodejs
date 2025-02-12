@@ -16,6 +16,11 @@ export type PostsType = {
     blogName: string,
     createdAt: string
 }
+export type UsersType = {
+    login: string,
+    email: string,
+    createdAt: string
+}
 
 export type RequestWithParamAndQuery<P, Q> = Request<P, {}, {}, Q>
 export type RequestWithParams<P> = Request<P, {}, {}, {}>;
@@ -39,5 +44,12 @@ export type OutputPostType = {
     content: string,
     blogId: string,
     blogName: string,
+    createdAt: string
+}
+
+export type OutputUserType = {
+    id: string,
+    login: string,
+    email: string,
     createdAt: string
 }
