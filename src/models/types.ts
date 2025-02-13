@@ -19,6 +19,7 @@ export type PostsType = {
 export type UsersType = {
     login: string,
     email: string,
+    password: string,
     createdAt: string
 }
 
