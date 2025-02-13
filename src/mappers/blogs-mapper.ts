@@ -1,5 +1,5 @@
 import {WithId} from "mongodb";
-import {BlogsType, PostsType} from "../models/types";
+import {BlogsType, PostsType, UsersType} from "../models/types";
 
 export const blogsMapper = (blog: WithId<BlogsType>) =>{
     return {
@@ -20,5 +20,14 @@ export const postsMapper = (post: WithId<PostsType>) =>{
         blogId: post.blogId,
         blogName: post.blogName,
         createdAt: post.createdAt
+    }
+}
+
+export const usersMapper = (user: WithId<UsersType>)=>{
+    return{
+        id: user._id.toString(),
+        login:user.login,
+        email:user.email,
+        createdAt:user.createdAt
     }
 }
