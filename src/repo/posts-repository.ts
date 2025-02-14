@@ -1,6 +1,6 @@
 import {blogsCollection, postsCollection} from "../database/DB";
 import {OutputPostType, PostsType} from "../models/types";
-import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
+import {postsMapper} from "../mappers/blogs-mapper";
 import {ObjectId, SortDirection} from "mongodb";
 
 export class postsRepo {
@@ -31,7 +31,7 @@ export class postsRepo {
         if (!post) {
             return false
         }
-        let postArr = Array.of(post)
+        let postArr = Array.of(post)  //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
         return postArr.map(postsMapper)[0]
     }
 
