@@ -1,5 +1,5 @@
 import {Response, Router} from "express";
-import {OutputUserType, RequestWithQuery} from "../models/types";
+import {OutputUserType, RequestWithBody, RequestWithQuery} from "../models/types";
 import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
 
@@ -7,7 +7,7 @@ export const usersRoute = Router({});
 
 usersRoute.get('/', async (req: RequestWithQuery<{searchLoginTerm?: string,searchEmailTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputUserType[]>> => {
     const [searchLoginTerm,searchEmailTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchLoginTerm,req.query.searchEmailTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
-    const users = await usersRepo.getAllUsers(searchLoginTerm, pageNumber, pageSize, sortBy, sortDirection)
+    const users = await usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection)
     const usersRepoCount = await usersRepo.getCount()
 
     return res.send({
@@ -17,8 +17,12 @@ usersRoute.get('/', async (req: RequestWithQuery<{searchLoginTerm?: string,searc
         "totalCount": usersRepoCount,
         "items": users
     })
-}) //not done
+})
 
-usersRoute.post('/', (req, res) => {})
+usersRoute.post('/', async (req: RequestWithBody<{login:string, password:string, email:string}>, res) => {
+    const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
+    const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
+    return res.status(201).send(user)
+})
 
 usersRoute.delete('/:id', (req, res) => {})
