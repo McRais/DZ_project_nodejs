@@ -38,7 +38,7 @@ class blogsRepo {
             if (!blog) {
                 return false;
             }
-            const blogArr = Array.of(blog);
+            const blogArr = Array.of(blog); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
             return blogArr.map(blogs_mapper_1.blogsMapper)[0];
         });
     }

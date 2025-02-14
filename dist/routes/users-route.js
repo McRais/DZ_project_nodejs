@@ -15,7 +15,7 @@ const users_repository_1 = require("../repo/users-repository");
 exports.usersRoute = (0, express_1.Router)({});
 exports.usersRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchLoginTerm, req.query.searchEmailTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
-    const users = yield users_repository_1.usersRepo.getAllUsers(searchLoginTerm, pageNumber, pageSize, sortBy, sortDirection);
+    const users = yield users_repository_1.usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection);
     const usersRepoCount = yield users_repository_1.usersRepo.getCount();
     return res.send({
         "pagesCount": Math.ceil(usersRepoCount / pageSize),
@@ -24,6 +24,10 @@ exports.usersRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
         "totalCount": usersRepoCount,
         "items": users
     });
-})); //not done
-exports.usersRoute.post('/', (req, res) => { });
+}));
+exports.usersRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date];
+    const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
+    return res.status(201).send(user);
+}));
 exports.usersRoute.delete('/:id', (req, res) => { });

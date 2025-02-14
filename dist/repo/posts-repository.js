@@ -43,7 +43,7 @@ class postsRepo {
             if (!post) {
                 return false;
             }
-            let postArr = Array.of(post);
+            let postArr = Array.of(post); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
             return postArr.map(blogs_mapper_1.postsMapper)[0];
         });
     }

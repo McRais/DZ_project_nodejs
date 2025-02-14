@@ -18,16 +18,33 @@ class usersRepo {
             return yield DB_1.usersCollection.countDocuments();
         });
     }
-    static getAllUsers(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
+    static getUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
+            const user = yield DB_1.usersCollection.findOne({ userID: userID });
+            if (!user) {
+                return false;
+            } //it will never return it, this function is only for usersRepo.createUser
+            const userArr = Array.of(user); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
+            return userArr.map(blogs_mapper_1.usersMapper)[0];
+        });
+    }
+    static getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const regexLogin = searchLoginTerm ? { name: { $regex: searchLoginTerm, $options: "i" } } : {};
+            const regexEmail = searchEmailTerm ? { name: { $regex: searchEmailTerm, $options: "i" } } : {};
             const users = yield DB_1.usersCollection
-                .find(regex)
+                .find({ $or: [{ login: regexLogin }, { email: regexEmail }] })
                 .sort(sortBy, sortDirection)
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
             return users.map(blogs_mapper_1.usersMapper);
+        });
+    }
+    static createUser(login, password, email, createdAt) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield DB_1.usersCollection.insertOne({ login, password, email, createdAt: createdAt });
+            return usersRepo.getUser(user.insertedId.toString());
         });
     }
 }
