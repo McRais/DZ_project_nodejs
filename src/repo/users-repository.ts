@@ -1,4 +1,4 @@
-import {SortDirection} from "mongodb";
+import { SortDirection} from "mongodb";
 import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersMapper} from "../mappers/blogs-mapper";
@@ -8,15 +8,28 @@ export class usersRepo{
         return await usersCollection.countDocuments()
     }
 
-    static async getAllUsers(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
-        const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
+    static async getUser(userID:string): Promise<OutputUserType|false> {
+        const user = await usersCollection.findOne({userID:userID})
+        if (!user) {return false}  //it will never return it, this function is only for usersRepo.createUser
+        const userArr = Array.of(user) //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
+        return userArr.map(usersMapper)[0]
+
+    }
+
+    static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
+        const regexLogin = searchLoginTerm?{name:{$regex: searchLoginTerm, $options: "i"}} : {};
+        const regexEmail = searchEmailTerm?{name:{$regex: searchEmailTerm, $options: "i"}}:{}
         const users = await usersCollection
-            .find(regex)
+            .find({$or: [{login:regexLogin}, {email:regexEmail}]})
             .sort(sortBy, sortDirection)
             .limit(pageSize)
             .skip((pageNumber - 1) * pageSize)
             .toArray()
-
         return users.map(usersMapper)
+    }
+
+    static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
+        const user = await usersCollection.insertOne({login, password, email, createdAt: createdAt})
+        return usersRepo.getUser(user.insertedId.toString())
     }
 }
