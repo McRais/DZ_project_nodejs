@@ -30,4 +30,7 @@ exports.usersRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fun
     const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
     return res.status(201).send(user);
 }));
-exports.usersRoute.delete('/:id', (req, res) => { });
+exports.usersRoute.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield users_repository_1.usersRepo.deleteUser(req.params.id); //redo later
+    return res.status(200).send({ result });
+}));

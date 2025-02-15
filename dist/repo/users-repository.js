@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepo = void 0;
+const mongodb_1 = require("mongodb");
 const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
 class usersRepo {
@@ -45,6 +46,11 @@ class usersRepo {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield DB_1.usersCollection.insertOne({ login, password, email, createdAt: createdAt });
             return usersRepo.getUser(user.insertedId.toString());
+        });
+    }
+    static deleteUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield DB_1.usersCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) }); //redo later
         });
     }
 }
