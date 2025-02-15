@@ -21,12 +21,22 @@ usersRoute.get('/', async (req: RequestWithQuery<{searchLoginTerm?: string,searc
 
 usersRoute.post('/', async (req: RequestWithBody<{login:string, password:string, email:string}>, res) => {
 
-    if(await usersRepo.getUserLogin(req.body.login)){
+    if(await usersRepo.checkUserLoginUniqueness(req.body.login)){
         return res.send(400).json({
             "errorsMessages": [
                 {
                     "message": "Login is not unique",
                     "field": "login"
+                }
+            ]
+        })
+    }
+    if(await usersRepo.checkUserEmailUniqueness(req.body.email)){
+        return res.send(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Email is not unique",
+                    "field": "email"
                 }
             ]
         })
