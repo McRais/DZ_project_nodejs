@@ -20,6 +20,18 @@ usersRoute.get('/', async (req: RequestWithQuery<{searchLoginTerm?: string,searc
 })
 
 usersRoute.post('/', async (req: RequestWithBody<{login:string, password:string, email:string}>, res) => {
+
+    if(await usersRepo.getUserLogin(req.body.login)){
+        return res.send(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Login is not unique",
+                    "field": "login"
+                }
+            ]
+        })
+    }
+    
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
     const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
     return res.status(201).send(user)

@@ -16,6 +16,14 @@ export class usersRepo{
 
     }
 
+    static async getUserLogin(login:string): Promise<boolean> {
+        const user = await usersCollection.findOne({login:login})
+        if (!user) {return false}
+        return true
+
+
+    }
+
     static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
         const regexLogin = searchLoginTerm?{name:{$regex: searchLoginTerm, $options: "i"}} : {};
         const regexEmail = searchEmailTerm?{name:{$regex: searchEmailTerm, $options: "i"}}:{}
