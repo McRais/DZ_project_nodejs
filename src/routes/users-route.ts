@@ -1,5 +1,5 @@
 import {Response, Router} from "express";
-import {OutputUserType, RequestWithBody, RequestWithQuery} from "../models/types";
+import {OutputUserType, RequestWithBody, RequestWithParams, RequestWithQuery} from "../models/types";
 import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
 
@@ -25,4 +25,7 @@ usersRoute.post('/', async (req: RequestWithBody<{login:string, password:string,
     return res.status(201).send(user)
 })
 
-usersRoute.delete('/:id', (req, res) => {})
+usersRoute.delete('/:id', async (req:RequestWithParams<{id:string}>, res) => {
+    const result = await usersRepo.deleteUser(req.params.id)    //redo later
+    return res.status(200).send({result})
+})

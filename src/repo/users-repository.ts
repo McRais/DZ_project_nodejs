@@ -1,4 +1,4 @@
-import { SortDirection} from "mongodb";
+import {ObjectId, SortDirection} from "mongodb";
 import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersMapper} from "../mappers/blogs-mapper";
@@ -31,5 +31,9 @@ export class usersRepo{
     static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
         const user = await usersCollection.insertOne({login, password, email, createdAt: createdAt})
         return usersRepo.getUser(user.insertedId.toString())
+    }
+
+    static async deleteUser(id:string): Promise<any> {
+        return await usersCollection.deleteOne({_id: new ObjectId(id)}) //redo later
     }
 }
