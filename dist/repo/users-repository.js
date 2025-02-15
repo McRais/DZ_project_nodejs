@@ -29,6 +29,24 @@ class usersRepo {
             return userArr.map(blogs_mapper_1.usersMapper)[0];
         });
     }
+    static checkUserLoginUniqueness(login) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield DB_1.usersCollection.findOne({ login: login });
+            if (!user) {
+                return false;
+            }
+            return true;
+        });
+    }
+    static checkUserEmailUniqueness(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield DB_1.usersCollection.findOne({ email: email });
+            if (!user) {
+                return false;
+            }
+            return true;
+        });
+    }
     static getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             const regexLogin = searchLoginTerm ? { name: { $regex: searchLoginTerm, $options: "i" } } : {};

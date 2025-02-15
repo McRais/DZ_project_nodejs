@@ -26,6 +26,26 @@ exports.usersRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
     });
 }));
 exports.usersRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login)) {
+        return res.send(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Login is not unique",
+                    "field": "login"
+                }
+            ]
+        });
+    }
+    if (yield users_repository_1.usersRepo.checkUserEmailUniqueness(req.body.email)) {
+        return res.send(400).json({
+            "errorsMessages": [
+                {
+                    "message": "Email is not unique",
+                    "field": "email"
+                }
+            ]
+        });
+    }
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date];
     const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
     return res.status(201).send(user);
