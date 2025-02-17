@@ -29,7 +29,7 @@ export class usersRepo{
 
     static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
         const regexLogin = searchLoginTerm?{name:{$regex: searchLoginTerm, $options: "i"}} : {};
-        const regexEmail = searchEmailTerm?{name:{$regex: searchEmailTerm, $options: "i"}}:{}
+        const regexEmail = searchEmailTerm?{name:{$regex: searchEmailTerm, $options: "i"}} : {}
         const users = await usersCollection
             .find({$or: [{login:regexLogin}, {email:regexEmail}]})
             .sort(sortBy, sortDirection)
@@ -40,11 +40,13 @@ export class usersRepo{
     }
 
     static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
-        const user = await usersCollection.insertOne({login, password, email, createdAt: createdAt})
-        return usersRepo.getUser(user.insertedId.toString())
+        const user = await usersCollection.insertOne({login, password, email, createdAt})
+        return await usersRepo.getUser(user.insertedId.toString())
     }
 
-    static async deleteUser(id:string): Promise<any> {
-        return await usersCollection.deleteOne({_id: new ObjectId(id)}) //redo later
+
+    static async deleteUser(id:string): Promise<boolean> {
+        const deleteResult = await usersCollection.deleteOne({_id: new ObjectId(id)})
+        return deleteResult.deletedCount != 0
     }
 }
