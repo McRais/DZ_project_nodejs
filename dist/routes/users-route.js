@@ -12,8 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRoute = void 0;
 const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
+const auth_middleware_1 = require("../middlewares/auth-middleware");
 exports.usersRoute = (0, express_1.Router)({});
-exports.usersRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchLoginTerm, req.query.searchEmailTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const users = yield users_repository_1.usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection);
     const usersRepoCount = yield users_repository_1.usersRepo.getCount();
@@ -25,7 +26,7 @@ exports.usersRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, func
         "items": users
     });
 }));
-exports.usersRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.usersRoute.post('/', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login)) {
         return res.send(400).json({
             "errorsMessages": [
@@ -50,7 +51,7 @@ exports.usersRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fun
     const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
     return res.status(201).send(user);
 }));
-exports.usersRoute.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield users_repository_1.usersRepo.deleteUser(req.params.id); //redo later
-    return res.status(200).send({ result });
+exports.usersRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield users_repository_1.usersRepo.deleteUser(req.params.id);
+    return result ? res.sendStatus(204) : res.sendStatus(404);
 }));
