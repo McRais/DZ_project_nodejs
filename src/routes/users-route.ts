@@ -1,4 +1,4 @@
-import e, {Response, Router} from "express";
+import {Response, Router} from "express";
 import {OutputUserType, RequestWithBody, RequestWithParams, RequestWithQuery} from "../models/types";
 import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
@@ -49,6 +49,6 @@ usersRoute.post('/', authMiddleware, async (req: RequestWithBody<{login:string, 
 
 usersRoute.delete('/:id',authMiddleware, async (req:RequestWithParams<{id:string}>, res: Response): Promise<Response<204|404>> => {
 
-    const result = await usersRepo.deleteUser(req.params.id)   
+    const result = await usersRepo.deleteUser(req.params.id)
     return result? res.sendStatus(204):res.sendStatus(404)
 })
