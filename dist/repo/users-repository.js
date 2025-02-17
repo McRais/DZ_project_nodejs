@@ -62,13 +62,14 @@ class usersRepo {
     }
     static createUser(login, password, email, createdAt) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield DB_1.usersCollection.insertOne({ login, password, email, createdAt: createdAt });
-            return usersRepo.getUser(user.insertedId.toString());
+            const user = yield DB_1.usersCollection.insertOne({ login, password, email, createdAt });
+            return yield usersRepo.getUser(user.insertedId.toString());
         });
     }
     static deleteUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield DB_1.usersCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) }); //redo later
+            const deleteResult = yield DB_1.usersCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+            return deleteResult.deletedCount != 0;
         });
     }
 }
