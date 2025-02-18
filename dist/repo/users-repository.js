@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepo = void 0;
 const mongodb_1 = require("mongodb");
 const DB_1 = require("../database/DB");
 const blogs_mapper_1 = require("../mappers/blogs-mapper");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 class usersRepo {
     static getCount() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62,7 +66,8 @@ class usersRepo {
     }
     static createUser(login, password, email, createdAt) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield DB_1.usersCollection.insertOne({ login, password, email, createdAt });
+            const hashPass = bcrypt_1.default.hashSync(password, 10);
+            const user = yield DB_1.usersCollection.insertOne({ login: login, password: hashPass, email: email, createdAt: createdAt });
             return yield usersRepo.getUser(user.insertedId.toString());
         });
     }
@@ -70,6 +75,15 @@ class usersRepo {
         return __awaiter(this, void 0, void 0, function* () {
             const deleteResult = yield DB_1.usersCollection.deleteOne({ _id: new mongodb_1.ObjectId(id) });
             return deleteResult.deletedCount != 0;
+        });
+    }
+    static loginUser(loginOrEmail, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield DB_1.usersCollection.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
+            if (!user) {
+                return false;
+            }
+            return bcrypt_1.default.compareSync(password, user.password);
         });
     }
 }
