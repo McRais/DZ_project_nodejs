@@ -13,6 +13,7 @@ exports.usersRoute = void 0;
 const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
+const validator_users_1 = require("../validators/validator-users");
 exports.usersRoute = (0, express_1.Router)({});
 exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchLoginTerm, req.query.searchEmailTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
@@ -26,7 +27,7 @@ exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __aw
         "items": users
     });
 }));
-exports.usersRoute.post('/', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.usersRoute.post('/', auth_middleware_1.authMiddleware, (0, validator_users_1.userValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login)) {
         return res.send(400).json({
             "errorsMessages": [
