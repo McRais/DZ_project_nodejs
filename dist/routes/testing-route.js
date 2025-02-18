@@ -16,5 +16,6 @@ exports.testingRoute = (0, express_1.Router)({});
 exports.testingRoute.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield DB_1.blogsCollection.drop();
     yield DB_1.postsCollection.drop();
+    yield DB_1.usersCollection.drop();
     return res.sendStatus(204);
 }));
