@@ -3,6 +3,7 @@ import {OutputUserType, RequestWithBody, RequestWithParams, RequestWithQuery} fr
 import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
 import {authMiddleware} from "../middlewares/auth-middleware";
+import {userValidator} from "../validators/validator-users";
 
 export const usersRoute = Router({});
 
@@ -20,7 +21,7 @@ usersRoute.get('/',authMiddleware, async (req: RequestWithQuery<{searchLoginTerm
     })
 })
 
-usersRoute.post('/', authMiddleware, async (req: RequestWithBody<{login:string, password:string, email:string}>, res:Response): Promise<Response<OutputUserType|400>> => {
+usersRoute.post('/', authMiddleware, userValidator(), async (req: RequestWithBody<{login:string, password:string, email:string}>, res:Response): Promise<Response<OutputUserType|400>> => {
 
     if(await usersRepo.checkUserLoginUniqueness(req.body.login)){
         return res.send(400).json({
