@@ -51,4 +51,10 @@ export class usersRepo{
         const deleteResult = await usersCollection.deleteOne({_id: new ObjectId(id)})
         return deleteResult.deletedCount != 0
     }
+
+    static async loginUser(loginOrEmail:string,password:string):Promise<boolean> {
+        const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
+        if (!user) {return false}
+        return bcrypt.compareSync(password, user.password)
+    }
 }
