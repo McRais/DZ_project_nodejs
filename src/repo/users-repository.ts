@@ -2,6 +2,7 @@ import {ObjectId, SortDirection} from "mongodb";
 import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersMapper} from "../mappers/blogs-mapper";
+import bcrypt from "bcrypt";
 
 export class usersRepo{
     static async getCount(): Promise<number> {
@@ -40,7 +41,8 @@ export class usersRepo{
     }
 
     static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
-        const user = await usersCollection.insertOne({login, password, email, createdAt})
+        const hashPass = bcrypt.hashSync(password, 10);
+        const user = await usersCollection.insertOne({login:login, password:hashPass, email:email, createdAt:createdAt})
         return await usersRepo.getUser(user.insertedId.toString())
     }
 
