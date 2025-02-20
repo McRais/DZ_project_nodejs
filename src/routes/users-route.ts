@@ -24,7 +24,7 @@ usersRoute.get('/',authMiddleware, async (req: RequestWithQuery<{searchLoginTerm
 usersRoute.post('/', authMiddleware, userValidator(), async (req: RequestWithBody<{login:string, password:string, email:string}>, res:Response): Promise<Response<OutputUserType|400>> => {
 
     if(await usersRepo.checkUserLoginUniqueness(req.body.login)){
-        return res.send(400).json({
+        return res.status(400).send({
             "errorsMessages": [
                 {
                     "message": "Login is not unique",
@@ -34,7 +34,7 @@ usersRoute.post('/', authMiddleware, userValidator(), async (req: RequestWithBod
         })
     }
     if(await usersRepo.checkUserEmailUniqueness(req.body.email)){
-        return res.send(400).json({
+        return res.status(400).send({
             "errorsMessages": [
                 {
                     "message": "Email is not unique",
