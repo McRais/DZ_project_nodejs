@@ -29,7 +29,7 @@ exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __aw
 }));
 exports.usersRoute.post('/', auth_middleware_1.authMiddleware, (0, validator_users_1.userValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login)) {
-        return res.send(400).json({
+        return res.status(400).send({
             "errorsMessages": [
                 {
                     "message": "Login is not unique",
@@ -39,7 +39,7 @@ exports.usersRoute.post('/', auth_middleware_1.authMiddleware, (0, validator_use
         });
     }
     if (yield users_repository_1.usersRepo.checkUserEmailUniqueness(req.body.email)) {
-        return res.send(400).json({
+        return res.status(400).send({
             "errorsMessages": [
                 {
                     "message": "Email is not unique",

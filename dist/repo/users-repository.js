@@ -25,7 +25,7 @@ class usersRepo {
     }
     static getUser(userID) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield DB_1.usersCollection.findOne({ userID: userID });
+            const user = yield DB_1.usersCollection.findOne({ _id: new mongodb_1.ObjectId(userID) });
             if (!user) {
                 return false;
             } //it will never return it, this function is only for usersRepo.createUser
@@ -54,9 +54,9 @@ class usersRepo {
     static getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             const regexLogin = searchLoginTerm ? { name: { $regex: searchLoginTerm, $options: "i" } } : {};
-            const regexEmail = searchEmailTerm ? { name: { $regex: searchEmailTerm, $options: "i" } } : {};
+            const regexEmail = searchEmailTerm ? { email: { $regex: searchEmailTerm, $options: "i" } } : {};
             const users = yield DB_1.usersCollection
-                .find({ $or: [{ login: regexLogin }, { email: regexEmail }] })
+                .find({ $or: [regexLogin, regexEmail] })
                 .sort(sortBy, sortDirection)
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
