@@ -10,10 +10,10 @@ const loginValidator = body('login')
     }).withMessage('incorrect login length')
     .matches(/^[a-zA-Z0-9_-]*$/, 'incorrect login pattern')
 
-const emailValidator = body('email')
+/*const emailValidator = body('email')
     .isString().withMessage('website URL must be a string')
     .trim()
-    .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').withMessage('incorrect email address')
+    .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').withMessage('incorrect email address')*/
 
 const passwordValidator = body('password')
     .isString().withMessage('password must be a string')
@@ -23,4 +23,4 @@ const passwordValidator = body('password')
         max: 20
     }).withMessage('incorrect password length')
 
-export const userValidator = () => [loginValidator, emailValidator, passwordValidator, validatorErrorsCatcher]
+export const userValidator = () => [loginValidator, /*emailValidator,*/ passwordValidator, validatorErrorsCatcher]
