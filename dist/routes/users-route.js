@@ -18,7 +18,7 @@ exports.usersRoute = (0, express_1.Router)({});
 exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchLoginTerm, req.query.searchEmailTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const users = yield users_repository_1.usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection);
-    const usersRepoCount = yield users_repository_1.usersRepo.getCount();
+    const usersRepoCount = yield users_repository_1.usersRepo.getCount(searchLoginTerm, searchEmailTerm);
     return res.send({
         "pagesCount": Math.ceil(usersRepoCount / pageSize),
         "page": pageNumber,
