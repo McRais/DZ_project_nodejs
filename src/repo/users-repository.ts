@@ -5,8 +5,10 @@ import {usersMapper} from "../mappers/blogs-mapper";
 import bcrypt from "bcrypt";
 
 export class usersRepo{
-    static async getCount(): Promise<number> {
-        return await usersCollection.countDocuments()
+    static async getCount(searchLoginTerm:string|undefined, searchEmailTerm:string|undefined): Promise<number> {
+        const regexLogin = searchLoginTerm ? {name:{$regex: searchLoginTerm, $options: "i"}} : {};
+        const regexEmail = searchEmailTerm ? {email:{$regex: searchEmailTerm, $options: "i"}} : {};
+        return await usersCollection.countDocuments({$or:[regexLogin,regexEmail]})
     }
 
     static async getUser(userID:string): Promise<OutputUserType|false> {
