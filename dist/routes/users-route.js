@@ -13,8 +13,6 @@ exports.usersRoute = void 0;
 const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
 const auth_middleware_1 = require("../middlewares/auth-middleware");
-const validator_users_1 = require("../validators/validator-users");
-const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
 exports.usersRoute = (0, express_1.Router)({});
 exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchLoginTerm, req.query.searchEmailTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
@@ -28,18 +26,20 @@ exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __aw
         "items": users
     });
 }));
-exports.usersRoute.post('/', auth_middleware_1.authMiddleware, validator_users_1.userValidator, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    if (yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login)) {
+/*usersRoute.post('/', authMiddleware, userValidator, async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response, next:NextFunction): Promise<Response<OutputUserType|400>> => {
+
+    if(await usersRepo.checkUserLoginUniqueness(req.body.login)){
         throw new Error('login already exists');
     }
-    if (yield users_repository_1.usersRepo.checkUserEmailUniqueness(req.body.email)) {
+    if(await usersRepo.checkUserEmailUniqueness(req.body.email)){
         throw new Error('email already exists');
     }
-    (0, validator_errors_catcher_1.validatorErrorsCatcher)(req, res, next);
-    const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date];
-    const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
-    return res.status(201).send(user);
-}));
+    validatorErrorsCatcher(req,res,next)
+
+    const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
+    const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
+    return res.status(201).send(user)
+})*/
 exports.usersRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield users_repository_1.usersRepo.deleteUser(req.params.id);
     return result ? res.sendStatus(204) : res.sendStatus(404);
