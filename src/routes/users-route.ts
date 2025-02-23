@@ -4,7 +4,7 @@ import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {userValidator} from "../validators/validator-users";
-import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
+
 
 
 export const usersRoute = Router({});
@@ -23,15 +23,9 @@ usersRoute.get('/',authMiddleware, async (req: RequestWithQuery<{searchLoginTerm
     })
 })
 
-/*usersRoute.post('/', authMiddleware, userValidator, async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response, next:NextFunction): Promise<Response<OutputUserType|400>> => {
-
-    if(await usersRepo.checkUserLoginUniqueness(req.body.login)){
-        throw new Error('login already exists');
-    }
-    if(await usersRepo.checkUserEmailUniqueness(req.body.email)){
-        throw new Error('email already exists');
-    }
-    validatorErrorsCatcher(req,res,next)
+/*usersRoute.post('/', authMiddleware, userValidator, async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
+    const checkEmailUniqueness = await usersRepo.checkUserEmailUniqueness(req.body.email)
+    if (!checkEmailUniqueness) {}
 
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
     const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
