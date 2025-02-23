@@ -20,13 +20,13 @@ export class usersRepo{
 
     static async checkUserLoginUniqueness(login:string): Promise<boolean> {
         const user = await usersCollection.findOne({login:login})
-        if (!user) {return false}
-        return true
+        if (!user) {return true}
+        return false
     }
     static async checkUserEmailUniqueness(email:string): Promise<boolean> {
         const user = await usersCollection.findOne({email:email})
-        if (!user) {return false}
-        return true
+        if (!user) {return true}
+        return false
     }
 
     static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
