@@ -9,7 +9,7 @@ const loginValidator = body('login')
         min:3,
         max: 100
     }).withMessage('incorrect login length')
-    .matches('^[a-zA-Z0-9_-]*$').withMessage('incorrect login pattern')
+    .matches(/^[a-zA-Z0-9_-]*$/g).withMessage('incorrect login pattern')
 
 const emailValidator = body('email')
     .isString().withMessage('website URL must be a string')
@@ -24,18 +24,18 @@ const passwordValidator = body('password')
         max: 20
     }).withMessage('incorrect password length')
 
-const loginUniquenessValidator = body('login').custom(async(login) => {
+const loginUniquenessValidator = body('login').custom(async(login) => { //not here
     const loginUniqueness =  await usersRepo.checkUserLoginUniqueness(login)
     if (!loginUniqueness) {
         throw new Error('login is not unique')
     }
 })
 
-const emailUniquenessValidator = body('email').custom(async(email) => {
+const emailUniquenessValidator = body('email').custom(async(email) => { //not here
     const emailUniqueness =  await usersRepo.checkUserEmailUniqueness(email)
     if (!emailUniqueness) {
         throw new Error('email is not unique')
     }
 })
 
-export const userValidator = () => [loginValidator, emailValidator, passwordValidator,loginUniquenessValidator,emailUniquenessValidator, validatorErrorsCatcher]
+export const userValidator = () => [loginValidator, emailValidator, passwordValidator, validatorErrorsCatcher]

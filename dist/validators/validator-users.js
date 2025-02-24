@@ -20,7 +20,7 @@ const loginValidator = (0, express_validator_1.body)('login')
     min: 3,
     max: 100
 }).withMessage('incorrect login length')
-    .matches('^[a-zA-Z0-9_-]*$').withMessage('incorrect login pattern');
+    .matches(/^[a-zA-Z0-9_-]*$/g).withMessage('incorrect login pattern');
 const emailValidator = (0, express_validator_1.body)('email')
     .isString().withMessage('website URL must be a string')
     .trim()
@@ -44,5 +44,5 @@ const emailUniquenessValidator = (0, express_validator_1.body)('email').custom((
         throw new Error('email is not unique');
     }
 }));
-const userValidator = () => [loginValidator, emailValidator, passwordValidator, loginUniquenessValidator, emailUniquenessValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+const userValidator = () => [loginValidator, emailValidator, passwordValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.userValidator = userValidator;
