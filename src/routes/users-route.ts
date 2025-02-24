@@ -1,9 +1,11 @@
-import {NextFunction, Response, Router} from "express";
+import {Response, Router} from "express";
 import {OutputUserType, RequestWithBody, RequestWithParams, RequestWithQuery} from "../models/types";
 import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {userValidator} from "../validators/validator-users";
+import {validationResult} from "express-validator";
+
 
 
 
@@ -23,14 +25,12 @@ usersRoute.get('/',authMiddleware, async (req: RequestWithQuery<{searchLoginTerm
     })
 })
 
-/*usersRoute.post('/', authMiddleware, userValidator, async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
-    const checkEmailUniqueness = await usersRepo.checkUserEmailUniqueness(req.body.email)
-    if (!checkEmailUniqueness) {}
+usersRoute.post('/', authMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
 
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
     const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
     return res.status(201).send(user)
-})*/
+})
 
 usersRoute.delete('/:id',authMiddleware, async (req:RequestWithParams<{id:string}>, res: Response): Promise<Response<204|404>> => {
 
