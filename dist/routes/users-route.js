@@ -28,6 +28,18 @@ exports.usersRoute.get('/', auth_middleware_1.authMiddleware, (req, res) => __aw
     });
 }));
 exports.usersRoute.post('/', auth_middleware_1.authMiddleware, (0, validator_users_1.userValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const checkLoginUniqueness = yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login);
+    if (!checkLoginUniqueness) {
+        return res.status(400).send({
+            errorsMessages: [{ field: 'login', message: 'login should be unique' }]
+        });
+    }
+    const checkEmailUniqueness = yield users_repository_1.usersRepo.checkUserEmailUniqueness(req.body.email);
+    if (!checkEmailUniqueness) {
+        return res.status(400).send({
+            errorsMessages: [{ field: 'email', message: 'email should be unique' }]
+        });
+    }
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date];
     const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
     return res.status(201).send(user);
