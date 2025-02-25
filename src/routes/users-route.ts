@@ -4,7 +4,7 @@ import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
 import {authMiddleware} from "../middlewares/auth-middleware";
 import {userValidator} from "../validators/validator-users";
-import {validationResult} from "express-validator";
+
 
 
 
@@ -27,6 +27,14 @@ usersRoute.get('/',authMiddleware, async (req: RequestWithQuery<{searchLoginTerm
 
 usersRoute.post('/', authMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
 
+    const checkLoginUniqueness = await usersRepo.checkUserLoginUniqueness(req.body.login)
+    if(!checkLoginUniqueness){return res.status(400).send({
+        errorsMessages: [{field: 'login', message: 'login should be unique'}]
+    })}
+    const checkEmailUniqueness = await usersRepo.checkUserEmailUniqueness(req.body.email)
+    if(!checkEmailUniqueness){return res.status(400).send({
+        errorsMessages: [{field: 'email', message: 'email should be unique'}]
+    })}
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
     const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
     return res.status(201).send(user)
