@@ -9,7 +9,7 @@ const loginValidator = body('login')
         min:3,
         max: 100
     }).withMessage('incorrect login length')
-    .matches(/^[a-zA-Z0-9_-]*$/g).withMessage('incorrect login pattern')
+    .matches(/^[a-zA-Z0-9_-]*$/g).withMessage('incorrect login pattern') //problem with this, string "123456789011" shouldn't pass?
 
 const emailValidator = body('email')
     .isString().withMessage('website URL must be a string')
