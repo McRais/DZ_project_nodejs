@@ -55,10 +55,10 @@ class usersRepo {
     }
     static getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            const regexLogin = searchLoginTerm ? { name: { $regex: searchLoginTerm, $options: "i" } } : {};
+            const regexLogin = searchLoginTerm ? { login: { $regex: searchLoginTerm, $options: "i" } } : {};
             const regexEmail = searchEmailTerm ? { email: { $regex: searchEmailTerm, $options: "i" } } : {};
             const users = yield DB_1.usersCollection
-                .find({ $or: [regexLogin, regexEmail] }) //problem with this, can't pull some users  in tests
+                .find({ $or: [regexLogin, regexEmail] })
                 .sort(sortBy, sortDirection)
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
