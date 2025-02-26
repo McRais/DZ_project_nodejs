@@ -8,9 +8,9 @@ const loginValidator = (0, express_validator_1.body)('login')
     .trim()
     .isLength({
     min: 3,
-    max: 100
+    max: 10
 }).withMessage('incorrect login length')
-    .matches(/^[a-zA-Z0-9_-]*$/g).withMessage('incorrect login pattern');
+    .matches('^[a-zA-Z0-9_-]*$').withMessage('incorrect login pattern');
 const emailValidator = (0, express_validator_1.body)('email')
     .isString().withMessage('website URL must be a string')
     .trim()
