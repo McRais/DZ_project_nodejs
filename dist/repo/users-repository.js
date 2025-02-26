@@ -20,7 +20,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 class usersRepo {
     static getCount(searchLoginTerm, searchEmailTerm) {
         return __awaiter(this, void 0, void 0, function* () {
-            const regexLogin = searchLoginTerm ? { name: { $regex: searchLoginTerm, $options: "i" } } : {};
+            const regexLogin = searchLoginTerm ? { login: { $regex: searchLoginTerm, $options: "i" } } : {};
             const regexEmail = searchEmailTerm ? { email: { $regex: searchEmailTerm, $options: "i" } } : {};
             return yield DB_1.usersCollection.countDocuments({ $or: [regexLogin, regexEmail] });
         });

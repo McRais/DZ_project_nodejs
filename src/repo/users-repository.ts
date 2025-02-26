@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 
 export class usersRepo{
     static async getCount(searchLoginTerm:string|undefined, searchEmailTerm:string|undefined): Promise<number> {
-        const regexLogin = searchLoginTerm ? {name:{$regex: searchLoginTerm, $options: "i"}} : {};
+        const regexLogin = searchLoginTerm ? {login:{$regex: searchLoginTerm, $options: "i"}} : {};
         const regexEmail = searchEmailTerm ? {email:{$regex: searchEmailTerm, $options: "i"}} : {};
         return await usersCollection.countDocuments({$or:[regexLogin,regexEmail]})
     }
