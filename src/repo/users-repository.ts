@@ -30,10 +30,10 @@ export class usersRepo{
     }
 
     static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
-        const regexLogin = searchLoginTerm ? {name:{$regex: searchLoginTerm, $options: "i"}} : {};
+        const regexLogin = searchLoginTerm ? {login:{$regex: searchLoginTerm, $options: "i"}} : {};
         const regexEmail = searchEmailTerm ? {email:{$regex: searchEmailTerm, $options: "i"}} : {};
         const users = await usersCollection
-            .find({$or: [regexLogin, regexEmail]}) //problem with this, can't pull some users  in tests
+            .find({$or: [regexLogin, regexEmail]})
             .sort(sortBy, sortDirection)
             .limit(pageSize)
             .skip((pageNumber - 1) * pageSize)
