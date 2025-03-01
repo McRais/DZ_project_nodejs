@@ -23,6 +23,17 @@ export type UsersType = {
     createdAt: string
 }
 
+export type CommentsType = {
+    content: string,
+    commentatorInfo: commentatorInfoType,
+    createdAt: string
+}
+
+export type commentatorInfoType = {
+    userId: string,
+    userLogin: string
+}
+
 export type RequestWithParamAndQuery<P, Q> = Request<P, {}, {}, Q>
 export type RequestWithParams<P> = Request<P, {}, {}, {}>;
 export type RequestWithBody<B> = Request<{}, {}, B, {}>
@@ -53,4 +64,21 @@ export type OutputUserType = {
     login: string,
     email: string,
     createdAt: string
+}
+
+export type OutputCommentType = {
+    id: string,
+    content: string,
+    commentatorInfo: commentatorInfoType,
+    createdAt: string
+}
+
+export type MeViewType  = {
+    email: string,
+    login: string,
+    userId: string
+}
+
+export type LoginSuccessType = {
+    accessToken: string,
 }
