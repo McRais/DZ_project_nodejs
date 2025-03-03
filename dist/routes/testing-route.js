@@ -17,5 +17,6 @@ exports.testingRoute.delete("/", (req, res) => __awaiter(void 0, void 0, void 0,
     yield DB_1.blogsCollection.drop();
     yield DB_1.postsCollection.drop();
     yield DB_1.usersCollection.drop();
+    yield DB_1.commentsCollection.drop();
     return res.sendStatus(204);
 }));
