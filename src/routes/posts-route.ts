@@ -4,7 +4,7 @@ import {postsRepo} from "../repo/posts-repository";
 import {
     OutputPostType,
     RequestWithBody,
-    RequestWithBodyAndParams,
+    RequestWithBodyAndParams, RequestWithParamAndQuery,
     RequestWithQuery
 } from "../models/types";
 import {postValidation} from "../validators/validator-posts";
@@ -53,4 +53,12 @@ postsRoute.post("/", authMiddleware, postValidation(), async (req:RequestWithBod
 postsRoute.put("/:id", authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
+})
+
+postsRoute.get("/:postId/comments", async (req:RequestWithParamAndQuery<{postId:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res:Response)=>{
+
+})
+
+postsRoute.post("/:postId/comments", async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
+
 })
