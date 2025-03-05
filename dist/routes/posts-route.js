@@ -63,3 +63,7 @@ exports.postsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_p
         return res.sendStatus(204);
     }
 }));
+exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
+exports.postsRoute.post("/:postId/comments", (req) => __awaiter(void 0, void 0, void 0, function* () {
+}));
