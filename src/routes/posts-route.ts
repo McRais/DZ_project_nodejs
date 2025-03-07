@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {authMiddleware} from "../middlewares/auth-middleware";
+import {basicAuthMiddleware} from "../middlewares/basic-auth-middleware";
 import {postsRepo} from "../repo/posts-repository";
 import {
     OutputPostType,
@@ -38,19 +38,19 @@ postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<Out
 })
 
 //delete post by id, auth
-postsRoute.delete('/:id', authMiddleware, async (req:Request, res:Response): Promise<Response<404|204>> =>{
+postsRoute.delete('/:id', basicAuthMiddleware, async (req:Request, res:Response): Promise<Response<404|204>> =>{
     const post =await postsRepo.deletePost(req.params.id)
     if (post===false){return res.sendStatus(404)} else {return res.sendStatus(204)} //done
 })
 
 //post a post, auth and validation
-postsRoute.post("/", authMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.post("/", basicAuthMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(201).send(post)
 })
 
 //put new values into existing blog, auth and validation
-postsRoute.put("/:id", authMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>,res:Response) =>{
+postsRoute.put("/:id", basicAuthMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
