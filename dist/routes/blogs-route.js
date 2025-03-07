@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRoute = void 0;
 const express_1 = require("express");
-const auth_middleware_1 = require("../middlewares/auth-middleware");
+const basic_auth_middleware_1 = require("../middlewares/basic-auth-middleware");
 const blogs_repository_1 = require("../repo/blogs-repository");
 const validator_blogs_1 = require("../validators/validator-blogs");
 const validator_posts_1 = require("../validators/validator-posts");
@@ -38,7 +38,7 @@ exports.blogsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
         return res.send(blog);
     }
 }));
-exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.delete('/:id', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield blogs_repository_1.blogsRepo.deleteBlog(req.params.id);
     if (result === false) {
         return res.sendStatus(404);
@@ -47,13 +47,13 @@ exports.blogsRoute.delete('/:id', auth_middleware_1.authMiddleware, (req, res) =
         return res.sendStatus(204);
     }
 }));
-exports.blogsRoute.post("/", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/", basic_auth_middleware_1.basicAuthMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const createdAt = new Date;
     const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl, createdAt.toISOString());
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(blogId);
     return res.status(201).send(blog);
 }));
-exports.blogsRoute.put("/:id", auth_middleware_1.authMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.put("/:id", basic_auth_middleware_1.basicAuthMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (!blog) {
         return res.sendStatus(404);
@@ -74,7 +74,7 @@ exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.paramBlogIdValidation
         "items": posts
     });
 }));
-exports.blogsRoute.post("/:id/posts", auth_middleware_1.authMiddleware, (0, validator_blogs_1.paramBlogIdValidation)(), (0, validator_posts_1.postInBlogRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/:id/posts", basic_auth_middleware_1.basicAuthMiddleware, (0, validator_blogs_1.paramBlogIdValidation)(), (0, validator_posts_1.postInBlogRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
     return res.status(201).send(post);
 }));
