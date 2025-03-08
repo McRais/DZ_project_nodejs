@@ -14,6 +14,7 @@ const express_1 = require("express");
 const basic_auth_middleware_1 = require("../middlewares/basic-auth-middleware");
 const posts_repository_1 = require("../repo/posts-repository");
 const validator_posts_1 = require("../validators/validator-posts");
+const comments_repository_1 = require("../repo/comments-repository");
 exports.postsRoute = (0, express_1.Router)({});
 //get all posts
 exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -64,6 +65,16 @@ exports.postsRoute.put("/:id", basic_auth_middleware_1.basicAuthMiddleware, (0, 
     }
 }));
 exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [pageNumber, pageSize, sortBy, sortDirection] = [Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
+    const comments = yield comments_repository_1.commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection);
+    const commentsFromPostCount = yield comments_repository_1.commentsRepo.getCommentsFromPostCount(req.params.postId);
+    return res.send({
+        "pagesCount": Math.ceil(commentsFromPostCount / pageSize),
+        "page": pageNumber,
+        "pageSize": pageSize,
+        "totalCount": commentsFromPostCount,
+        "items": comments
+    });
 }));
 exports.postsRoute.post("/:postId/comments", (req) => __awaiter(void 0, void 0, void 0, function* () {
 }));
