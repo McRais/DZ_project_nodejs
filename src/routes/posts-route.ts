@@ -56,6 +56,7 @@ postsRoute.put("/:id", basicAuthMiddleware, postValidation(), async (req:Request
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
 
+//get all comments from the post
 postsRoute.get("/:postId/comments", async (req:RequestWithParamAndQuery<{postId:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res:Response)=>{
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const comments = await commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection)
@@ -71,6 +72,7 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamAndQuery<{postId:
 
 })
 
+//post a comment
 postsRoute.post("/:postId/comments", async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
 
 })
