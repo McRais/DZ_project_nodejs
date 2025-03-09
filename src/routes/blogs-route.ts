@@ -17,7 +17,7 @@ import {SortDirection} from "mongodb";
 
 export const blogsRoute = Router({})
 
-
+//get all blogs with pagination
 blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputBlogType[]>> => {
     const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const blogs = await blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
@@ -32,16 +32,19 @@ blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageN
     })
 })
 
+//get specific blog by id
 blogsRoute.get('/:id', async (req: RequestWithParams<{pageNumber:number, pageSize:number, sortBy:string, sortDirection:string, id:string}>, res: Response) => {
 const blog = await blogsRepo.getBlogById(req.params.id)
     if(blog === false){return res.sendStatus(404)} else{return res.send(blog)}
 })
 
+//delete blog
 blogsRoute.delete('/:id',basicAuthMiddleware, async (req:Request, res:Response) =>{
     const result = await blogsRepo.deleteBlog(req.params.id)
     if (result === false){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
 
+//post blog
 blogsRoute.post("/",basicAuthMiddleware, blogBodyValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const createdAt = new Date
     const blogId = await blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl, createdAt.toISOString())
@@ -49,11 +52,13 @@ blogsRoute.post("/",basicAuthMiddleware, blogBodyValidation(), async (req:Reques
     return res.status(201).send(blog)
 })
 
+//update blog
 blogsRoute.put("/:id",basicAuthMiddleware, blogBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const blog = await blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
+//get posts from blog
 blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
@@ -69,6 +74,7 @@ blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithPar
     })
 })
 
+//create new post in blog
 blogsRoute.post("/:id/posts", basicAuthMiddleware,paramBlogIdValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
