@@ -64,6 +64,7 @@ exports.postsRoute.put("/:id", basic_auth_middleware_1.basicAuthMiddleware, (0, 
         return res.sendStatus(204);
     }
 }));
+//get all comments from the post
 exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [pageNumber, pageSize, sortBy, sortDirection] = [Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const comments = yield comments_repository_1.commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection);
@@ -76,5 +77,6 @@ exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void
         "items": comments
     });
 }));
+//post a comment
 exports.postsRoute.post("/:postId/comments", (req) => __awaiter(void 0, void 0, void 0, function* () {
 }));
