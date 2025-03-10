@@ -8,7 +8,7 @@ import {
     RequestWithParamAndQuery,
     RequestWithParams, RequestWithQuery
 } from "../models/types";
-import {blogBodyValidation, paramBlogIdValidation} from "../validators/validator-blogs";
+import {blogBodyValidation, BlogIdInParamValidation} from "../validators/validator-blogs";
 import {postInBlogRouteValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
 import {SortDirection} from "mongodb";
@@ -59,7 +59,7 @@ blogsRoute.put("/:id",basicAuthMiddleware, blogBodyValidation(), async (req:Requ
 })
 
 //get posts from blog
-blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
+blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithParamAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
@@ -75,7 +75,7 @@ blogsRoute.get('/:id/posts', paramBlogIdValidation(), async (req: RequestWithPar
 })
 
 //create new post in blog
-blogsRoute.post("/:id/posts", basicAuthMiddleware,paramBlogIdValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+blogsRoute.post("/:id/posts", basicAuthMiddleware,BlogIdInParamValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
 })
