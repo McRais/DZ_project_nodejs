@@ -68,7 +68,7 @@ exports.blogsRoute.put("/:id", basic_auth_middleware_1.basicAuthMiddleware, (0, 
     }
 }));
 //get posts from blog
-exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.paramBlogIdValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.BlogIdInParamValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [pageNumber, pageSize, sortBy, sortDirection] = [Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection);
     const postsRepoCount = yield posts_repository_1.postsRepo.getCountFromBlog(req.params.id);
@@ -81,7 +81,7 @@ exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.paramBlogIdValidation
     });
 }));
 //create new post in blog
-exports.blogsRoute.post("/:id/posts", basic_auth_middleware_1.basicAuthMiddleware, (0, validator_blogs_1.paramBlogIdValidation)(), (0, validator_posts_1.postInBlogRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/:id/posts", basic_auth_middleware_1.basicAuthMiddleware, (0, validator_blogs_1.BlogIdInParamValidation)(), (0, validator_posts_1.postInBlogRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
     return res.status(201).send(post);
 }));
