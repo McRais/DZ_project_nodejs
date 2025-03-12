@@ -2,6 +2,8 @@ import {Request, Response, Router} from "express";
 import {blogsCollection, commentsCollection, postsCollection, usersCollection} from "../database/DB";
 
 export const testingRoute = Router({})
+
+//drop all tables for testing purposes
 testingRoute.delete("/", async (req: Request, res: Response) => {
     await blogsCollection.drop()
     await postsCollection.drop()
