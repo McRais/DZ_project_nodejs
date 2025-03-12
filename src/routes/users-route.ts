@@ -11,6 +11,7 @@ import {userValidator} from "../validators/validator-users";
 
 export const usersRoute = Router({});
 
+//get users table with pagination and sorting
 usersRoute.get('/',basicAuthMiddleware, async (req: RequestWithQuery<{searchLoginTerm?: string,searchEmailTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputUserType[]>> => {
     const [searchLoginTerm,searchEmailTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchLoginTerm,req.query.searchEmailTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const users = await usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection)
@@ -25,6 +26,8 @@ usersRoute.get('/',basicAuthMiddleware, async (req: RequestWithQuery<{searchLogi
     })
 })
 
+
+//create new user
 usersRoute.post('/', basicAuthMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
 
     const checkLoginUniqueness = await usersRepo.checkUserLoginUniqueness(req.body.login)
@@ -40,6 +43,7 @@ usersRoute.post('/', basicAuthMiddleware, userValidator(), async (req: RequestWi
     return res.status(201).send(user)
 })
 
+//delete user
 usersRoute.delete('/:id',basicAuthMiddleware, async (req:RequestWithParams<{id:string}>, res: Response): Promise<Response<204|404>> => {
 
     const result = await usersRepo.deleteUser(req.params.id)
