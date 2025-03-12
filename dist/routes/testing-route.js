@@ -13,6 +13,7 @@ exports.testingRoute = void 0;
 const express_1 = require("express");
 const DB_1 = require("../database/DB");
 exports.testingRoute = (0, express_1.Router)({});
+//drop all tables for testing purposes
 exports.testingRoute.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield DB_1.blogsCollection.drop();
     yield DB_1.postsCollection.drop();

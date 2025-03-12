@@ -15,6 +15,7 @@ const users_repository_1 = require("../repo/users-repository");
 const basic_auth_middleware_1 = require("../middlewares/basic-auth-middleware");
 const validator_users_1 = require("../validators/validator-users");
 exports.usersRoute = (0, express_1.Router)({});
+//get users table with pagination and sorting
 exports.usersRoute.get('/', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchLoginTerm, req.query.searchEmailTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const users = yield users_repository_1.usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection);
@@ -27,6 +28,7 @@ exports.usersRoute.get('/', basic_auth_middleware_1.basicAuthMiddleware, (req, r
         "items": users
     });
 }));
+//create new user
 exports.usersRoute.post('/', basic_auth_middleware_1.basicAuthMiddleware, (0, validator_users_1.userValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const checkLoginUniqueness = yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login);
     if (!checkLoginUniqueness) {
@@ -44,6 +46,7 @@ exports.usersRoute.post('/', basic_auth_middleware_1.basicAuthMiddleware, (0, va
     const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
     return res.status(201).send(user);
 }));
+//delete user
 exports.usersRoute.delete('/:id', basic_auth_middleware_1.basicAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield users_repository_1.usersRepo.deleteUser(req.params.id);
     return result ? res.sendStatus(204) : res.sendStatus(404);
