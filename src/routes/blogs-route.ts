@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {basicAuthMiddleware} from "../middlewares/basic-auth-middleware";
+import {AuthByBasicCredentialsMiddleware} from "../middlewares/auth-by-basic-credentials-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
 import {
     OutputBlogType,
@@ -39,13 +39,13 @@ const blog = await blogsRepo.getBlogById(req.params.id)
 })
 
 //delete blog
-blogsRoute.delete('/:id',basicAuthMiddleware, async (req:Request, res:Response) =>{
+blogsRoute.delete('/:id',AuthByBasicCredentialsMiddleware, async (req:Request, res:Response) =>{
     const result = await blogsRepo.deleteBlog(req.params.id)
     if (result === false){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
 
 //post blog
-blogsRoute.post("/",basicAuthMiddleware, blogBodyValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+blogsRoute.post("/",AuthByBasicCredentialsMiddleware, blogBodyValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const createdAt = new Date
     const blogId = await blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl, createdAt.toISOString())
     const blog = await blogsRepo.getBlogById(blogId)
@@ -53,7 +53,7 @@ blogsRoute.post("/",basicAuthMiddleware, blogBodyValidation(), async (req:Reques
 })
 
 //update blog
-blogsRoute.put("/:id",basicAuthMiddleware, blogBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+blogsRoute.put("/:id",AuthByBasicCredentialsMiddleware, blogBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const blog = await blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
@@ -75,7 +75,7 @@ blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithP
 })
 
 //create new post in blog
-blogsRoute.post("/:id/posts", basicAuthMiddleware,BlogIdInParamValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+blogsRoute.post("/:id/posts", AuthByBasicCredentialsMiddleware,BlogIdInParamValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
 })
