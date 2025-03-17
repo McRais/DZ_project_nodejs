@@ -19,6 +19,13 @@ class commentsRepo {
     }
     static getCommentsFromPost(postId, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
+            //need to add link to types, probably array to every post containing commentsId's
+            const posts = yield DB_1.commentsCollection
+                .find({ commentatorInfo: { postId: postId } })
+                .sort(sortBy, sortDirection)
+                .limit(pageSize)
+                .skip((pageNumber - 1) * pageSize)
+                .toArray();
         });
     }
 }
