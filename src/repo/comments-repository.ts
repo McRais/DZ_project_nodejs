@@ -8,6 +8,14 @@ export class commentsRepo{
 
     static async getCommentsFromPost(postId: string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<any>{
 
+        //need to add link to types, probably array to every post containing commentsId's
+        const posts = await commentsCollection
+            .find({commentatorInfo:{postId:postId}})
+            .sort(sortBy, sortDirection)
+            .limit(pageSize)
+            .skip((pageNumber - 1) * pageSize)
+            .toArray()
+
     }
 
 }
