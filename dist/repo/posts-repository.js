@@ -60,7 +60,8 @@ class postsRepo {
                 content: content,
                 blogId: blogId,
                 blogName: blog.name,
-                createdAt: date.toISOString()
+                createdAt: date.toISOString(),
+                commentsIds: []
             };
             const result = yield DB_1.postsCollection.insertOne(newPost);
             return postsRepo.getPostById(result.insertedId.toString());
