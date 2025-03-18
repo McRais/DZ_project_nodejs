@@ -1,6 +1,6 @@
 import {OutputBlogType, OutputPostType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
-import {blogsMapper, postsMapper} from "../mappers/blogs-mapper";
+import {blogsMapper, postsMapper} from "../mappers/mappers";
 import {ObjectId, SortDirection} from "mongodb";
 
 export class blogsRepo {
