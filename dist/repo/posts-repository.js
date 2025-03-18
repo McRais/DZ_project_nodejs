@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRepo = void 0;
 const DB_1 = require("../database/DB");
-const blogs_mapper_1 = require("../mappers/blogs-mapper");
+const mappers_1 = require("../mappers/mappers");
 const mongodb_1 = require("mongodb");
 class postsRepo {
     static getCount(searchNameTerm) {
@@ -34,7 +34,7 @@ class postsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return posts.map(blogs_mapper_1.postsMapper);
+            return posts.map(mappers_1.postsMapper);
         });
     }
     static getPostById(id) {
@@ -44,7 +44,7 @@ class postsRepo {
                 return false;
             }
             let postArr = Array.of(post); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-            return postArr.map(blogs_mapper_1.postsMapper)[0];
+            return postArr.map(mappers_1.postsMapper)[0];
         });
     }
     static createNewPost(title, shortDescription, content, blogId) {

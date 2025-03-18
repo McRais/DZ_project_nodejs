@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepo = void 0;
 const mongodb_1 = require("mongodb");
 const DB_1 = require("../database/DB");
-const blogs_mapper_1 = require("../mappers/blogs-mapper");
+const mappers_1 = require("../mappers/mappers");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 class usersRepo {
     static getCount(searchLoginTerm, searchEmailTerm) {
@@ -32,7 +32,7 @@ class usersRepo {
                 return false;
             } //it will never return it, this function is only for usersRepo.createUser
             const userArr = Array.of(user); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-            return userArr.map(blogs_mapper_1.usersMapper)[0];
+            return userArr.map(mappers_1.usersMapper)[0];
         });
     }
     static checkUserLoginUniqueness(login) {
@@ -63,7 +63,7 @@ class usersRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return users.map(blogs_mapper_1.usersMapper);
+            return users.map(mappers_1.usersMapper);
         });
     }
     static createUser(login, password, email, createdAt) {
