@@ -1,7 +1,7 @@
 import {WithId} from "mongodb";
 import {BlogsType, commentatorInfoType, CommentsType, PostsType, UsersType} from "../models/types";
 
-export const mappers = (blog: WithId<BlogsType>) =>{
+export const blogsMapper = (blog: WithId<BlogsType>) =>{
     return {
         id: blog._id.toString(),
         name: blog.name,
