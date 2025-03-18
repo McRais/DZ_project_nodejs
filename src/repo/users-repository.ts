@@ -1,7 +1,7 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
-import {usersMapper} from "../mappers/blogs-mapper";
+import {usersMapper} from "../mappers/mappers";
 import bcrypt from "bcrypt";
 
 export class usersRepo{
