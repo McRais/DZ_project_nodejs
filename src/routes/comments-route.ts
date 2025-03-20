@@ -4,10 +4,16 @@ export const commentsRoute = Router({})
 
 
 //get comment by id
-commentsRoute.get('', (req, res) => {})
+commentsRoute.get('', (req, res) => {
+
+})
 
 //update comment by id
-commentsRoute.put('', (req, res) => {})
+commentsRoute.put('', (req, res) => {
+
+})
 
 //delete comment by id
-commentsRoute.delete('', (req, res) => {})
+commentsRoute.delete('', (req, res) => {
+
+})
