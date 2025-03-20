@@ -15,7 +15,6 @@ export type PostsType = {
     blogId: string,
     blogName: string,
     createdAt: string
-    commentsIds:string[]
 }
 export type UsersType = {
     login: string,
@@ -28,6 +27,7 @@ export type CommentsType = {
     content: string,
     commentatorInfo: commentatorInfoType,
     createdAt: string
+    postId: string
 }
 
 export type commentatorInfoType = {

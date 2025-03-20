@@ -61,7 +61,6 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamAndQuery<{postId:
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const comments = await commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection)
     const commentsFromPostCount = await commentsRepo.getCommentsFromPostCount(req.params.postId)
-
     return res.send({
         "pagesCount": Math.ceil(commentsFromPostCount/pageSize),
         "page": pageNumber,

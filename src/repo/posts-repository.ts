@@ -50,7 +50,6 @@ export class postsRepo {
             blogId: blogId,
             blogName: blog.name,
             createdAt: date.toISOString(),
-            commentsIds:[]
         }
         const result = await postsCollection.insertOne(newPost)
         return postsRepo.getPostById(result.insertedId.toString())
