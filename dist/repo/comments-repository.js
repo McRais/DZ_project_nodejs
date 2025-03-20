@@ -11,21 +11,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentsRepo = void 0;
 const DB_1 = require("../database/DB");
+const mappers_1 = require("../mappers/mappers");
 class commentsRepo {
     static getCommentsFromPostCount(postId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield DB_1.commentsCollection.countDocuments({ postId: postId }); //feels not right, check the types.ts
+            return yield DB_1.commentsCollection.countDocuments({ postId: postId });
         });
     }
     static getCommentsFromPost(postId, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
-            //need to add link to types, probably array to every post containing commentsId's
-            const posts = yield DB_1.commentsCollection
-                .find({ commentatorInfo: { postId: postId } })
+            const comments = yield DB_1.commentsCollection
+                .find({ postId: postId })
                 .sort(sortBy, sortDirection)
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
+            return comments.map(mappers_1.commentsMapper);
         });
     }
 }
