@@ -1,6 +1,7 @@
-import {SortDirection} from "mongodb";
+import {ObjectId, SortDirection} from "mongodb";
 import {commentsCollection} from "../database/DB";
-import {commentsMapper} from "../mappers/mappers";
+import {blogsMapper, commentsMapper} from "../mappers/mappers";
+import {OutputCommentType} from "../models/types";
 
 export class commentsRepo{
 
@@ -16,6 +17,12 @@ export class commentsRepo{
             .skip((pageNumber - 1) * pageSize)
             .toArray()
         return comments.map(commentsMapper)
+    }
+    static async getCommentById(id:string): Promise<OutputCommentType|false> {
+        const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
+        if (!comment) {return false}
+        const commentArr = Array.of(comment)
+        return commentArr.map(commentsMapper)[0]
     }
 
 }
