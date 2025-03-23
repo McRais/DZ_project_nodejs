@@ -1,6 +1,6 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {commentsCollection} from "../database/DB";
-import {blogsMapper, commentsMapper} from "../mappers/mappers";
+import {commentsMapper} from "../mappers/mappers";
 import {OutputCommentType} from "../models/types";
 
 export class commentsRepo{
