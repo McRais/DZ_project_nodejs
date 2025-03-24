@@ -5,10 +5,6 @@ import {usersRepo} from "../repo/users-repository";
 import {BasicAuthMiddleware} from "../middlewares/basic-auth-middleware";
 import {userValidator} from "../validators/validator-users";
 
-
-
-
-
 export const usersRoute = Router({});
 
 //get users table with pagination and sorting
