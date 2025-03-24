@@ -1,7 +1,7 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {commentsCollection} from "../database/DB";
 import {commentsMapper} from "../mappers/mappers";
-import {commentatorInfoType, CommentsType, OutputCommentType} from "../models/types";
+import {OutputCommentType} from "../models/types";
 
 export class commentsRepo{
 
