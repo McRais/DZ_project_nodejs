@@ -40,5 +40,23 @@ class commentsRepo {
             return commentArr.map(mappers_1.commentsMapper)[0];
         });
     }
+    static createComment(content, postId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(postId) });
+            if (!comment) {
+                return false;
+            }
+            const res = yield DB_1.commentsCollection.insertOne({
+                content: content,
+                commentatorInfo: {
+                    userId: "",
+                    userLogin: ""
+                },
+                createdAt: new Date().toISOString(),
+                postId: postId
+            });
+            return res.insertedId.toString();
+        });
+    }
 }
 exports.commentsRepo = commentsRepo;
