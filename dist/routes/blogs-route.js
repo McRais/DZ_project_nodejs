@@ -51,14 +51,14 @@ exports.blogsRoute.delete('/:id', basic_auth_middleware_1.BasicAuthMiddleware, (
     }
 }));
 //post blog
-exports.blogsRoute.post("/", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_blogs_1.blogCreateUpdateBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const createdAt = new Date;
     const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl, createdAt.toISOString());
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(blogId);
     return res.status(201).send(blog);
 }));
 //update blog
-exports.blogsRoute.put("/:id", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.put("/:id", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_blogs_1.blogCreateUpdateBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (!blog) {
         return res.sendStatus(404);
