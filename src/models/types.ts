@@ -74,7 +74,7 @@ export type OutputCommentType = {
     createdAt: string
 }
 
-export type MeViewType  = {
+export type MyInfoType  = {
     email: string,
     login: string,
     userId: string
