@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BlogIdInParamValidation = exports.blogBodyValidation = void 0;
+exports.BlogIdInParamValidation = exports.blogCreateUpdateBodyValidation = void 0;
 const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
 const express_validator_1 = require("express-validator");
 const blogs_repository_1 = require("../repo/blogs-repository");
@@ -41,7 +41,7 @@ const blogIdParamValidator = (0, express_validator_1.param)('id')
         throw new Error('incorrect id of blog');
     }
 }));
-const blogBodyValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
-exports.blogBodyValidation = blogBodyValidation;
+const blogCreateUpdateBodyValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+exports.blogCreateUpdateBodyValidation = blogCreateUpdateBodyValidation;
 const BlogIdInParamValidation = () => [blogIdParamValidator, validator_errors_catcher_1.validatorIdErrorCatcher];
 exports.BlogIdInParamValidation = BlogIdInParamValidation;
