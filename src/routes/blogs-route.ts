@@ -8,7 +8,7 @@ import {
     RequestWithParamAndQuery,
     RequestWithParams, RequestWithQuery
 } from "../models/types";
-import {blogBodyValidation, BlogIdInParamValidation} from "../validators/validator-blogs";
+import {blogCreateUpdateBodyValidation, BlogIdInParamValidation} from "../validators/validator-blogs";
 import {postInBlogRouteValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
 import {SortDirection} from "mongodb";
@@ -45,7 +45,7 @@ blogsRoute.delete('/:id',BasicAuthMiddleware, async (req:Request, res:Response) 
 })
 
 //post blog
-blogsRoute.post("/",BasicAuthMiddleware, blogBodyValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+blogsRoute.post("/",BasicAuthMiddleware, blogCreateUpdateBodyValidation(), async (req:RequestWithBody<{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const createdAt = new Date
     const blogId = await blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl, createdAt.toISOString())
     const blog = await blogsRepo.getBlogById(blogId)
@@ -53,7 +53,7 @@ blogsRoute.post("/",BasicAuthMiddleware, blogBodyValidation(), async (req:Reques
 })
 
 //update blog
-blogsRoute.put("/:id",BasicAuthMiddleware, blogBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+blogsRoute.put("/:id",BasicAuthMiddleware, blogCreateUpdateBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const blog = await blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
