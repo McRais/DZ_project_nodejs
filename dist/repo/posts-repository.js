@@ -14,13 +14,13 @@ const DB_1 = require("../database/DB");
 const mappers_1 = require("../mappers/mappers");
 const mongodb_1 = require("mongodb");
 class postsRepo {
-    static getCount(searchNameTerm) {
+    static getPostsCountByName(searchNameTerm) {
         return __awaiter(this, void 0, void 0, function* () {
             const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
             return yield DB_1.postsCollection.countDocuments(regex);
         });
     }
-    static getCountFromBlog(blogId) {
+    static getCountOfPostsFromBlog(blogId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield DB_1.postsCollection.countDocuments({ blogId: blogId });
         });

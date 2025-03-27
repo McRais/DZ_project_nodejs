@@ -21,7 +21,7 @@ exports.blogsRoute = (0, express_1.Router)({});
 exports.blogsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [searchNameTerm, pageNumber, pageSize, sortBy, sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const blogs = yield blogs_repository_1.blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection);
-    const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCount(searchNameTerm);
+    const blogsRepoCount = yield blogs_repository_1.blogsRepo.getCountByName(searchNameTerm);
     return res.send({
         "pagesCount": Math.ceil(blogsRepoCount / pageSize),
         "page": pageNumber,
@@ -71,7 +71,7 @@ exports.blogsRoute.put("/:id", basic_auth_middleware_1.BasicAuthMiddleware, (0, 
 exports.blogsRoute.get('/:id/posts', (0, validator_blogs_1.BlogIdInParamValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [pageNumber, pageSize, sortBy, sortDirection] = [Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection);
-    const postsRepoCount = yield posts_repository_1.postsRepo.getCountFromBlog(req.params.id);
+    const postsRepoCount = yield posts_repository_1.postsRepo.getCountOfPostsFromBlog(req.params.id);
     return res.status(200).send({
         "pagesCount": Math.ceil(postsRepoCount / pageSize),
         "page": pageNumber,

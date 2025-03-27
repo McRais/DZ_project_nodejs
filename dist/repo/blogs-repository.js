@@ -14,7 +14,7 @@ const DB_1 = require("../database/DB");
 const mappers_1 = require("../mappers/mappers");
 const mongodb_1 = require("mongodb");
 class blogsRepo {
-    static getCount(searchNameTerm) {
+    static getCountByName(searchNameTerm) {
         return __awaiter(this, void 0, void 0, function* () {
             const regex = searchNameTerm ? { name: { $regex: searchNameTerm, $options: "i" } } : {};
             return yield DB_1.blogsCollection.countDocuments(regex);
