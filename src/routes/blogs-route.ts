@@ -21,7 +21,7 @@ export const blogsRoute = Router({})
 blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputBlogType[]>> => {
     const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const blogs = await blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
-    const blogsRepoCount = await blogsRepo.getCount(searchNameTerm)
+    const blogsRepoCount = await blogsRepo.getCountByName(searchNameTerm)
 
     return res.send({
         "pagesCount": Math.ceil(blogsRepoCount/pageSize),
@@ -64,7 +64,7 @@ blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithP
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
 
-    const postsRepoCount = await postsRepo.getCountFromBlog(req.params.id)
+    const postsRepoCount = await postsRepo.getCountOfPostsFromBlog(req.params.id)
     return res.status(200).send({
         "pagesCount": Math.ceil(postsRepoCount/pageSize),
         "page": pageNumber,
