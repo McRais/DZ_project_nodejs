@@ -11,7 +11,6 @@ export const validatorErrorsCatcher = (req:Request,res:Response,next:NextFunctio
         const errorMessage = validationErrors.array({onlyFirstError:true})
         return res.status(400).json({errorsMessages: errorMessage})
     }
-
     return next()
 }
 
