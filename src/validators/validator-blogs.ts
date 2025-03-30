@@ -33,8 +33,6 @@ const blogIdParamValidator = param('id')
             throw new Error('incorrect id of blog')}
     })
 
-
-
 export const blogCreateUpdateBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
 export const BlogIdInParamValidation = () => [blogIdParamValidator, validatorIdErrorCatcher]
 
