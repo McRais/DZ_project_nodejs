@@ -1,4 +1,3 @@
-
 import {NextFunction, Request, Response} from "express";
 
 export const BasicAccessAuthMiddleware = (req: Request, res: Response, next:NextFunction) => {
