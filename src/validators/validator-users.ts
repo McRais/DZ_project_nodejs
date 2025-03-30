@@ -1,7 +1,6 @@
 import {body} from "express-validator";
 import {validatorErrorsCatcher} from "../middlewares/validator-errors-catcher";
 
-
 const loginValidator = body('login')
     .isString().withMessage('login must be a string')
     .trim()
@@ -23,6 +22,5 @@ const passwordValidator = body('password')
         min:6,
         max: 20
     }).withMessage('incorrect password length')
-
 
 export const userValidator = () => [loginValidator, emailValidator, passwordValidator, validatorErrorsCatcher]
