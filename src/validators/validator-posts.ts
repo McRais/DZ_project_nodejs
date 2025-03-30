@@ -33,7 +33,5 @@ const blogIdBodyValidator = body('blogId')
             throw new Error('incorrect id of blog')}
     })
 
-
-
 export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validatorErrorsCatcher]
 export const postInBlogRouteValidation = () =>[titleValidator, shortDescValidator, contentValidator, validatorErrorsCatcher]
