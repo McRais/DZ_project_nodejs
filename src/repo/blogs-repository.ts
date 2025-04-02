@@ -33,7 +33,6 @@ export class blogsRepo {
         return blogArr.map(blogsMapper)[0]
     }
 
-
     static async createNewBlog(name: string, description: string, websiteUrl: string, createdAt:string): Promise<string> {
         const res = await blogsCollection.insertOne({name, description, websiteUrl, createdAt: createdAt, isMembership:false})
         return res.insertedId.toString()
