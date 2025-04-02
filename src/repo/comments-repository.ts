@@ -40,5 +40,4 @@ export class commentsRepo{
         })
         return res.insertedId.toString()
     }
-
 }
