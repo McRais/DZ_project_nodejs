@@ -35,7 +35,6 @@ export class postsRepo {
         return postArr.map(postsMapper)[0]
     }
 
-
     static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostType | false> {
         const blog = await blogsCollection.findOne({_id: new ObjectId(blogId)})
         if (!blog) {
@@ -62,7 +61,6 @@ export class postsRepo {
         }
         return await postsCollection.deleteOne({_id: new ObjectId(id)})
     }
-
 
     static async updatePost(id: string, title:string, shortDescription:string, content:string, blogId: string):Promise<boolean> {
         const postCheck = await postsCollection.findOne({_id: new ObjectId(id)})
