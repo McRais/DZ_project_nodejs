@@ -11,10 +11,7 @@ import {postValidation} from "../validators/validator-posts";
 import {SortDirection} from "mongodb";
 import {commentsRepo} from "../repo/comments-repository";
 
-
-
 export const postsRoute = Router({})
-
 
 //get all posts
 postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>,res:Response): Promise<Response<OutputPostType[]>> =>{
@@ -30,7 +27,6 @@ postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNu
         "items": posts
     })
 })
-
 
 //get post by id
 postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<OutputPostType | 404>> => {
