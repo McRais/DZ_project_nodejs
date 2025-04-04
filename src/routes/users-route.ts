@@ -22,7 +22,6 @@ usersRoute.get('/',BasicAuthMiddleware, async (req: RequestWithQuery<{searchLogi
     })
 })
 
-
 //create new user
 usersRoute.post('/', BasicAuthMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
 
