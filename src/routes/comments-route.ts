@@ -4,7 +4,6 @@ import {commentsRepo} from "../repo/comments-repository";
 
 export const commentsRoute = Router({})
 
-
 //get comment by id
 commentsRoute.get('/:id', async (req: RequestWithParams<{id:string}>, res:Response) : Promise<any> => {
     const comment = await commentsRepo.getCommentById(req.params.id);
