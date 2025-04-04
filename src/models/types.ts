@@ -1,6 +1,5 @@
 import {Request} from "express";
 
-
 export type BlogsType = {
     name: string,
     description: string,
@@ -34,12 +33,6 @@ export type commentatorInfoType = {
     userId: string,
     userLogin: string
 }
-
-export type RequestWithParamAndQuery<P, Q> = Request<P, {}, {}, Q>
-export type RequestWithParams<P> = Request<P, {}, {}, {}>;
-export type RequestWithBody<B> = Request<{}, {}, B, {}>
-export type RequestWithBodyAndParams<P, B> = Request<P, {}, B, {}>
-export type RequestWithQuery<Q> = Request<{},{},{},Q>
 
 export type OutputBlogType = {
     id: string,
@@ -83,3 +76,9 @@ export type MyInfoType  = {
 export type LoginSuccessType = {
     accessToken: string,
 }
+
+export type RequestWithParamAndQuery<P, Q> = Request<P, {}, {}, Q>
+export type RequestWithParams<P> = Request<P, {}, {}, {}>;
+export type RequestWithBody<B> = Request<{}, {}, B, {}>
+export type RequestWithBodyAndParams<P, B> = Request<P, {}, B, {}>
+export type RequestWithQuery<Q> = Request<{},{},{},Q>
