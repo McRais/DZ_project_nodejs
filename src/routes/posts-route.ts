@@ -10,6 +10,7 @@ import {
 import {postValidation} from "../validators/validator-posts";
 import {SortDirection} from "mongodb";
 import {commentsRepo} from "../repo/comments-repository";
+import {BearerAuthMiddleware} from "../middlewares/bearer-auth-middleware";
 
 export const postsRoute = Router({})
 
@@ -68,6 +69,6 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamAndQuery<{postId:
 })
 
 //post a comment
-postsRoute.post("/:postId/comments", async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
+postsRoute.post("/:postId/comments", BearerAuthMiddleware, async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
 
 })
