@@ -4,7 +4,7 @@ import {postsRepo} from "../repo/posts-repository";
 import {
     OutputPostType,
     RequestWithBody,
-    RequestWithBodyAndParams, RequestWithParamAndQuery,
+    RequestWithBodyAndParams, RequestWithParamsAndQuery,
     RequestWithQuery
 } from "../models/types";
 import {postValidation} from "../validators/validator-posts";
@@ -54,7 +54,7 @@ postsRoute.put("/:id", BasicAuthMiddleware, postValidation(), async (req:Request
 })
 
 //get all comments from the post
-postsRoute.get("/:postId/comments", async (req:RequestWithParamAndQuery<{postId:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res:Response)=>{
+postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res:Response)=>{
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const comments = await commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection)
     const commentsFromPostCount = await commentsRepo.getCommentsFromPostCount(req.params.postId)
