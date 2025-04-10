@@ -1,7 +1,7 @@
 import {Router, Response} from "express";
 import {RequestWithParams} from "../models/types";
 import {commentsRepo} from "../repo/comments-repository";
-import {BearerAuthMiddleware} from "../middlewares/bearer-auth-middleware";
+import {AuthWithBearerTokenMiddleware} from "../middlewares/auth-with-bearer-token-middleware";
 
 export const commentsRoute = Router({})
 
@@ -12,11 +12,11 @@ commentsRoute.get('/:id', async (req: RequestWithParams<{id:string}>, res:Respon
 })
 
 //update comment by id
-commentsRoute.put('', BearerAuthMiddleware, (req, res) => {
+commentsRoute.put('', AuthWithBearerTokenMiddleware, (req, res) => {
 
 })
 
 //delete comment by id
-commentsRoute.delete('', BearerAuthMiddleware, (req, res) => {
+commentsRoute.delete('', AuthWithBearerTokenMiddleware, (req, res) => {
 
 })
