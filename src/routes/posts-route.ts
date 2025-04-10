@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {BasicAuthMiddleware} from "../middlewares/basic-auth-middleware";
+import {AuthWithBasicAccessMiddleware} from "../middlewares/auth-with-basic-access-middleware";
 import {postsRepo} from "../repo/posts-repository";
 import {
     OutputPostType,
@@ -10,7 +10,7 @@ import {
 import {postValidation} from "../validators/validator-posts";
 import {SortDirection} from "mongodb";
 import {commentsRepo} from "../repo/comments-repository";
-import {BearerAuthMiddleware} from "../middlewares/bearer-auth-middleware";
+import {AuthWithBearerTokenMiddleware} from "../middlewares/auth-with-bearer-token-middleware";
 
 export const postsRoute = Router({})
 
@@ -36,19 +36,19 @@ postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<Out
 })
 
 //delete post by id, auth
-postsRoute.delete('/:id', BasicAuthMiddleware, async (req:Request, res:Response): Promise<Response<404|204>> =>{
+postsRoute.delete('/:id', AuthWithBasicAccessMiddleware, async (req:Request, res:Response): Promise<Response<404|204>> =>{
     const post =await postsRepo.deletePost(req.params.id)
     if (post===false){return res.sendStatus(404)} else {return res.sendStatus(204)} //done
 })
 
 //post a post, auth and validation
-postsRoute.post("/", BasicAuthMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.post("/", AuthWithBasicAccessMiddleware, postValidation(), async (req:RequestWithBody<{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     return res.status(201).send(post)
 })
 
 //put new values into existing blog, auth and validation
-postsRoute.put("/:id", BasicAuthMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.put("/:id", AuthWithBasicAccessMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
@@ -69,6 +69,6 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId
 })
 
 //post a comment
-postsRoute.post("/:postId/comments", BearerAuthMiddleware, async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
+postsRoute.post("/:postId/comments", AuthWithBearerTokenMiddleware, async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
 
 })
