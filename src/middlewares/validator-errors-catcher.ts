@@ -6,7 +6,6 @@ export const validatorErrorsCatcher = (req:Request,res:Response,next:NextFunctio
         message: error.msg,
         field: error.type === "field" ? error.path : "field is not found"
     }))
-
     if (!validationErrors.isEmpty()){
         const errorMessage = validationErrors.array({onlyFirstError:true})
         return res.status(400).json({errorsMessages: errorMessage})
@@ -19,11 +18,9 @@ export const validatorIdErrorCatcher = (req:Request,res:Response,next:NextFuncti
         message: error.msg,
         field: error.type === "field" ? error.path : "field is not found"
     }))
-
     if (!validationErrors.isEmpty()){
         const errorMessage = validationErrors.array({onlyFirstError:true})
         return res.status(404).json({errorsMessages: errorMessage})
     }
-
     return next()
 }
