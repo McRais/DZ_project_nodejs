@@ -69,6 +69,4 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId
 })
 
 //post a comment
-postsRoute.post("/:postId/comments", AuthWithBearerTokenMiddleware, async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{
-
-})
+postsRoute.post("/:postId/comments", AuthWithBearerTokenMiddleware, async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{})
