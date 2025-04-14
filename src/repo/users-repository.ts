@@ -47,7 +47,6 @@ export class usersRepo{
         return await usersRepo.getUser(user.insertedId.toString())
     }
 
-
     static async deleteUser(id:string): Promise<boolean> {
         const deleteResult = await usersCollection.deleteOne({_id: new ObjectId(id)})
         return deleteResult.deletedCount != 0
