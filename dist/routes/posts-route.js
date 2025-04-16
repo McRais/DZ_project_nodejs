@@ -79,5 +79,4 @@ exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void
     });
 }));
 //post a comment
-exports.postsRoute.post("/:postId/comments", bearer_auth_middleware_1.BearerAuthMiddleware, (req) => __awaiter(void 0, void 0, void 0, function* () {
-}));
+exports.postsRoute.post("/:postId/comments", bearer_auth_middleware_1.BearerAuthMiddleware, (req) => __awaiter(void 0, void 0, void 0, function* () { }));
