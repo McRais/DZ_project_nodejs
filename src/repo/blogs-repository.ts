@@ -1,6 +1,6 @@
 import {OutputBlogType, OutputPostType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
-import {blogsMapper, postsMapper} from "../mappers/mappers";
+import {blogsOutputMapper, postsOutputMapper} from "../mappers/mappers";
 import {ObjectId, SortDirection} from "mongodb";
 
 export class blogsRepo {
@@ -21,7 +21,7 @@ export class blogsRepo {
             .skip((pageNumber - 1) * pageSize)
             .toArray()
 
-        return blogs.map(blogsMapper)
+        return blogs.map(blogsOutputMapper)
     }
 
     static async getBlogById(id: string): Promise<OutputBlogType | false> {
@@ -30,7 +30,7 @@ export class blogsRepo {
             return false
         }
         const blogArr = Array.of(blog) //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-        return blogArr.map(blogsMapper)[0]
+        return blogArr.map(blogsOutputMapper)[0]
     }
 
     static async createNewBlog(name: string, description: string, websiteUrl: string, createdAt:string): Promise<string> {
@@ -68,6 +68,6 @@ export class blogsRepo {
             .skip((pageNumber - 1) * pageSize)
             .toArray()
 
-        return posts.map(postsMapper)
+        return posts.map(postsOutputMapper)
     }
 }
