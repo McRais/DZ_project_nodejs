@@ -1,7 +1,7 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
-import {usersMapper} from "../mappers/mappers";
+import {usersOutputMapper} from "../mappers/mappers";
 import bcrypt from "bcrypt";
 
 export class usersRepo{
@@ -15,7 +15,7 @@ export class usersRepo{
         const user = await usersCollection.findOne({_id: new ObjectId(userID)},)
         if (!user) {return false}  //it will never return it, this function is only for usersRepo.createUser
         const userArr = Array.of(user) //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-        return userArr.map(usersMapper)[0]
+        return userArr.map(usersOutputMapper)[0]
     }
 
     static async checkUserLoginUniqueness(login:string): Promise<boolean> {
@@ -38,7 +38,7 @@ export class usersRepo{
             .limit(pageSize)
             .skip((pageNumber - 1) * pageSize)
             .toArray()
-        return users.map(usersMapper)
+        return users.map(usersOutputMapper)
     }
 
     static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
