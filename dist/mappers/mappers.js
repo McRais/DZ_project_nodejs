@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.commentsMapper = exports.usersMapper = exports.postsMapper = exports.blogsMapper = void 0;
-const blogsMapper = (blog) => {
+exports.commentsOutputMapper = exports.usersOutputMapper = exports.postsOutputMapper = exports.blogsOutputMapper = void 0;
+const blogsOutputMapper = (blog) => {
     return {
         id: blog._id.toString(),
         name: blog.name,
@@ -11,8 +11,8 @@ const blogsMapper = (blog) => {
         isMembership: blog.isMembership
     };
 };
-exports.blogsMapper = blogsMapper;
-const postsMapper = (post) => {
+exports.blogsOutputMapper = blogsOutputMapper;
+const postsOutputMapper = (post) => {
     return {
         id: post._id.toString(),
         title: post.title,
@@ -23,8 +23,8 @@ const postsMapper = (post) => {
         createdAt: post.createdAt
     };
 };
-exports.postsMapper = postsMapper;
-const usersMapper = (user) => {
+exports.postsOutputMapper = postsOutputMapper;
+const usersOutputMapper = (user) => {
     return {
         id: user._id.toString(),
         login: user.login,
@@ -32,8 +32,8 @@ const usersMapper = (user) => {
         createdAt: user.createdAt
     };
 };
-exports.usersMapper = usersMapper;
-const commentsMapper = (comment) => {
+exports.usersOutputMapper = usersOutputMapper;
+const commentsOutputMapper = (comment) => {
     return {
         id: comment._id.toString(),
         content: comment.content,
@@ -41,4 +41,4 @@ const commentsMapper = (comment) => {
         createdAt: comment.createdAt
     };
 };
-exports.commentsMapper = commentsMapper;
+exports.commentsOutputMapper = commentsOutputMapper;

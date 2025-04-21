@@ -31,8 +31,12 @@ class usersRepo {
             if (!user) {
                 return false;
             } //it will never return it, this function is only for usersRepo.createUser
-            const userArr = Array.of(user); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-            return userArr.map(mappers_1.usersMapper)[0];
+            return {
+                id: user._id.toString(),
+                login: user.login,
+                email: user.email,
+                createdAt: user.createdAt
+            };
         });
     }
     static checkUserLoginUniqueness(login) {
@@ -63,7 +67,7 @@ class usersRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return users.map(mappers_1.usersMapper);
+            return users.map(mappers_1.usersOutputMapper);
         });
     }
     static createUser(login, password, email, createdAt) {

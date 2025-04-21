@@ -27,7 +27,7 @@ class commentsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return comments.map(mappers_1.commentsMapper);
+            return comments.map(mappers_1.commentsOutputMapper);
         });
     }
     static getCommentById(id) {
@@ -36,8 +36,12 @@ class commentsRepo {
             if (!comment) {
                 return false;
             }
-            const commentArr = Array.of(comment);
-            return commentArr.map(mappers_1.commentsMapper)[0];
+            return {
+                id: comment._id.toString(),
+                content: comment.content,
+                commentatorInfo: comment.commentatorInfo,
+                createdAt: comment.createdAt
+            };
         });
     }
     static createComment(content, postId) {

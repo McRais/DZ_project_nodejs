@@ -34,7 +34,7 @@ class postsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return posts.map(mappers_1.postsMapper);
+            return posts.map(mappers_1.postsOutputMapper);
         });
     }
     static getPostById(id) {
@@ -43,8 +43,15 @@ class postsRepo {
             if (!post) {
                 return false;
             }
-            let postArr = Array.of(post); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-            return postArr.map(mappers_1.postsMapper)[0];
+            return {
+                id: post._id.toString(),
+                title: post.title,
+                shortDescription: post.shortDescription,
+                content: post.content,
+                blogId: post.blogId,
+                blogName: post.blogName,
+                createdAt: post.createdAt
+            };
         });
     }
     static createNewPost(title, shortDescription, content, blogId) {

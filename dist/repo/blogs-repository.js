@@ -29,7 +29,7 @@ class blogsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return blogs.map(mappers_1.blogsMapper);
+            return blogs.map(mappers_1.blogsOutputMapper);
         });
     }
     static getBlogById(id) {
@@ -38,8 +38,14 @@ class blogsRepo {
             if (!blog) {
                 return false;
             }
-            const blogArr = Array.of(blog); //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-            return blogArr.map(mappers_1.blogsMapper)[0];
+            return {
+                id: blog._id.toString(),
+                name: blog.name,
+                description: blog.description,
+                websiteUrl: blog.websiteUrl,
+                createdAt: blog.createdAt,
+                isMembership: blog.isMembership
+            };
         });
     }
     static createNewBlog(name, description, websiteUrl, createdAt) {
@@ -79,7 +85,7 @@ class blogsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return posts.map(mappers_1.postsMapper);
+            return posts.map(mappers_1.postsOutputMapper);
         });
     }
 }
