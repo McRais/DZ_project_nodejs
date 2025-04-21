@@ -31,8 +31,15 @@ export class postsRepo {
         if (!post) {
             return false
         }
-        let postArr = Array.of(post)  //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-        return postArr.map(postsOutputMapper)[0]
+        return{
+            id: post._id.toString(),
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt
+        }
     }
 
     static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostType | false> {
