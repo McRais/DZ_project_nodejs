@@ -14,8 +14,12 @@ export class usersRepo{
     static async getUser(userID:string): Promise<OutputUserType|false> {
         const user = await usersCollection.findOne({_id: new ObjectId(userID)},)
         if (!user) {return false}  //it will never return it, this function is only for usersRepo.createUser
-        const userArr = Array.of(user) //eugene please refactor this, there is a lot of crutches already. Sincerely, Eugene
-        return userArr.map(usersOutputMapper)[0]
+        return{
+            id: user._id.toString(),
+            login:user.login,
+            email:user.email,
+            createdAt:user.createdAt
+        }
     }
 
     static async checkUserLoginUniqueness(login:string): Promise<boolean> {
