@@ -31,15 +31,7 @@ export class postsRepo {
         if (!post) {
             return false
         }
-        return{
-            id: post._id.toString(),
-            title: post.title,
-            shortDescription: post.shortDescription,
-            content: post.content,
-            blogId: post.blogId,
-            blogName: post.blogName,
-            createdAt: post.createdAt
-        }
+        return postsOutputMapper(post)
     }
 
     static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostType | false> {
