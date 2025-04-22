@@ -29,14 +29,7 @@ export class blogsRepo {
         if (!blog) {
             return false
         }
-        return {
-            id: blog._id.toString(),
-            name: blog.name,
-            description: blog.description,
-            websiteUrl: blog.websiteUrl,
-            createdAt: blog.createdAt,
-            isMembership: blog.isMembership
-        }
+        return blogsOutputMapper(blog)
     }
 
     static async createNewBlog(name: string, description: string, websiteUrl: string, createdAt:string): Promise<string> {
