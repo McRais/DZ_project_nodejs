@@ -22,12 +22,7 @@ export class commentsRepo{
     static async getCommentById(id:string): Promise<OutputCommentType|false> {
         const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
         if (!comment) {return false}
-        return {
-            id: comment._id.toString(),
-            content: comment.content,
-            commentatorInfo: comment.commentatorInfo,
-            createdAt: comment.createdAt
-        }
+        return commentsOutputMapper(comment)
     }
 
     static async createComment(content:string, postId:string): Promise<string|false> {
