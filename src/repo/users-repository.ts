@@ -53,7 +53,7 @@ export class usersRepo{
 
     static async loginUser(loginOrEmail:string,password:string):Promise<boolean> {
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
-        if (!user) {return false}
-        return bcrypt.compareSync(password, user.password)
+        if(!user || !bcrypt.compareSync(password, user.password)){return false}
+        return true
     }
 }
