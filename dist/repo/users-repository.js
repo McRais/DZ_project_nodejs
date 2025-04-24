@@ -31,12 +31,7 @@ class usersRepo {
             if (!user) {
                 return false;
             } //it will never return it, this function is only for usersRepo.createUser
-            return {
-                id: user._id.toString(),
-                login: user.login,
-                email: user.email,
-                createdAt: user.createdAt
-            };
+            return (0, mappers_1.usersOutputMapper)(user);
         });
     }
     static checkUserLoginUniqueness(login) {
@@ -86,10 +81,10 @@ class usersRepo {
     static loginUser(loginOrEmail, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield DB_1.usersCollection.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
-            if (!user) {
+            if (!user || !bcrypt_1.default.compareSync(password, user.password)) {
                 return false;
             }
-            return bcrypt_1.default.compareSync(password, user.password);
+            return true;
         });
     }
 }

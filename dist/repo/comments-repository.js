@@ -36,12 +36,7 @@ class commentsRepo {
             if (!comment) {
                 return false;
             }
-            return {
-                id: comment._id.toString(),
-                content: comment.content,
-                commentatorInfo: comment.commentatorInfo,
-                createdAt: comment.createdAt
-            };
+            return (0, mappers_1.commentsOutputMapper)(comment);
         });
     }
     static createComment(content, postId) {

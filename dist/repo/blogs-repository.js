@@ -38,14 +38,7 @@ class blogsRepo {
             if (!blog) {
                 return false;
             }
-            return {
-                id: blog._id.toString(),
-                name: blog.name,
-                description: blog.description,
-                websiteUrl: blog.websiteUrl,
-                createdAt: blog.createdAt,
-                isMembership: blog.isMembership
-            };
+            return (0, mappers_1.blogsOutputMapper)(blog);
         });
     }
     static createNewBlog(name, description, websiteUrl, createdAt) {

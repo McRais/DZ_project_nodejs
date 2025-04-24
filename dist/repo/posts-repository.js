@@ -43,15 +43,7 @@ class postsRepo {
             if (!post) {
                 return false;
             }
-            return {
-                id: post._id.toString(),
-                title: post.title,
-                shortDescription: post.shortDescription,
-                content: post.content,
-                blogId: post.blogId,
-                blogName: post.blogName,
-                createdAt: post.createdAt
-            };
+            return (0, mappers_1.postsOutputMapper)(post);
         });
     }
     static createNewPost(title, shortDescription, content, blogId) {
