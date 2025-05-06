@@ -2,13 +2,13 @@ import {Response, Router} from "express";
 import {OutputUserType, RequestWithBody, RequestWithParams, RequestWithQuery} from "../models/types";
 import {SortDirection} from "mongodb";
 import {usersRepo} from "../repo/users-repository";
-import {BasicAuthMiddleware} from "../middlewares/basic-auth-middleware";
+import {AuthBasicMiddleware} from "../middlewares/auth-basic-middleware";
 import {userValidator} from "../validators/validator-users";
 
 export const usersRoute = Router({});
 
 //get users table with pagination and sorting
-usersRoute.get('/',BasicAuthMiddleware, async (req: RequestWithQuery<{searchLoginTerm?: string,searchEmailTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputUserType[]>> => {
+usersRoute.get('/',AuthBasicMiddleware, async (req: RequestWithQuery<{searchLoginTerm?: string,searchEmailTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputUserType[]>> => {
     const [searchLoginTerm,searchEmailTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchLoginTerm,req.query.searchEmailTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const users = await usersRepo.getAllUsers(searchLoginTerm, searchEmailTerm, pageNumber, pageSize, sortBy, sortDirection)
     const usersRepoCount = await usersRepo.getCount(searchLoginTerm,searchEmailTerm)
@@ -23,7 +23,7 @@ usersRoute.get('/',BasicAuthMiddleware, async (req: RequestWithQuery<{searchLogi
 })
 
 //create new user
-usersRoute.post('/', BasicAuthMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
+usersRoute.post('/', AuthBasicMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUserType|400>> => {
 
     const checkLoginUniqueness = await usersRepo.checkUserLoginUniqueness(req.body.login)
     if(!checkLoginUniqueness){return res.status(400).send({
@@ -39,7 +39,7 @@ usersRoute.post('/', BasicAuthMiddleware, userValidator(), async (req: RequestWi
 })
 
 //delete user
-usersRoute.delete('/:id',BasicAuthMiddleware, async (req:RequestWithParams<{id:string}>, res: Response): Promise<Response<204|404>> => {
+usersRoute.delete('/:id',AuthBasicMiddleware, async (req:RequestWithParams<{id:string}>, res: Response): Promise<Response<204|404>> => {
 
     const result = await usersRepo.deleteUser(req.params.id)
     return result? res.sendStatus(204):res.sendStatus(404)
