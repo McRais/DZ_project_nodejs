@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentsRoute = void 0;
 const express_1 = require("express");
 const comments_repository_1 = require("../repo/comments-repository");
-const bearer_auth_middleware_1 = require("../middlewares/bearer-auth-middleware");
+const auth_bearer_middleware_1 = require("../middlewares/auth-bearer-middleware");
 exports.commentsRoute = (0, express_1.Router)({});
 //get comment by id
 exports.commentsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,6 +20,6 @@ exports.commentsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0
     return res.status(200).send(comment);
 }));
 //update comment by id
-exports.commentsRoute.put('', bearer_auth_middleware_1.BearerAuthMiddleware, (req, res) => { });
+exports.commentsRoute.put('', auth_bearer_middleware_1.AuthBearerMiddleware, (req, res) => { });
 //delete comment by id
-exports.commentsRoute.delete('', bearer_auth_middleware_1.BearerAuthMiddleware, (req, res) => { });
+exports.commentsRoute.delete('', auth_bearer_middleware_1.AuthBearerMiddleware, (req, res) => { });
