@@ -11,11 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRoute = void 0;
 const express_1 = require("express");
-const auth_basic_middleware_1 = require("../middlewares/auth-basic-middleware");
+const basic_auth_middleware_1 = require("../middlewares/basic-auth-middleware");
 const posts_repository_1 = require("../repo/posts-repository");
 const validator_posts_1 = require("../validators/validator-posts");
 const comments_repository_1 = require("../repo/comments-repository");
-const auth_bearer_middleware_1 = require("../middlewares/auth-bearer-middleware");
+const bearer_auth_middleware_1 = require("../middlewares/bearer-auth-middleware");
 exports.postsRoute = (0, express_1.Router)({});
 //get all posts
 exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,7 +41,7 @@ exports.postsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 //delete post by id, auth
-exports.postsRoute.delete('/:id', auth_basic_middleware_1.AuthBasicMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.postsRoute.delete('/:id', basic_auth_middleware_1.BasicAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.deletePost(req.params.id);
     if (post === false) {
         return res.sendStatus(404);
@@ -51,12 +51,12 @@ exports.postsRoute.delete('/:id', auth_basic_middleware_1.AuthBasicMiddleware, (
     } //done
 }));
 //post a post, auth and validation
-exports.postsRoute.post("/", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.postsRoute.post("/", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     return res.status(201).send(post);
 }));
 //put new values into existing blog, auth and validation
-exports.postsRoute.put("/:id", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.postsRoute.put("/:id", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     if (!post) {
         return res.sendStatus(404);
@@ -79,4 +79,4 @@ exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void
     });
 }));
 //post a comment
-exports.postsRoute.post("/:postId/comments", auth_bearer_middleware_1.AuthBearerMiddleware, (req) => __awaiter(void 0, void 0, void 0, function* () { }));
+exports.postsRoute.post("/:postId/comments", bearer_auth_middleware_1.BearerAuthMiddleware, (req) => __awaiter(void 0, void 0, void 0, function* () { }));
