@@ -12,7 +12,12 @@ commentsRoute.get('/:id', async (req: RequestWithParams<{id:string}>, res:Respon
 })
 
 //update comment by id
-commentsRoute.put('', BearerAuthMiddleware, (req, res) => {})
+commentsRoute.put('', BearerAuthMiddleware, async (req, res) => {
+    const comment =await commentsRepo.updateComment(req.params.id, req.body.content);
+    if(!comment){return res.sendStatus(404)} else {return res.sendStatus(204)}
+})
 
 //delete comment by id
-commentsRoute.delete('', BearerAuthMiddleware, (req, res) => {})
+commentsRoute.delete('', BearerAuthMiddleware, (req, res) => {
+
+})

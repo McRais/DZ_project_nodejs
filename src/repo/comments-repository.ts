@@ -1,5 +1,5 @@
 import {ObjectId, SortDirection} from "mongodb";
-import {commentsCollection} from "../database/DB";
+import {commentsCollection, postsCollection} from "../database/DB";
 import {commentsOutputMapper} from "../mappers/mappers";
 import {OutputCommentType} from "../models/types";
 
@@ -38,5 +38,17 @@ export class commentsRepo{
             postId: postId
         })
         return res.insertedId.toString()
+    }
+
+    static async updateComment(id: string, content:string):Promise<boolean> {
+        const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
+        if (!comment) {
+            return false
+        }
+        await commentsCollection.updateOne({_id: new ObjectId(id)},
+            {$set: {
+                    content: content
+                }})
+        return true
     }
 }
