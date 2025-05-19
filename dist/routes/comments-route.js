@@ -20,6 +20,15 @@ exports.commentsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0
     return res.status(200).send(comment);
 }));
 //update comment by id
-exports.commentsRoute.put('', bearer_auth_middleware_1.BearerAuthMiddleware, (req, res) => { });
+exports.commentsRoute.put('', bearer_auth_middleware_1.BearerAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const comment = yield comments_repository_1.commentsRepo.updateComment(req.params.id, req.body.content);
+    if (!comment) {
+        return res.sendStatus(404);
+    }
+    else {
+        return res.sendStatus(204);
+    }
+}));
 //delete comment by id
-exports.commentsRoute.delete('', bearer_auth_middleware_1.BearerAuthMiddleware, (req, res) => { });
+exports.commentsRoute.delete('', bearer_auth_middleware_1.BearerAuthMiddleware, (req, res) => {
+});

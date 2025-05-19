@@ -55,7 +55,7 @@ exports.postsRoute.post("/", basic_auth_middleware_1.BasicAuthMiddleware, (0, va
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     return res.status(201).send(post);
 }));
-//put new values into existing blog, auth and validation
+//update existing blog, auth and validation
 exports.postsRoute.put("/:id", basic_auth_middleware_1.BasicAuthMiddleware, (0, validator_posts_1.postValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId);
     if (!post) {

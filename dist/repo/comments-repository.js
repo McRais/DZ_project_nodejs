@@ -57,5 +57,17 @@ class commentsRepo {
             return res.insertedId.toString();
         });
     }
+    static updateComment(id, content) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            if (!comment) {
+                return false;
+            }
+            yield DB_1.commentsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
+                    content: content
+                } });
+            return true;
+        });
+    }
 }
 exports.commentsRepo = commentsRepo;
