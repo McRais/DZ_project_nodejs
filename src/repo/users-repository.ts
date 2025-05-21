@@ -3,6 +3,7 @@ import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersOutputMapper} from "../mappers/mappers";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export class usersRepo{
     static async getCount(searchLoginTerm:string|undefined, searchEmailTerm:string|undefined): Promise<number> {
@@ -51,9 +52,11 @@ export class usersRepo{
         return deleteResult.deletedCount != 0
     }
 
-    static async loginUser(loginOrEmail:string,password:string):Promise<boolean> {
+    static async loginUser(loginOrEmail:string,password:string):Promise<boolean|object> {
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
         if(!user || !bcrypt.compareSync(password, user.password)){return false}
-        return true
+        return {
+            "accessToken": jwt.sign({},)
+        }
     }
 }
