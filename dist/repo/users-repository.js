@@ -84,7 +84,9 @@ class usersRepo {
             if (!user || !bcrypt_1.default.compareSync(password, user.password)) {
                 return false;
             }
-            return true;
+            return {
+            //"accessToken": jwt.sign({},)
+            };
         });
     }
 }
