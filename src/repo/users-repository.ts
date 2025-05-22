@@ -56,7 +56,7 @@ export class usersRepo{
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
         if(!user || !bcrypt.compareSync(password, user.password)){return false}
         return {
-            "accessToken": jwt.sign({},)
+            //"accessToken": jwt.sign({},)
         }
     }
 }
