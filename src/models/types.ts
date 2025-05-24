@@ -1,13 +1,14 @@
 import {Request} from "express";
 
-export type BlogsType = {
+//types WithId
+export type DBBlogsType = {
     name: string,
     description: string,
     websiteUrl: string,
     createdAt: string,
     isMembership: boolean
 }
-export type PostsType = {
+export type DBPostsType = {
     title: string,
     shortDescription: string,
     content: string,
@@ -15,14 +16,14 @@ export type PostsType = {
     blogName: string,
     createdAt: string
 }
-export type UsersType = {
+export type DBUsersType = {
     login: string,
     email: string,
     password: string,
     createdAt: string
 }
 
-export type CommentsType = {
+export type DBCommentsType = {
     content: string,
     commentatorInfo: commentatorInfoType,
     createdAt: string
@@ -34,6 +35,8 @@ export type commentatorInfoType = {
     userLogin: string
 }
 
+
+//what should the functions output to user.
 export type OutputBlogType = {
     id: string,
     name: string,
