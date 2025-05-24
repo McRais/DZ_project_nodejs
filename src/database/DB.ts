@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb";
-import {BlogsType, CommentsType, PostsType, UsersType} from "../models/types";
+import {DBBlogsType, DBCommentsType, DBPostsType, DBUsersType} from "../models/types";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -9,10 +9,10 @@ if (!mongoURI) {throw new Error("no db connection")}
 const client = new MongoClient(mongoURI)
 
 const db = client.db('blogs-db')
-export const blogsCollection = db.collection<BlogsType>('blogs')
-export const postsCollection = db.collection<PostsType>('posts')
-export const usersCollection = db.collection<UsersType>('users')
-export const commentsCollection = db.collection<CommentsType>('comments')
+export const blogsCollection = db.collection<DBBlogsType>('blogs')
+export const postsCollection = db.collection<DBPostsType>('posts')
+export const usersCollection = db.collection<DBUsersType>('users')
+export const commentsCollection = db.collection<DBCommentsType>('comments')
 
 export const runDb = async() => {
     try {
