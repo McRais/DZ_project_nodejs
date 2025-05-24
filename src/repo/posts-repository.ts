@@ -1,5 +1,5 @@
 import {blogsCollection, postsCollection} from "../database/DB";
-import {OutputPostType, PostsType} from "../models/types";
+import {OutputPostType, DBPostsType} from "../models/types";
 import {postsOutputMapper} from "../mappers/mappers";
 import {ObjectId, SortDirection} from "mongodb";
 
@@ -41,7 +41,7 @@ export class postsRepo {
         }
         const date = new Date()
 
-        const newPost: PostsType = {
+        const newPost: DBPostsType = {
             title: title,
             shortDescription: shortDescription,
             content: content,
