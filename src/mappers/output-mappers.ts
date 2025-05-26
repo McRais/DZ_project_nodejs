@@ -1,7 +1,7 @@
 import {WithId} from "mongodb";
 import {DBBlogsType, commentatorInfoType, DBCommentsType, DBPostsType, DBUsersType} from "../models/types";
 
-export const blogsOutputMapper = (blog: WithId<DBBlogsType>) =>{
+export const blogsMapper = (blog: WithId<DBBlogsType>) =>{
     return {
         id: blog._id.toString(),
         name: blog.name,
@@ -11,7 +11,7 @@ export const blogsOutputMapper = (blog: WithId<DBBlogsType>) =>{
         isMembership: blog.isMembership
     }
 }
-export const postsOutputMapper = (post: WithId<DBPostsType>) =>{
+export const postsMapper = (post: WithId<DBPostsType>) =>{
     return{
         id: post._id.toString(),
         title: post.title,
@@ -23,7 +23,7 @@ export const postsOutputMapper = (post: WithId<DBPostsType>) =>{
     }
 }
 
-export const usersOutputMapper = (user: WithId<DBUsersType>)=>{
+export const usersMapper = (user: WithId<DBUsersType>)=>{
     return{
         id: user._id.toString(),
         login:user.login,
@@ -32,7 +32,7 @@ export const usersOutputMapper = (user: WithId<DBUsersType>)=>{
     }
 }
 
-export const commentsOutputMapper = (comment: WithId<DBCommentsType>) =>{
+export const commentsMapper = (comment: WithId<DBCommentsType>) =>{
     return {
         id: comment._id.toString(),
         content: comment.content,
