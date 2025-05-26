@@ -1,6 +1,6 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {commentsCollection, postsCollection} from "../database/DB";
-import {commentsOutputMapper} from "../mappers/mappers";
+import {commentsMapper} from "../mappers/output-mappers";
 import {OutputCommentType} from "../models/types";
 
 export class commentsRepo{
@@ -16,13 +16,13 @@ export class commentsRepo{
             .limit(pageSize)
             .skip((pageNumber - 1) * pageSize)
             .toArray()
-        return comments.map(commentsOutputMapper)
+        return comments.map(commentsMapper)
     }
 
     static async getCommentById(id:string): Promise<OutputCommentType|false> {
         const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
         if (!comment) {return false}
-        return commentsOutputMapper(comment)
+        return commentsMapper(comment)
     }
 
     static async createComment(content:string, postId:string): Promise<string|false> {
