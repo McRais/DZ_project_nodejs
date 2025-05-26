@@ -1,6 +1,6 @@
 import {OutputBlogType, OutputPostType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
-import {blogsOutputMapper, postsOutputMapper} from "../mappers/mappers";
+import {blogsMapper, postsMapper} from "../mappers/output-mappers";
 import {ObjectId, SortDirection} from "mongodb";
 
 export class blogsRepo {
@@ -21,7 +21,7 @@ export class blogsRepo {
             .skip((pageNumber - 1) * pageSize)
             .toArray()
 
-        return blogs.map(blogsOutputMapper)
+        return blogs.map(blogsMapper)
     }
 
     static async getBlogById(id: string): Promise<OutputBlogType | false> {
@@ -29,7 +29,7 @@ export class blogsRepo {
         if (!blog) {
             return false
         }
-        return blogsOutputMapper(blog)
+        return blogsMapper(blog)
     }
 
     static async createNewBlog(name: string, description: string, websiteUrl: string, createdAt:string): Promise<string> {
@@ -67,6 +67,6 @@ export class blogsRepo {
             .skip((pageNumber - 1) * pageSize)
             .toArray()
 
-        return posts.map(postsOutputMapper)
+        return posts.map(postsMapper)
     }
 }
