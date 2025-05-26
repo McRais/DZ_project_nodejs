@@ -1,7 +1,7 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
-import {usersOutputMapper} from "../mappers/mappers";
+import {usersMapper} from "../mappers/output-mappers";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -15,7 +15,7 @@ export class usersRepo{
     static async getUser(userID:string): Promise<OutputUserType|false> {
         const user = await usersCollection.findOne({_id: new ObjectId(userID)},)
         if (!user) {return false}  //it will never return it, this function is only for usersRepo.createUser
-        return usersOutputMapper(user)
+        return usersMapper(user)
     }
 
     static async checkUserLoginUniqueness(login:string): Promise<boolean> {
@@ -38,7 +38,7 @@ export class usersRepo{
             .limit(pageSize)
             .skip((pageNumber - 1) * pageSize)
             .toArray()
-        return users.map(usersOutputMapper)
+        return users.map(usersMapper)
     }
 
     static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
