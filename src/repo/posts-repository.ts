@@ -1,6 +1,6 @@
 import {blogsCollection, postsCollection} from "../database/DB";
 import {OutputPostType, DBPostsType} from "../models/types";
-import {postsOutputMapper} from "../mappers/mappers";
+import {postsMapper} from "../mappers/output-mappers";
 import {ObjectId, SortDirection} from "mongodb";
 
 export class postsRepo {
@@ -23,7 +23,7 @@ export class postsRepo {
             .skip((pageNumber - 1) * pageSize)
             .toArray()
 
-        return posts.map(postsOutputMapper)
+        return posts.map(postsMapper)
     }
 
     static async getPostById(id: string): Promise<OutputPostType | false> {
@@ -31,7 +31,7 @@ export class postsRepo {
         if (!post) {
             return false
         }
-        return postsOutputMapper(post)
+        return postsMapper(post)
     }
 
     static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostType | false> {
