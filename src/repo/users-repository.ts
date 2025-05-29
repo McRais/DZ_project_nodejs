@@ -1,5 +1,5 @@
 import {ObjectId, SortDirection} from "mongodb";
-import {OutputUserType} from "../models/types";
+import {LoginSuccessType, OutputUserType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersMapper} from "../mappers/output-mappers";
 import bcrypt from "bcrypt";
@@ -52,11 +52,11 @@ export class usersRepo{
         return deleteResult.deletedCount != 0
     }
 
-    static async loginUser(loginOrEmail:string,password:string):Promise<boolean|object> {
+    static async loginUser(loginOrEmail:string,password:string):Promise<boolean|LoginSuccessType> {
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
         if(!user || !bcrypt.compareSync(password, user.password)){return false}
         return {
-            //"accessToken": jwt.sign({},)
+            "accessToken": "" //need to send a jwt of a user
         }
     }
 }
