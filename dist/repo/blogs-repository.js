@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsRepo = void 0;
 const DB_1 = require("../database/DB");
-const mappers_1 = require("../mappers/mappers");
+const output_mappers_1 = require("../mappers/output-mappers");
 const mongodb_1 = require("mongodb");
 class blogsRepo {
     static getCountByName(searchNameTerm) {
@@ -29,7 +29,7 @@ class blogsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return blogs.map(mappers_1.blogsOutputMapper);
+            return blogs.map(output_mappers_1.blogsMapper);
         });
     }
     static getBlogById(id) {
@@ -38,7 +38,7 @@ class blogsRepo {
             if (!blog) {
                 return false;
             }
-            return (0, mappers_1.blogsOutputMapper)(blog);
+            return (0, output_mappers_1.blogsMapper)(blog);
         });
     }
     static createNewBlog(name, description, websiteUrl, createdAt) {
@@ -78,7 +78,7 @@ class blogsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return posts.map(mappers_1.postsOutputMapper);
+            return posts.map(output_mappers_1.postsMapper);
         });
     }
 }

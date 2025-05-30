@@ -18,6 +18,6 @@ exports.app.use(body_parser_1.default.json());
 exports.app.use('/blogs', blogs_route_1.blogsRoute);
 exports.app.use('/posts', posts_route_1.postsRoute);
 exports.app.use('/users', users_route_1.usersRoute);
-exports.app.use('/auth/login', login_route_1.loginRoute);
+exports.app.use('/auth', login_route_1.loginRoute);
 exports.app.use('/comments', comments_route_1.commentsRoute);
 exports.app.use('/testing/all-data', testing_route_1.testingRoute);

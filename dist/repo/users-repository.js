@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepo = void 0;
 const mongodb_1 = require("mongodb");
 const DB_1 = require("../database/DB");
-const mappers_1 = require("../mappers/mappers");
+const output_mappers_1 = require("../mappers/output-mappers");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 class usersRepo {
     static getCount(searchLoginTerm, searchEmailTerm) {
@@ -31,7 +31,7 @@ class usersRepo {
             if (!user) {
                 return false;
             } //it will never return it, this function is only for usersRepo.createUser
-            return (0, mappers_1.usersOutputMapper)(user);
+            return (0, output_mappers_1.usersMapper)(user);
         });
     }
     static checkUserLoginUniqueness(login) {
@@ -62,7 +62,7 @@ class usersRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return users.map(mappers_1.usersOutputMapper);
+            return users.map(output_mappers_1.usersMapper);
         });
     }
     static createUser(login, password, email, createdAt) {
@@ -85,7 +85,7 @@ class usersRepo {
                 return false;
             }
             return {
-            //"accessToken": jwt.sign({},)
+                "accessToken": "" //need to send a jwt of a user
             };
         });
     }

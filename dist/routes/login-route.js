@@ -13,11 +13,12 @@ exports.loginRoute = void 0;
 const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
 exports.loginRoute = (0, express_1.Router)({});
-//login user, needs update and validator of input values
-exports.loginRoute.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const login = yield users_repository_1.usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
-    if (login) {
-        return res.status(200).send(login);
+//login user, needs update and validator for input values
+exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const jwtOfUser = yield users_repository_1.usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
+    if (jwtOfUser) {
+        return res.status(200).send(jwtOfUser);
     }
     return res.sendStatus(401);
 }));
+//loginRoute.get('/me', async (req: RequestWithBody<{me: string}>, res:Response): Promise<MyInfoType|401> => {})

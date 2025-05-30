@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.commentsRepo = void 0;
 const mongodb_1 = require("mongodb");
 const DB_1 = require("../database/DB");
-const mappers_1 = require("../mappers/mappers");
+const output_mappers_1 = require("../mappers/output-mappers");
 class commentsRepo {
     static getCommentsFromPostCount(postId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,7 +27,7 @@ class commentsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return comments.map(mappers_1.commentsOutputMapper);
+            return comments.map(output_mappers_1.commentsMapper);
         });
     }
     static getCommentById(id) {
@@ -36,7 +36,7 @@ class commentsRepo {
             if (!comment) {
                 return false;
             }
-            return (0, mappers_1.commentsOutputMapper)(comment);
+            return (0, output_mappers_1.commentsMapper)(comment);
         });
     }
     static createComment(content, postId) {

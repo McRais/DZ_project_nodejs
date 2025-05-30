@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsRepo = void 0;
 const DB_1 = require("../database/DB");
-const mappers_1 = require("../mappers/mappers");
+const output_mappers_1 = require("../mappers/output-mappers");
 const mongodb_1 = require("mongodb");
 class postsRepo {
     static getPostsCountByName(searchNameTerm) {
@@ -34,7 +34,7 @@ class postsRepo {
                 .limit(pageSize)
                 .skip((pageNumber - 1) * pageSize)
                 .toArray();
-            return posts.map(mappers_1.postsOutputMapper);
+            return posts.map(output_mappers_1.postsMapper);
         });
     }
     static getPostById(id) {
@@ -43,7 +43,7 @@ class postsRepo {
             if (!post) {
                 return false;
             }
-            return (0, mappers_1.postsOutputMapper)(post);
+            return (0, output_mappers_1.postsMapper)(post);
         });
     }
     static createNewPost(title, shortDescription, content, blogId) {
