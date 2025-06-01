@@ -37,7 +37,7 @@ export type commentatorInfoType = {
 
 
 //what should the functions output to user.
-export type OutputBlogType = {
+export type OutputBlogsType = {
     id: string,
     name: string,
     description: string,
@@ -46,7 +46,7 @@ export type OutputBlogType = {
     isMembership: boolean
 }
 
-export type OutputPostType = {
+export type OutputPostsType = {
     id: string,
     title: string,
     shortDescription: string,
@@ -56,14 +56,14 @@ export type OutputPostType = {
     createdAt: string
 }
 
-export type OutputUserType = {
+export type OutputUsersType = {
     id: string,
     login: string,
     email: string,
     createdAt: string
 }
 
-export type OutputCommentType = {
+export type OutputCommentsType = {
     id: string,
     content: string,
     commentatorInfo: commentatorInfoType,
