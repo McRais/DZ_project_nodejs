@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {BasicAuthMiddleware} from "../middlewares/basic-auth-middleware";
 import {blogsRepo} from "../repo/blogs-repository";
 import {
-    OutputBlogType,
+    OutputBlogsType,
     RequestWithBody,
     RequestWithBodyAndParams,
     RequestWithParamsAndQuery,
@@ -18,7 +18,7 @@ import {SortDirection} from "mongodb";
 export const blogsRoute = Router({})
 
 //get all blogs with pagination
-blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputBlogType[]>> => {
+blogsRoute.get('/', async (req: RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response): Promise<Response<OutputBlogsType[]>> => {
     const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const blogs = await blogsRepo.getAllBlogs(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     const blogsRepoCount = await blogsRepo.getCountByName(searchNameTerm)

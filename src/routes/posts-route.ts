@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {BasicAuthMiddleware} from "../middlewares/basic-auth-middleware";
 import {postsRepo} from "../repo/posts-repository";
 import {
-    OutputPostType,
+    OutputPostsType,
     RequestWithBody,
     RequestWithBodyAndParams, RequestWithParamsAndQuery,
     RequestWithQuery
@@ -15,7 +15,7 @@ import {BearerAuthMiddleware} from "../middlewares/bearer-auth-middleware";
 export const postsRoute = Router({})
 
 //get all posts
-postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>,res:Response): Promise<Response<OutputPostType[]>> =>{
+postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>,res:Response): Promise<Response<OutputPostsType[]>> =>{
     const [searchNameTerm, pageNumber,pageSize,sortBy,sortDirection] = [req.query.searchNameTerm, Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"];
     const posts = await postsRepo.getAllPosts(searchNameTerm, pageNumber, pageSize, sortBy, sortDirection)
     const postsRepoCount = await postsRepo.getPostsCountByName(searchNameTerm)
@@ -30,7 +30,7 @@ postsRoute.get('/', async (req:RequestWithQuery<{searchNameTerm?: string, pageNu
 })
 
 //get post by id
-postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<OutputPostType | 404>> => {
+postsRoute.get('/:id', async (req: Request, res: Response): Promise<Response<OutputPostsType | 404>> => {
     const post = await postsRepo.getPostById(req.params.id)
     if(post === false){return res.sendStatus(404)} else{return res.send(post)}
 })
