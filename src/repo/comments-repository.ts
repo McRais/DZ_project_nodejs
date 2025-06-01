@@ -1,7 +1,7 @@
 import {ObjectId, SortDirection} from "mongodb";
 import {commentsCollection, postsCollection} from "../database/DB";
 import {commentsMapper} from "../mappers/output-mappers";
-import {OutputCommentType} from "../models/types";
+import {OutputCommentsType} from "../models/types";
 
 export class commentsRepo{
 
@@ -19,7 +19,7 @@ export class commentsRepo{
         return comments.map(commentsMapper)
     }
 
-    static async getCommentById(id:string): Promise<OutputCommentType|false> {
+    static async getCommentById(id:string): Promise<OutputCommentsType|false> {
         const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
         if (!comment) {return false}
         return commentsMapper(comment)

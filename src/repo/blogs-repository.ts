@@ -1,4 +1,4 @@
-import {OutputBlogType, OutputPostType} from "../models/types";
+import {OutputBlogsType, OutputPostsType} from "../models/types";
 import {blogsCollection, postsCollection} from "../database/DB";
 import {blogsMapper, postsMapper} from "../mappers/output-mappers";
 import {ObjectId, SortDirection} from "mongodb";
@@ -10,7 +10,7 @@ export class blogsRepo {
         return await blogsCollection.countDocuments(regex)
     }
 
-    static async getAllBlogs(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputBlogType[]> {
+    static async getAllBlogs(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputBlogsType[]> {
 
         const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
 
@@ -24,7 +24,7 @@ export class blogsRepo {
         return blogs.map(blogsMapper)
     }
 
-    static async getBlogById(id: string): Promise<OutputBlogType | false> {
+    static async getBlogById(id: string): Promise<OutputBlogsType | false> {
         const blog = await blogsCollection.findOne({_id: new ObjectId(id)})
         if (!blog) {
             return false
@@ -58,7 +58,7 @@ export class blogsRepo {
         return true
     }
 
-    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection):Promise<OutputPostType[]> {
+    static async getPostsFromBlog(id:string, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection):Promise<OutputPostsType[]> {
 
         const posts = await postsCollection
             .find({blogId: id})

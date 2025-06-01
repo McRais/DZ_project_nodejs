@@ -1,5 +1,5 @@
 import {ObjectId, SortDirection} from "mongodb";
-import {LoginSuccessType, OutputUserType} from "../models/types";
+import {LoginSuccessType, OutputUsersType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersMapper} from "../mappers/output-mappers";
 import bcrypt from "bcrypt";
@@ -12,7 +12,7 @@ export class usersRepo{
         return await usersCollection.countDocuments({$or:[regexLogin,regexEmail]})
     }
 
-    static async getUser(userID:string): Promise<OutputUserType|false> {
+    static async getUser(userID:string): Promise<OutputUsersType|false> {
         const user = await usersCollection.findOne({_id: new ObjectId(userID)},)
         if (!user) {return false}  //it will never return it, this function is only for usersRepo.createUser
         return usersMapper(user)
@@ -29,7 +29,7 @@ export class usersRepo{
         return false
     }
 
-    static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUserType[]> {
+    static async getAllUsers(searchLoginTerm: string|undefined, searchEmailTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputUsersType[]> {
         const regexLogin = searchLoginTerm ? {login:{$regex: searchLoginTerm, $options: "i"}} : {};
         const regexEmail = searchEmailTerm ? {email:{$regex: searchEmailTerm, $options: "i"}} : {};
         const users = await usersCollection
@@ -41,7 +41,7 @@ export class usersRepo{
         return users.map(usersMapper)
     }
 
-    static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUserType|false> {
+    static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUsersType|false> {
         const hashPass = bcrypt.hashSync(password, 10);
         const user = await usersCollection.insertOne({login:login, password:hashPass, email:email, createdAt:createdAt})
         return await usersRepo.getUser(user.insertedId.toString())

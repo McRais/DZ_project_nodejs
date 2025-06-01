@@ -1,5 +1,5 @@
 import {blogsCollection, postsCollection} from "../database/DB";
-import {OutputPostType, DBPostsType} from "../models/types";
+import {OutputPostsType, DBPostsType} from "../models/types";
 import {postsMapper} from "../mappers/output-mappers";
 import {ObjectId, SortDirection} from "mongodb";
 
@@ -13,7 +13,7 @@ export class postsRepo {
         return await postsCollection.countDocuments({blogId: blogId})
     }
 
-    static async getAllPosts(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputPostType[]> {
+    static async getAllPosts(searchNameTerm: string|undefined, pageNumber:number, pageSize:number, sortBy:string, sortDirection:SortDirection): Promise<OutputPostsType[]> {
         const regex = searchNameTerm?{name:{$regex: searchNameTerm, $options: "i"}} : {};
 
         const posts = await postsCollection
@@ -26,7 +26,7 @@ export class postsRepo {
         return posts.map(postsMapper)
     }
 
-    static async getPostById(id: string): Promise<OutputPostType | false> {
+    static async getPostById(id: string): Promise<OutputPostsType | false> {
         const post = await postsCollection.findOne({_id: new ObjectId(id)})
         if (!post) {
             return false
@@ -34,7 +34,7 @@ export class postsRepo {
         return postsMapper(post)
     }
 
-    static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostType | false> {
+    static async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<OutputPostsType | false> {
         const blog = await blogsCollection.findOne({_id: new ObjectId(blogId)})
         if (!blog) {
             throw new Error("No blog")
