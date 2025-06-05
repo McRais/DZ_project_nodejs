@@ -2,6 +2,7 @@ import {Router, Response} from "express";
 import {RequestWithParams} from "../models/types";
 import {commentsRepo} from "../repo/comments-repository";
 import {AuthBearerMiddleware} from "../middlewares/auth-bearer-middleware";
+import {usersRepo} from "../repo/users-repository";
 
 export const commentsRoute = Router({})
 
@@ -18,6 +19,8 @@ commentsRoute.put('', AuthBearerMiddleware, async (req, res) => {
 })
 
 //delete comment by id
-commentsRoute.delete('', AuthBearerMiddleware, (req, res) => {
+/*commentsRoute.delete('', AuthBearerMiddleware, async (req:RequestWithParams<{id:string}>, res:Response):Promise<204|404|403> => {
+    const result = await usersRepo.deleteUser(req.params.id)
+    return
 
-})
+})*/
