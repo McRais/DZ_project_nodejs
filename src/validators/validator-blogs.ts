@@ -35,5 +35,6 @@ const blogIdParamValidator = param('id')
 
 export const blogCreateUpdateBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
 export const BlogIdInParamValidation = () => [blogIdParamValidator, validatorIdErrorCatcher]
+//need rework, blogId check in business, not in validation
 
 
