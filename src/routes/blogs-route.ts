@@ -58,7 +58,7 @@ blogsRoute.put("/:id",AuthBasicMiddleware, blogCreateUpdateBodyValidation(), asy
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
-//get posts from blog
+//get posts from blog, need rework to check id in route, not in validator
 blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
@@ -74,7 +74,7 @@ blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithP
     })
 })
 
-//create new post in blog
+//create new post in blog, need rework to check id in route, not in validator
 blogsRoute.post("/:id/posts", AuthBasicMiddleware,BlogIdInParamValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
