@@ -34,6 +34,7 @@ const blogIdParamValidator = param('id')
     })
 
 export const blogCreateUpdateBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
+
 export const BlogIdInParamValidation = () => [blogIdParamValidator, validatorIdErrorCatcher]
 
 
