@@ -8,7 +8,7 @@ import {
     RequestWithParamsAndQuery,
     RequestWithParams, RequestWithQuery
 } from "../models/types";
-import {blogCreateUpdateBodyValidation, BlogIdInParamValidation} from "../validators/validator-blogs";
+import {blogCreateUpdateBodyValidation} from "../validators/validator-blogs";
 import {postInBlogRouteValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
 import {SortDirection} from "mongodb";
@@ -58,8 +58,16 @@ blogsRoute.put("/:id",AuthBasicMiddleware, blogCreateUpdateBodyValidation(), asy
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
-//get posts from blog, need rework to check id in route, not in validator
-blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
+//get posts from blog
+blogsRoute.get('/:id/posts', async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
+
+    const blog = await blogsRepo.getBlogById(req.params.id)
+    if (blog === false){
+        return res.status(404).send({
+            message: "blog not found or the id is incorrect",
+            field: "blogId"
+        })
+    }
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
@@ -74,8 +82,8 @@ blogsRoute.get('/:id/posts', BlogIdInParamValidation(), async (req: RequestWithP
     })
 })
 
-//create new post in blog, need rework to check id in route, not in validator
-blogsRoute.post("/:id/posts", AuthBasicMiddleware,BlogIdInParamValidation(), postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+//create new post in blog, need to check blogId before sending data to the post validation
+blogsRoute.post("/:id/posts", AuthBasicMiddleware, postInBlogRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
 })
