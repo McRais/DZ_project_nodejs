@@ -96,7 +96,7 @@ exports.blogsRoute.post("/:id/posts", auth_basic_middleware_1.AuthBasicMiddlewar
             field: "blogId"
         });
     }
-    (0, validator_posts_1.postInBlogRouteValidation)();
+    (0, validator_posts_1.postInBlogRouteValidation)(); //doesn't work
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
     return res.status(201).send(post);
 }));
