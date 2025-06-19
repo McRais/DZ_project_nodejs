@@ -92,7 +92,7 @@ blogsRoute.post("/:id/posts", AuthBasicMiddleware, async (req:RequestWithBodyAnd
             field: "blogId"
         })
     }
-    postInBlogRouteValidation()
+    postInBlogRouteValidation() //doesn't work
 
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
