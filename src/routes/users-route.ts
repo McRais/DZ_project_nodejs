@@ -25,7 +25,7 @@ usersRoute.get('/',AuthBasicMiddleware, async (req: RequestWithQuery<{searchLogi
 //create new user
 usersRoute.post('/', AuthBasicMiddleware, userValidator(), async (req: RequestWithBody<{ login: string, password: string, email: string }>, res: Response): Promise<Response<OutputUsersType|400>> => {
 
-    const checkLoginUniqueness = await usersRepo.checkUserLoginUniqueness(req.body.login)
+    const checkLoginUniqueness = await usersRepo.checkUserLoginUniqueness(req.body.login) //something is not right
     if(!checkLoginUniqueness){return res.status(400).send({
         errorsMessages: [{field: 'login', message: 'login should be unique'}]
     })}
@@ -35,7 +35,7 @@ usersRoute.post('/', AuthBasicMiddleware, userValidator(), async (req: RequestWi
     })}
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date]
     const user = await usersRepo.createUser(login, password, email, createdAt.toISOString())
-    return res.status(201).send(user)
+    return res.status(201).send(user) //redo, can't send user all the data
 })
 
 //delete user
