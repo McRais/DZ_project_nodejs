@@ -42,8 +42,9 @@ export class usersRepo{
     }
 
     static async createUser(login:string,password:string,email:string,createdAt:string): Promise<OutputUsersType|false> {
-        const hashPass = bcrypt.hashSync(password, 10);
-        const user = await usersCollection.insertOne({login:login, password:hashPass, email:email, createdAt:createdAt})
+        const salt = await bcrypt.genSalt(10);
+        const hashPass = await bcrypt.hash(password, salt);
+        const user = await usersCollection.insertOne({login:login, password:hashPass, salt: salt, email:email, createdAt:createdAt})
         return await usersRepo.getUser(user.insertedId.toString())
     }
 
@@ -54,9 +55,9 @@ export class usersRepo{
 
     static async loginUser(loginOrEmail:string,password:string):Promise<boolean|LoginSuccessType> {
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
-        if(!user || !bcrypt.compareSync(password, user.password)){return false}
+        if(!user || await bcrypt.hash(password, user.salt) != user.password) {return false}
         return {
-            "accessToken": "" //need to send a jwt of a user
+                "accessToken": "" //need to send a jwt of a user
         }
     }
 }

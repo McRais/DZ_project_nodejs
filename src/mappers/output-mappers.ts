@@ -28,6 +28,7 @@ export const usersMapper = (user: WithId<DBUsersType>)=>{
         id: user._id.toString(),
         login:user.login,
         email:user.email,
+        salt: user.salt,
         createdAt:user.createdAt
     }
 }

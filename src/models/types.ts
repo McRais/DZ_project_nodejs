@@ -20,6 +20,7 @@ export type DBUsersType = {
     login: string,
     email: string,
     password: string,
+    salt: string,
     createdAt: string
 }
 
