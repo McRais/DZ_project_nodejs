@@ -30,7 +30,7 @@ exports.usersRoute.get('/', auth_basic_middleware_1.AuthBasicMiddleware, (req, r
 }));
 //create new user
 exports.usersRoute.post('/', auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_users_1.userValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const checkLoginUniqueness = yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login);
+    const checkLoginUniqueness = yield users_repository_1.usersRepo.checkUserLoginUniqueness(req.body.login); //something is not right
     if (!checkLoginUniqueness) {
         return res.status(400).send({
             errorsMessages: [{ field: 'login', message: 'login should be unique' }]
@@ -44,7 +44,7 @@ exports.usersRoute.post('/', auth_basic_middleware_1.AuthBasicMiddleware, (0, va
     }
     const [login, password, email, createdAt] = [req.body.login, req.body.password, req.body.email, new Date];
     const user = yield users_repository_1.usersRepo.createUser(login, password, email, createdAt.toISOString());
-    return res.status(201).send(user);
+    return res.status(201).send(user); //redo, can't send user all the data
 }));
 //delete user
 exports.usersRoute.delete('/:id', auth_basic_middleware_1.AuthBasicMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {

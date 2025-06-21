@@ -67,8 +67,9 @@ class usersRepo {
     }
     static createUser(login, password, email, createdAt) {
         return __awaiter(this, void 0, void 0, function* () {
-            const hashPass = bcrypt_1.default.hashSync(password, 10);
-            const user = yield DB_1.usersCollection.insertOne({ login: login, password: hashPass, email: email, createdAt: createdAt });
+            const salt = yield bcrypt_1.default.genSalt(10);
+            const hashPass = yield bcrypt_1.default.hash(password, salt);
+            const user = yield DB_1.usersCollection.insertOne({ login: login, password: hashPass, salt: salt, email: email, createdAt: createdAt });
             return yield usersRepo.getUser(user.insertedId.toString());
         });
     }
@@ -81,7 +82,7 @@ class usersRepo {
     static loginUser(loginOrEmail, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield DB_1.usersCollection.findOne({ $or: [{ login: loginOrEmail }, { email: loginOrEmail }] });
-            if (!user || !bcrypt_1.default.compareSync(password, user.password)) {
+            if (!user || (yield bcrypt_1.default.hash(password, user.salt)) != user.password) {
                 return false;
             }
             return {
