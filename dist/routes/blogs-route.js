@@ -87,16 +87,8 @@ exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, voi
         "items": posts
     });
 }));
-//create new post in blog, need to check blogId before sending data to the post validation
-exports.blogsRoute.post("/:id/posts", auth_basic_middleware_1.AuthBasicMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);
-    if (blog === false) {
-        return res.status(404).send({
-            message: "blog not found or the id is incorrect",
-            field: "blogId"
-        });
-    }
-    (0, validator_posts_1.postInBlogRouteValidation)(); //doesn't work
+//create new post in blog
+exports.blogsRoute.post("/:id/posts", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_posts_1.postInBlogsRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
     return res.status(201).send(post);
 }));
