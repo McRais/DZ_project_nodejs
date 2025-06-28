@@ -25,7 +25,7 @@ const websiteValidator = body('websiteUrl')
     max: 100
     }).matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$').withMessage('incorrect website URL')
 
-export const blogCreateUpdateBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
+export const blogBodyValidation = () =>[nameValidator, descriptionValidator, websiteValidator,validatorErrorsCatcher]
 
 
 
