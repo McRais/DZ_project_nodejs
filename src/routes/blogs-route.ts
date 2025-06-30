@@ -9,7 +9,7 @@ import {
     RequestWithParams, RequestWithQuery
 } from "../models/types";
 import {blogBodyValidation} from "../validators/validator-blogs";
-import {postInBlogsRouteValidation} from "../validators/validator-posts";
+import {blogIdParamValidation, postInBlogsRouteValidation} from "../validators/validator-posts";
 import {postsRepo} from "../repo/posts-repository";
 import {SortDirection} from "mongodb";
 
@@ -59,15 +59,7 @@ blogsRoute.put("/:id",AuthBasicMiddleware, blogBodyValidation(), async (req:Requ
 })
 
 //get posts from blog
-blogsRoute.get('/:id/posts', async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
-
-    const blog = await blogsRepo.getBlogById(req.params.id)
-    if (blog === false){
-        return res.status(404).send({
-            message: "blog not found or the id is incorrect",
-            field: "blogId"
-        })
-    }
+blogsRoute.get('/:id/posts', blogIdParamValidation(), async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
@@ -83,7 +75,7 @@ blogsRoute.get('/:id/posts', async (req: RequestWithParamsAndQuery<{id:string}, 
 })
 
 //create new post in blog
-blogsRoute.post("/:id/posts", AuthBasicMiddleware, postInBlogsRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+blogsRoute.post("/:id/posts", AuthBasicMiddleware, blogIdParamValidation(), postInBlogsRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
 })

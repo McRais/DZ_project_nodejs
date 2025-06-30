@@ -41,4 +41,5 @@ const blogIdParamValidator = param('blogId')
     })
 
 export const postValidation = () =>[titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validatorErrorsCatcher]
-export const postInBlogsRouteValidation = () =>[blogIdParamValidator,validatorBlogIdErrorCatcher, shortDescValidator, contentValidator, validatorErrorsCatcher]
+export const postInBlogsRouteValidation = () =>[shortDescValidator, contentValidator, validatorErrorsCatcher]
+export const blogIdParamValidation = () => [blogIdParamValidator,validatorBlogIdErrorCatcher]
