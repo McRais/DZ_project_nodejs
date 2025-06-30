@@ -50,7 +50,7 @@ const blogIdParamValidator = (0, express_validator_1.param)('blogId')
 }));
 const postValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postValidation = postValidation;
-const postInBlogsRouteValidation = () => [shortDescValidator, contentValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+const postInBlogsRouteValidation = () => [titleValidator, shortDescValidator, contentValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postInBlogsRouteValidation = postInBlogsRouteValidation;
 const blogIdParamValidation = () => [blogIdParamValidator, validator_errors_catcher_1.validatorBlogIdErrorCatcher];
 exports.blogIdParamValidation = blogIdParamValidation;
