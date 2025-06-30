@@ -53,11 +53,9 @@ export class usersRepo{
         return deleteResult.deletedCount != 0
     }
 
-    static async loginUser(loginOrEmail:string,password:string):Promise<boolean|LoginSuccessType> {
+    static async loginUser(loginOrEmail:string,password:string):Promise<boolean> {
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
         if(!user || await bcrypt.hash(password, user.salt) != user.password) {return false}
-        return {
-                "accessToken": "" //need to send a jwt of a user
-        }
+        return true
     }
 }
