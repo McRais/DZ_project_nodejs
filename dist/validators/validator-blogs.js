@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogCreateUpdateBodyValidation = void 0;
+exports.blogBodyValidation = void 0;
 const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
 const express_validator_1 = require("express-validator");
 const nameValidator = (0, express_validator_1.body)('name')
@@ -24,5 +24,5 @@ const websiteValidator = (0, express_validator_1.body)('websiteUrl')
     min: 0,
     max: 100
 }).matches('^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$').withMessage('incorrect website URL');
-const blogCreateUpdateBodyValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
-exports.blogCreateUpdateBodyValidation = blogCreateUpdateBodyValidation;
+const blogBodyValidation = () => [nameValidator, descriptionValidator, websiteValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+exports.blogBodyValidation = blogBodyValidation;

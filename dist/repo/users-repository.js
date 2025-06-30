@@ -85,9 +85,7 @@ class usersRepo {
             if (!user || (yield bcrypt_1.default.hash(password, user.salt)) != user.password) {
                 return false;
             }
-            return {
-                "accessToken": "" //need to send a jwt of a user
-            };
+            return true;
         });
     }
 }

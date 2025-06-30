@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postInBlogsRouteValidation = exports.postValidation = void 0;
+exports.blogIdParamValidation = exports.postInBlogsRouteValidation = exports.postValidation = void 0;
 const express_validator_1 = require("express-validator");
 const validator_errors_catcher_1 = require("../middlewares/validator-errors-catcher");
 const blogs_repository_1 = require("../repo/blogs-repository");
@@ -50,5 +50,7 @@ const blogIdParamValidator = (0, express_validator_1.param)('blogId')
 }));
 const postValidation = () => [titleValidator, shortDescValidator, contentValidator, blogIdBodyValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postValidation = postValidation;
-const postInBlogsRouteValidation = () => [blogIdParamValidator, validator_errors_catcher_1.validatorBlogIdErrorCatcher, shortDescValidator, contentValidator, validator_errors_catcher_1.validatorErrorsCatcher];
+const postInBlogsRouteValidation = () => [shortDescValidator, contentValidator, validator_errors_catcher_1.validatorErrorsCatcher];
 exports.postInBlogsRouteValidation = postInBlogsRouteValidation;
+const blogIdParamValidation = () => [blogIdParamValidator, validator_errors_catcher_1.validatorBlogIdErrorCatcher];
+exports.blogIdParamValidation = blogIdParamValidation;

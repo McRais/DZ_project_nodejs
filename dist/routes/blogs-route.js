@@ -51,14 +51,14 @@ exports.blogsRoute.delete('/:id', auth_basic_middleware_1.AuthBasicMiddleware, (
     }
 }));
 //post blog
-exports.blogsRoute.post("/", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_blogs_1.blogCreateUpdateBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const createdAt = new Date;
     const blogId = yield blogs_repository_1.blogsRepo.createNewBlog(req.body.name, req.body.description, req.body.websiteUrl, createdAt.toISOString());
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(blogId);
     return res.status(201).send(blog);
 }));
 //update blog
-exports.blogsRoute.put("/:id", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_blogs_1.blogCreateUpdateBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.put("/:id", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_blogs_1.blogBodyValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl);
     if (!blog) {
         return res.sendStatus(404);
@@ -68,14 +68,7 @@ exports.blogsRoute.put("/:id", auth_basic_middleware_1.AuthBasicMiddleware, (0, 
     }
 }));
 //get posts from blog
-exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const blog = yield blogs_repository_1.blogsRepo.getBlogById(req.params.id);
-    if (blog === false) {
-        return res.status(404).send({
-            message: "blog not found or the id is incorrect",
-            field: "blogId"
-        });
-    }
+exports.blogsRoute.get('/:id/posts', (0, validator_posts_1.blogIdParamValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [pageNumber, pageSize, sortBy, sortDirection] = [Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const posts = yield blogs_repository_1.blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection);
     const postsRepoCount = yield posts_repository_1.postsRepo.getCountOfPostsFromBlog(req.params.id);
@@ -88,7 +81,7 @@ exports.blogsRoute.get('/:id/posts', (req, res) => __awaiter(void 0, void 0, voi
     });
 }));
 //create new post in blog
-exports.blogsRoute.post("/:id/posts", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_posts_1.postInBlogsRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.blogsRoute.post("/:id/posts", auth_basic_middleware_1.AuthBasicMiddleware, (0, validator_posts_1.blogIdParamValidation)(), (0, validator_posts_1.postInBlogsRouteValidation)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const post = yield posts_repository_1.postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id);
     return res.status(201).send(post);
 }));
