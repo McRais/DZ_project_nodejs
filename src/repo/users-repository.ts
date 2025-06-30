@@ -1,9 +1,9 @@
 import {ObjectId, SortDirection} from "mongodb";
-import {LoginSuccessType, OutputUsersType} from "../models/types";
+import {DBUsersType, LoginSuccessType, OutputUsersType} from "../models/types";
 import {usersCollection} from "../database/DB";
 import {usersMapper} from "../mappers/output-mappers";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+
 
 export class usersRepo{
     static async getCount(searchLoginTerm:string|undefined, searchEmailTerm:string|undefined): Promise<number> {
@@ -53,9 +53,9 @@ export class usersRepo{
         return deleteResult.deletedCount != 0
     }
 
-    static async loginUser(loginOrEmail:string,password:string):Promise<boolean> {
+    static async loginUser(loginOrEmail:string,password:string):Promise<OutputUsersType|false> {
         const user = await usersCollection.findOne({$or: [{login:loginOrEmail}, {email:loginOrEmail}]})
         if(!user || await bcrypt.hash(password, user.salt) != user.password) {return false}
-        return true
+        return usersMapper(user)
     }
 }
