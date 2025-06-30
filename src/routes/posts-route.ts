@@ -4,7 +4,7 @@ import {postsRepo} from "../repo/posts-repository";
 import {
     OutputPostsType,
     RequestWithBody,
-    RequestWithBodyAndParams, RequestWithParamsAndQuery,
+    RequestWithParamsAndBody, RequestWithParamsAndQuery,
     RequestWithQuery
 } from "../models/types";
 import {postValidation} from "../validators/validator-posts";
@@ -48,7 +48,7 @@ postsRoute.post("/", AuthBasicMiddleware, postValidation(), async (req:RequestWi
 })
 
 //update existing blog, auth and validation
-postsRoute.put("/:id", AuthBasicMiddleware, postValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
+postsRoute.put("/:id", AuthBasicMiddleware, postValidation(), async (req:RequestWithParamsAndBody<{id:string},{title:string, shortDescription:string, content:string, blogId: string}>, res:Response) =>{
     const post = await postsRepo.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
@@ -69,4 +69,4 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId
 })
 
 //post a comment
-postsRoute.post("/:postId/comments", AuthBearerMiddleware, async (req:RequestWithBodyAndParams<{postId:string}, {content:string}>) =>{})
+postsRoute.post("/:postId/comments", AuthBearerMiddleware, async (req:RequestWithParamsAndBody<{postId:string}, {content:string}>) =>{})

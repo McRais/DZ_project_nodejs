@@ -4,7 +4,7 @@ import {blogsRepo} from "../repo/blogs-repository";
 import {
     OutputBlogsType,
     RequestWithBody,
-    RequestWithBodyAndParams,
+    RequestWithParamsAndBody,
     RequestWithParamsAndQuery,
     RequestWithParams, RequestWithQuery
 } from "../models/types";
@@ -53,13 +53,13 @@ blogsRoute.post("/",AuthBasicMiddleware, blogBodyValidation(), async (req:Reques
 })
 
 //update blog
-blogsRoute.put("/:id",AuthBasicMiddleware, blogBodyValidation(), async (req:RequestWithBodyAndParams<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
+blogsRoute.put("/:id",AuthBasicMiddleware, blogBodyValidation(), async (req:RequestWithParamsAndBody<{id:string},{name:string, description:string, websiteUrl:string}>, res:Response) =>{
     const blog = await blogsRepo.updateBlog(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
     if(!blog){return res.sendStatus(404)}else{return res.sendStatus(204)}
 })
 
 //get posts from blog
-blogsRoute.get('/:id/posts', blogIdParamValidation(), async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
+blogsRoute.get('/:id/posts', /*blogIdParamValidation()*/ async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
@@ -75,7 +75,7 @@ blogsRoute.get('/:id/posts', blogIdParamValidation(), async (req: RequestWithPar
 })
 
 //create new post in blog
-blogsRoute.post("/:id/posts", AuthBasicMiddleware, blogIdParamValidation(), postInBlogsRouteValidation(), async (req:RequestWithBodyAndParams<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
+blogsRoute.post("/:id/posts", AuthBasicMiddleware, blogIdParamValidation(), postInBlogsRouteValidation(), async (req:RequestWithParamsAndBody<{id:string},{title:string, shortDescription:string, content:string}>, res:Response) =>{
     const post = await postsRepo.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.params.id)
     return res.status(201).send(post)
 })
