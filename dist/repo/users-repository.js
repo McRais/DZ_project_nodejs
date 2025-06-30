@@ -85,7 +85,7 @@ class usersRepo {
             if (!user || (yield bcrypt_1.default.hash(password, user.salt)) != user.password) {
                 return false;
             }
-            return true;
+            return (0, output_mappers_1.usersMapper)(user);
         });
     }
 }

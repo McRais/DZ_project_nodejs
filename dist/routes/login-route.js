@@ -12,13 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginRoute = void 0;
 const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
+const jwt_service_1 = require("../services/jwt-service");
 exports.loginRoute = (0, express_1.Router)({});
-//login user, needs validator for input values
 exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const login = yield users_repository_1.usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
-    if (!login) {
-        return res.sendStatus(401);
+    const user = yield users_repository_1.usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
+    if (user != false) {
+        const token = yield jwt_service_1.jwtService.createJwt(user);
+        if (token) {
+            return res.status(204).send(token);
+        }
     }
-    return res.sendStatus(204);
+    return res.sendStatus(401);
 }));
 //loginRoute.get('/me', async (req: RequestWithBody<{me: string}>, res:Response): Promise<MyInfoType|401> => {})
