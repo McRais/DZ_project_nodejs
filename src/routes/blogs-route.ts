@@ -59,7 +59,7 @@ blogsRoute.put("/:id",AuthBasicMiddleware, blogBodyValidation(), async (req:Requ
 })
 
 //get posts from blog
-blogsRoute.get('/:id/posts', /*blogIdParamValidation()*/ async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
+blogsRoute.get('/:id/posts', blogIdParamValidation(), async (req: RequestWithParamsAndQuery<{id:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res: Response)=>{
 
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const posts = await blogsRepo.getPostsFromBlog(req.params.id, pageNumber, pageSize, sortBy, sortDirection)
