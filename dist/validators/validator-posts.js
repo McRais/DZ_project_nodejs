@@ -41,7 +41,7 @@ const blogIdBodyValidator = (0, express_validator_1.body)('blogId')
         throw new Error('incorrect id of blog');
     }
 }));
-const blogIdParamValidator = (0, express_validator_1.param)('blogId')
+const blogIdParamValidator = (0, express_validator_1.param)('id')
     .custom((id) => __awaiter(void 0, void 0, void 0, function* () {
     const blog = yield blogs_repository_1.blogsRepo.getBlogById(id);
     if (blog === false) {
