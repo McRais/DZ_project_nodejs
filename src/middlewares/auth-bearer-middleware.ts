@@ -10,8 +10,8 @@ export const AuthBearerMiddleware = async (req: Request, res: Response, next:Nex
 
     if (userId){
         const user = await usersRepo.getUser(userId)
-        if(user!=false){
-            req.user!.userId = userId;  //100% a mistake somewhere here
+        if(user){
+            req.user.userId = userId;  //100% a mistake somewhere here
             next()
         }
     }

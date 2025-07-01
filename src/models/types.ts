@@ -36,9 +36,6 @@ export type commentatorInfoType = {
     userLogin: string
 }
 
-export type userIdBearerAuthType = {
-    userId: string,
-}
 
 
 //what should the functions output to user.

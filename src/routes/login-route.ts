@@ -2,6 +2,7 @@ import {Response, Router} from "express";
 import {LoginSuccessType, MyInfoType, RequestWithBody} from "../models/types";
 import {usersRepo} from "../repo/users-repository";
 import {jwtService} from "../services/jwt-service";
+import {AuthBearerMiddleware} from "../middlewares/auth-bearer-middleware";
 
 export const loginRoute = Router({});
 
@@ -15,4 +16,11 @@ loginRoute.post('/login', async (req: RequestWithBody<{loginOrEmail: string, pas
     return  res.sendStatus(401);
 })
 
-//loginRoute.get('/me', async (req: RequestWithBody<{me: string}>, res:Response): Promise<MyInfoType|401> => {})
+/*loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response): Promise<MyInfoType> => {
+    const user = await usersRepo.getUser(req.user.userId)
+    if(user){return res.status(201).send({
+        email: user.email,
+        login: user.login,
+        userId: user.id
+    })}
+})*/
