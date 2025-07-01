@@ -16,6 +16,7 @@ const posts_repository_1 = require("../repo/posts-repository");
 const validator_posts_1 = require("../validators/validator-posts");
 const comments_repository_1 = require("../repo/comments-repository");
 const auth_bearer_middleware_1 = require("../middlewares/auth-bearer-middleware");
+const validator_comments_1 = require("../validators/validator-comments");
 exports.postsRoute = (0, express_1.Router)({});
 //get all posts
 exports.postsRoute.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,4 +80,11 @@ exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void
     });
 }));
 //post a comment
-exports.postsRoute.post("/:postId/comments", auth_bearer_middleware_1.AuthBearerMiddleware, (req) => __awaiter(void 0, void 0, void 0, function* () { }));
+exports.postsRoute.post("/:postId/comments", auth_bearer_middleware_1.AuthBearerMiddleware, (0, validator_comments_1.commentsValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_repository_1.postsRepo.getPostById(req.params.postId);
+    if (post === false) {
+        return res.sendStatus(404);
+    }
+    const comment = yield comments_repository_1.commentsRepo.createComment(req.user.userId, req.params.postId, req.body.content);
+    return res.status(201).send(comment);
+}));

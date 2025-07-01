@@ -13,6 +13,7 @@ exports.commentsRepo = void 0;
 const mongodb_1 = require("mongodb");
 const DB_1 = require("../database/DB");
 const output_mappers_1 = require("../mappers/output-mappers");
+const users_repository_1 = require("./users-repository");
 class commentsRepo {
     static getCommentsFromPostCount(postId) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,34 +40,52 @@ class commentsRepo {
             return (0, output_mappers_1.commentsMapper)(comment);
         });
     }
-    static createComment(content, postId) {
+    static createComment(userId, postId, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(postId) });
-            if (!comment) {
-                return false;
-            }
-            const res = yield DB_1.commentsCollection.insertOne({
+            const comment = {
                 content: content,
                 commentatorInfo: {
-                    userId: "",
-                    userLogin: ""
+                    userId: userId,
+                    userLogin: yield users_repository_1.usersRepo.getUserLogin(userId)
                 },
                 createdAt: new Date().toISOString(),
                 postId: postId
-            });
-            return res.insertedId.toString();
+            };
+            const res = yield DB_1.commentsCollection.insertOne(comment);
+            return {
+                id: res.insertedId.toString(),
+                content: comment.content,
+                commentatorInfo: comment.commentatorInfo,
+                createdAt: comment.createdAt
+            };
         });
     }
     static updateComment(id, content) {
         return __awaiter(this, void 0, void 0, function* () {
             const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
             if (!comment) {
-                return false;
+                return 404;
+            }
+            if (comment.commentatorInfo.userId != id) {
+                return 403;
             }
             yield DB_1.commentsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
                     content: content
                 } });
-            return true;
+            return 204;
+        });
+    }
+    static deleteComment(userId, commentId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(commentId) });
+            if (!comment) {
+                return 404;
+            }
+            if (userId != comment.commentatorInfo.userId) {
+                return 403;
+            }
+            yield DB_1.commentsCollection.deleteOne({ _id: new mongodb_1.ObjectId(commentId) });
+            return 204;
         });
     }
 }

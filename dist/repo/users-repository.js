@@ -88,5 +88,11 @@ class usersRepo {
             return (0, output_mappers_1.usersMapper)(user);
         });
     }
+    static getUserLogin(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield DB_1.usersCollection.findOne({ _id: new mongodb_1.ObjectId(userId) });
+            return user.login;
+        });
+    }
 }
 exports.usersRepo = usersRepo;
