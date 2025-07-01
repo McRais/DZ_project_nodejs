@@ -6,7 +6,8 @@ const secret = process.env.JWT_SECRET||"123";
 
 export const jwtService = {
      async createJwt(user: OutputUsersType) {
-        const token = jwt.sign({userId: user.id}, secret,{expiresIn: "1d"});
+         const payload = { "userId": user.id }
+        const token = jwt.sign(payload, secret, {expiresIn: "1h"});
         return {accessToken: token};
     },
 

@@ -17,7 +17,7 @@ const AuthBearerMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
         return res.sendStatus(401);
     }
     const token = req.headers.authorization.split(' ')[1];
-    const userDecodedToken = yield jwt_service_1.jwtService.getUserIdFromToken(token); //should return just JwtPayload
+    const userDecodedToken = yield jwt_service_1.jwtService.getUserIdFromToken(token); //should return just JwtPayload, returns a string
     if (userDecodedToken && typeof userDecodedToken !== "string") {
         const user = yield users_repository_1.usersRepo.getUser(userDecodedToken.id);
         if (user) {

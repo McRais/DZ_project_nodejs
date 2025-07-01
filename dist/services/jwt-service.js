@@ -18,7 +18,8 @@ const secret = process.env.JWT_SECRET || "123";
 exports.jwtService = {
     createJwt(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user.id }, secret, { expiresIn: "1d" });
+            const payload = { "userId": user.id };
+            const token = jsonwebtoken_1.default.sign(payload, secret, { expiresIn: "1h" });
             return { accessToken: token };
         });
     },
