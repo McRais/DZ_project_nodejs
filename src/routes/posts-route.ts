@@ -11,6 +11,7 @@ import {postValidation} from "../validators/validator-posts";
 import {SortDirection} from "mongodb";
 import {commentsRepo} from "../repo/comments-repository";
 import {AuthBearerMiddleware} from "../middlewares/auth-bearer-middleware";
+import {commentsValidator} from "../validators/validator-comments";
 
 export const postsRoute = Router({})
 
@@ -53,6 +54,8 @@ postsRoute.put("/:id", AuthBasicMiddleware, postValidation(), async (req:Request
     if(!post){return res.sendStatus(404)} else {return res.sendStatus(204)}
 })
 
+
+
 //get all comments from the post
 postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res:Response)=>{
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
@@ -69,4 +72,9 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId
 })
 
 //post a comment
-postsRoute.post("/:postId/comments", AuthBearerMiddleware, async (req:RequestWithParamsAndBody<{postId:string}, {content:string}>) =>{})
+postsRoute.post("/:postId/comments", AuthBearerMiddleware, commentsValidator(), async (req:RequestWithParamsAndBody<{postId:string},{content:string}>, res:Response) =>{
+    const post = await postsRepo.getPostById(req.params.postId)
+    if(post === false){return res.sendStatus(404)}
+    const comment = await commentsRepo.createComment(req.user!.userId, req.params.postId, req.body.content)
+    return res.status(201).send(comment)
+})

@@ -58,4 +58,9 @@ export class usersRepo{
         if(!user || await bcrypt.hash(password, user.salt) != user.password) {return false}
         return usersMapper(user)
     }
+
+    static async getUserLogin(userId:string):Promise<string> {
+        const user = await usersCollection.findOne({_id: new ObjectId(userId)})
+        return user!.login;
+    }
 }

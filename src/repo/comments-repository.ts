@@ -1,7 +1,8 @@
 import {ObjectId, SortDirection} from "mongodb";
-import {commentsCollection, postsCollection} from "../database/DB";
+import {commentsCollection} from "../database/DB";
 import {commentsMapper} from "../mappers/output-mappers";
 import {OutputCommentsType} from "../models/types";
+import {usersRepo} from "./users-repository";
 
 export class commentsRepo{
 
@@ -25,30 +26,46 @@ export class commentsRepo{
         return commentsMapper(comment)
     }
 
-    static async createComment(content:string, postId:string): Promise<string|false> {
-        const comment = await commentsCollection.findOne({_id: new ObjectId(postId)})
-        if (!comment) {return false}
-        const res = await commentsCollection.insertOne({
+    static async createComment(userId:string, postId:string, content:string): Promise<OutputCommentsType> {
+        const comment = {
             content: content,
             commentatorInfo:{
-                userId:"",
-                userLogin:""
+                userId:userId,
+                userLogin: await usersRepo.getUserLogin(userId)
             },
             createdAt: new Date().toISOString(),
             postId: postId
-        })
-        return res.insertedId.toString()
+        }
+
+        const res = await commentsCollection.insertOne(comment)
+        return {
+            id:res.insertedId.toString(),
+            content: comment.content,
+            commentatorInfo: comment.commentatorInfo,
+            createdAt: comment.createdAt
+        }
     }
 
-    static async updateComment(id: string, content:string):Promise<boolean> {
+    static async updateComment(id: string, content:string):Promise<number> {
         const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
         if (!comment) {
-            return false
+            return 404
+        }
+        if(comment.commentatorInfo.userId != id){
+            return 403
         }
         await commentsCollection.updateOne({_id: new ObjectId(id)},
             {$set: {
                     content: content
                 }})
-        return true
+        return 204
+    }
+
+    static async deleteComment(userId:string, commentId: string):Promise<number> {
+        const comment = await commentsCollection.findOne({_id: new ObjectId(commentId)})
+        if(!comment){return 404}
+        if(userId != comment.commentatorInfo.userId){return 403}
+        await commentsCollection.deleteOne({_id: new ObjectId(commentId)})
+        return 204
     }
 }
