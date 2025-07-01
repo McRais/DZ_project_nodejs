@@ -18,16 +18,16 @@ const secret = process.env.JWT_SECRET || "123";
 exports.jwtService = {
     createJwt(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const payload = { "userId": user.id };
-            const token = jsonwebtoken_1.default.sign(payload, secret, { expiresIn: "1h" });
+            const payload = { userId: user.id };
+            const token = jsonwebtoken_1.default.sign(payload, secret);
             return { accessToken: token };
         });
     },
     getUserIdFromToken(token) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = JSON.parse(jsonwebtoken_1.default.verify(token, secret).toString());
-                return result.userId;
+                const result = jsonwebtoken_1.default.verify(token, secret);
+                return result.userId; //here is the problem
             }
             catch (error) {
                 return null;

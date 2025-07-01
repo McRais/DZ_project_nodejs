@@ -6,15 +6,15 @@ const secret = process.env.JWT_SECRET||"123";
 
 export const jwtService = {
      async createJwt(user: OutputUsersType) {
-         const payload = { "userId": user.id }
-        const token = jwt.sign(payload, secret, {expiresIn: "1h"});
+         const payload = { userId: user.id }
+        const token = jwt.sign(payload, secret);
         return {accessToken: token};
     },
 
     async getUserIdFromToken(token:string){
          try {
-             const result = JSON.parse(jwt.verify(token, secret).toString());
-             return result.userId
+             const result:any = jwt.verify(token, secret);
+             return result.userId //here is the problem
          }
          catch (error) {return null}
     }
