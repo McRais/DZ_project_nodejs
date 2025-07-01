@@ -13,6 +13,7 @@ exports.loginRoute = void 0;
 const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
 const jwt_service_1 = require("../services/jwt-service");
+const auth_bearer_middleware_1 = require("../middlewares/auth-bearer-middleware");
 exports.loginRoute = (0, express_1.Router)({});
 exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield users_repository_1.usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
@@ -24,11 +25,15 @@ exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0
     }
     return res.sendStatus(401);
 }));
-/*loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response): Promise<MyInfoType> => {
-    const user = await usersRepo.getUser(req.user.userId)
-    if(user){return res.status(201).send({
-        email: user.email,
-        login: user.login,
-        userId: user.id
-    })}
-})*/ 
+exports.loginRoute.get('/me', auth_bearer_middleware_1.AuthBearerMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield users_repository_1.usersRepo.getUser(req.user.userId);
+    if (user) {
+        const info = {
+            email: user.email,
+            login: user.login,
+            userId: user.id
+        };
+        return res.status(201).send(info);
+    }
+    return res.sendStatus(401);
+}));
