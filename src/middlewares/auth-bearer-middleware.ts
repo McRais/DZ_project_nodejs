@@ -16,5 +16,5 @@ export const AuthBearerMiddleware = async (req: Request, res: Response, next:Nex
         }
     }
 
-    return res.sendStatus(401)
+    return res.status(201).send(userDecodedToken)
 }
