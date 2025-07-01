@@ -13,8 +13,8 @@ export const jwtService = {
 
     async getUserIdFromToken(token:string){
          try {
-             const result = jwt.verify(token, secret);
-             return result //need to find why jwt.verify can return a string
+             const result:any = jwt.verify(token, secret);
+             return result.userId
          }
          catch (error) {return null}
     }
