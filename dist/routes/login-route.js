@@ -19,7 +19,7 @@ exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0
     if (user != false) {
         const token = yield jwt_service_1.jwtService.createJwt(user);
         if (token) {
-            return res.status(204).send(user);
+            return res.status(200).send(token);
         }
     }
     return res.sendStatus(401);
