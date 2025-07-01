@@ -10,7 +10,7 @@ loginRoute.post('/login', async (req: RequestWithBody<{loginOrEmail: string, pas
     const user = await usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
     if(user != false){
         const token =await jwtService.createJwt(user)
-        if(token){return res.status(204).send(token)}
+        if(token){return res.status(200).send(token)}
     }
     return  res.sendStatus(401);
 })

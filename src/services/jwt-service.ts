@@ -1,18 +1,19 @@
 import {OutputUsersType} from "../models/types";
 import jwt from "jsonwebtoken";
-import {ObjectId} from "mongodb";
+
+const secret = process.env.JWT_SECRET||"123";
 
 
 export const jwtService = {
      async createJwt(user: OutputUsersType) {
-        const token = jwt.sign({userId: user.id}, "123",{expiresIn: "1d"});
+        const token = jwt.sign({userId: user.id}, secret,{expiresIn: "1d"});
         return {accessToken: token};
-    }
-    /*async getUserIdFromToken(token:string){
+    },
+    async getUserIdFromToken(token:string){
          try {
-             const result = jwt.verify(token, process.env.JWT_SECRET || '123');
-             return result.userId;
+             const result = jwt.verify(token, secret);
+             if(typeof result != "string"){return result.userId} //need to find why jwt.verify can return a string
          }
          catch (error) {return null}
-    }*/
+    }
 }

@@ -2,16 +2,19 @@ import {NextFunction, Request, Response} from "express";
 import {usersRepo} from "../repo/users-repository";
 import {jwtService} from "../services/jwt-service";
 
-export const AuthBearerMiddleware = (req: Request, res: Response, next:NextFunction) => {
-   /* if (!req.headers.authorization) {return res.sendStatus(401)}
+export const AuthBearerMiddleware = async (req: Request, res: Response, next:NextFunction) => {
+    if (!req.headers.authorization) {return res.sendStatus(401)}
 
     const token = req.headers.authorization.split(' ')[1];
-    const userId = await jwtService.getUserIdFromToken(token);
+    const userId = await jwtService.getUserIdFromToken(token); //should return string, not any
 
     if (userId){
-        req.userId=await usersRepo.getUser(userId)
-        return next()
+        const user = await usersRepo.getUser(userId)
+        if(user!=false){
+            req.user!.userId = userId;  //100% a mistake somewhere here
+            next()
+        }
     }
 
-    return res.sendStatus(401)*/
+    return res.sendStatus(401)
 }
