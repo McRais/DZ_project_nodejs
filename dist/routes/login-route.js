@@ -26,7 +26,7 @@ exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0
     return res.sendStatus(401);
 }));
 exports.loginRoute.get('/me', auth_bearer_middleware_1.AuthBearerMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield users_repository_1.usersRepo.getUser(req.user.userId);
+    const user = yield users_repository_1.usersRepo.getUser(req.userId);
     if (user) {
         const info = {
             email: user.email,

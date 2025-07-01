@@ -25,11 +25,11 @@ exports.commentsRoute.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0
 }));
 //update comment by id
 exports.commentsRoute.put('/:commentId', auth_bearer_middleware_1.AuthBearerMiddleware, (0, validator_comments_1.commentsValidator)(), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const commentStatus = yield comments_repository_1.commentsRepo.updateComment(req.user.userId, req.body.content);
+    const commentStatus = yield comments_repository_1.commentsRepo.updateComment(req.userId, req.body.content);
     return res.sendStatus(commentStatus); //need to rewrite, repo knows http codes
 }));
 //delete comment by id
 exports.commentsRoute.delete('/:commentId', auth_bearer_middleware_1.AuthBearerMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield comments_repository_1.commentsRepo.deleteComment(req.user.userId, req.params.id);
+    const result = yield comments_repository_1.commentsRepo.deleteComment(req.userId, req.params.id);
     return res.sendStatus(result);
 }));

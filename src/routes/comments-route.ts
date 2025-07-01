@@ -16,13 +16,13 @@ commentsRoute.get('/:id', async (req: RequestWithParams<{id:string}>, res:Respon
 
 //update comment by id
 commentsRoute.put('/:commentId', AuthBearerMiddleware, commentsValidator(), async (req:RequestWithParamsAndBody<{commentId:string}, {content:string}>, res:Response) => {
-    const commentStatus =await commentsRepo.updateComment(req.user!.userId, req.body.content);
+    const commentStatus =await commentsRepo.updateComment(req.userId!, req.body.content);
     return res.sendStatus(commentStatus) //need to rewrite, repo knows http codes
 })
 
 //delete comment by id
 commentsRoute.delete('/:commentId', AuthBearerMiddleware, async (req:RequestWithParams<{id:string}>, res:Response) => {
-    const result = await commentsRepo.deleteComment(req.user!.userId, req.params.id)
+    const result = await commentsRepo.deleteComment(req.userId!, req.params.id)
     return res.sendStatus(result)
 
 })

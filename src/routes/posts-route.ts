@@ -75,6 +75,6 @@ postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId
 postsRoute.post("/:postId/comments", AuthBearerMiddleware, commentsValidator(), async (req:RequestWithParamsAndBody<{postId:string},{content:string}>, res:Response) =>{
     const post = await postsRepo.getPostById(req.params.postId)
     if(post === false){return res.sendStatus(404)}
-    const comment = await commentsRepo.createComment(req.user!.userId, req.params.postId, req.body.content)
+    const comment = await commentsRepo.createComment(req.userId!, req.params.postId, req.body.content)
     return res.status(201).send(comment)
 })

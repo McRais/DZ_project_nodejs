@@ -85,6 +85,6 @@ exports.postsRoute.post("/:postId/comments", auth_bearer_middleware_1.AuthBearer
     if (post === false) {
         return res.sendStatus(404);
     }
-    const comment = yield comments_repository_1.commentsRepo.createComment(req.user.userId, req.params.postId, req.body.content);
+    const comment = yield comments_repository_1.commentsRepo.createComment(req.userId, req.params.postId, req.body.content);
     return res.status(201).send(comment);
 }));

@@ -18,13 +18,15 @@ const AuthBearerMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
     }
     const token = req.headers.authorization.split(' ')[1];
     const userIdFromToken = yield jwt_service_1.jwtService.getUserIdFromToken(token);
+    if (!userIdFromToken) {
+        return res.sendStatus(401);
+    }
     if (userIdFromToken) {
         const user = yield users_repository_1.usersRepo.getUser(userIdFromToken);
-        if (user) {
-            req.user.userId = userIdFromToken;
+        if (user != false) {
+            req.userId = user.id;
             next();
         }
     }
-    return res.sendStatus(401);
 });
 exports.AuthBearerMiddleware = AuthBearerMiddleware;

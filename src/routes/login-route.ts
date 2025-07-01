@@ -17,7 +17,7 @@ loginRoute.post('/login', async (req: RequestWithBody<{loginOrEmail: string, pas
 })
 
 loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response) => {
-    const user = await usersRepo.getUser(req.user.userId)
+    const user = await usersRepo.getUser(req.userId!)
     if(user){
         const info = {
             email: user.email,
