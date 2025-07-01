@@ -21,7 +21,7 @@ const AuthBearerMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
     if (userIdFromToken) {
         const user = yield users_repository_1.usersRepo.getUser(userIdFromToken);
         if (user) {
-            req.user.userId = userIdFromToken; //100% a mistake somewhere here
+            req.user.userId = userIdFromToken;
             next();
         }
     }

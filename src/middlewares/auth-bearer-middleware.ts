@@ -12,7 +12,7 @@ export const AuthBearerMiddleware = async (req: Request, res: Response, next:Nex
     if (userIdFromToken){
         const user = await usersRepo.getUser(userIdFromToken)
         if(user){
-            req.user.userId = userIdFromToken;  //100% a mistake somewhere here
+            req.user.userId = userIdFromToken;
             next()
         }
     }
