@@ -6,7 +6,6 @@ export const AuthBearerMiddleware = async (req: Request, res: Response, next:Nex
     if (!req.headers.authorization) {return res.sendStatus(401)}
 
     const token = req.headers.authorization.split(' ')[1];
-
     const userIdFromToken =await jwtService.getUserIdFromToken(token);
 
     if(!userIdFromToken){return res.sendStatus(401)}
@@ -15,7 +14,7 @@ export const AuthBearerMiddleware = async (req: Request, res: Response, next:Nex
         const user = await usersRepo.getUser(userIdFromToken)
         if(user != false){
             req.userId = user.id;
-            next()
+            return next()
         }
     }
 }

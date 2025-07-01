@@ -60,16 +60,16 @@ class commentsRepo {
             };
         });
     }
-    static updateComment(id, content) {
+    static updateComment(userId, commentId, content) {
         return __awaiter(this, void 0, void 0, function* () {
-            const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(id) });
+            const comment = yield DB_1.commentsCollection.findOne({ _id: new mongodb_1.ObjectId(commentId) });
             if (!comment) {
                 return 404;
             }
-            if (comment.commentatorInfo.userId != id) {
+            if (comment.commentatorInfo.userId != userId) {
                 return 403;
             }
-            yield DB_1.commentsCollection.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: {
+            yield DB_1.commentsCollection.updateOne({ _id: new mongodb_1.ObjectId(commentId) }, { $set: {
                     content: content
                 } });
             return 204;

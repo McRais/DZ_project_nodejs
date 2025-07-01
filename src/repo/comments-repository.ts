@@ -46,15 +46,15 @@ export class commentsRepo{
         }
     }
 
-    static async updateComment(id: string, content:string):Promise<number> {
-        const comment = await commentsCollection.findOne({_id: new ObjectId(id)})
+    static async updateComment(userId: string,commentId:string, content:string):Promise<number> {
+        const comment = await commentsCollection.findOne({_id: new ObjectId(commentId)})
         if (!comment) {
             return 404
         }
-        if(comment.commentatorInfo.userId != id){
+        if(comment.commentatorInfo.userId != userId){
             return 403
         }
-        await commentsCollection.updateOne({_id: new ObjectId(id)},
+        await commentsCollection.updateOne({_id: new ObjectId(commentId)},
             {$set: {
                     content: content
                 }})

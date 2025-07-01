@@ -16,7 +16,7 @@ commentsRoute.get('/:id', async (req: RequestWithParams<{id:string}>, res:Respon
 
 //update comment by id
 commentsRoute.put('/:commentId', AuthBearerMiddleware, commentsValidator(), async (req:RequestWithParamsAndBody<{commentId:string}, {content:string}>, res:Response) => {
-    const commentStatus =await commentsRepo.updateComment(req.userId!, req.body.content);
+    const commentStatus =await commentsRepo.updateComment(req.userId!,req.params.commentId, req.body.content);
     return res.sendStatus(commentStatus) //need to rewrite, repo knows http codes
 })
 
