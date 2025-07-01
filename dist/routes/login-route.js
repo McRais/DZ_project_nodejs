@@ -24,4 +24,11 @@ exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0
     }
     return res.sendStatus(401);
 }));
-//loginRoute.get('/me', async (req: RequestWithBody<{me: string}>, res:Response): Promise<MyInfoType|401> => {})
+/*loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response): Promise<MyInfoType> => {
+    const user = await usersRepo.getUser(req.user.userId)
+    if(user){return res.status(201).send({
+        email: user.email,
+        login: user.login,
+        userId: user.id
+    })}
+})*/ 

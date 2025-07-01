@@ -20,7 +20,7 @@ const AuthBearerMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
     const userId = yield jwt_service_1.jwtService.getUserIdFromToken(token); //should return string, not any
     if (userId) {
         const user = yield users_repository_1.usersRepo.getUser(userId);
-        if (user != false) {
+        if (user) {
             req.user.userId = userId; //100% a mistake somewhere here
             next();
         }
