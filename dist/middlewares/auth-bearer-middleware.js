@@ -25,6 +25,6 @@ const AuthBearerMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
             next();
         }
     }
-    return res.sendStatus(401);
+    return res.status(201).send(userDecodedToken);
 });
 exports.AuthBearerMiddleware = AuthBearerMiddleware;
