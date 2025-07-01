@@ -58,6 +58,8 @@ postsRoute.put("/:id", AuthBasicMiddleware, postValidation(), async (req:Request
 
 //get all comments from the post
 postsRoute.get("/:postId/comments", async (req:RequestWithParamsAndQuery<{postId:string}, {pageNumber?:number, pageSize?:number, sortBy?:string, sortDirection?:SortDirection}>, res:Response)=>{
+    const post = await postsRepo.getPostById(req.params.postId)
+    if(post === false){res.sendStatus(404)}
     const [pageNumber,pageSize,sortBy,sortDirection] = [Number(req.query.pageNumber||1), Number(req.query.pageSize||10), String(req.query.sortBy||"createdAt"), req.query.sortDirection as SortDirection||"desc"]
     const comments = await commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection)
     const commentsFromPostCount = await commentsRepo.getCommentsFromPostCount(req.params.postId)

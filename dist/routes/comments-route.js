@@ -30,6 +30,6 @@ exports.commentsRoute.put('/:commentId', auth_bearer_middleware_1.AuthBearerMidd
 }));
 //delete comment by id
 exports.commentsRoute.delete('/:commentId', auth_bearer_middleware_1.AuthBearerMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield comments_repository_1.commentsRepo.deleteComment(req.userId, req.params.id);
+    const result = yield comments_repository_1.commentsRepo.deleteComment(req.userId, req.params.commentId);
     return res.sendStatus(result);
 }));

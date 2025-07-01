@@ -68,6 +68,10 @@ exports.postsRoute.put("/:id", auth_basic_middleware_1.AuthBasicMiddleware, (0, 
 }));
 //get all comments from the post
 exports.postsRoute.get("/:postId/comments", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const post = yield posts_repository_1.postsRepo.getPostById(req.params.postId);
+    if (post === false) {
+        res.sendStatus(404);
+    }
     const [pageNumber, pageSize, sortBy, sortDirection] = [Number(req.query.pageNumber || 1), Number(req.query.pageSize || 10), String(req.query.sortBy || "createdAt"), req.query.sortDirection || "desc"];
     const comments = yield comments_repository_1.commentsRepo.getCommentsFromPost(req.params.postId, pageNumber, pageSize, sortBy, sortDirection);
     const commentsFromPostCount = yield comments_repository_1.commentsRepo.getCommentsFromPostCount(req.params.postId);

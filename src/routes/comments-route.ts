@@ -21,8 +21,7 @@ commentsRoute.put('/:commentId', AuthBearerMiddleware, commentsValidator(), asyn
 })
 
 //delete comment by id
-commentsRoute.delete('/:commentId', AuthBearerMiddleware, async (req:RequestWithParams<{id:string}>, res:Response) => {
-    const result = await commentsRepo.deleteComment(req.userId!, req.params.id)
+commentsRoute.delete('/:commentId', AuthBearerMiddleware, async (req:RequestWithParams<{commentId:string}>, res:Response) => {
+    const result = await commentsRepo.deleteComment(req.userId!, req.params.commentId)
     return res.sendStatus(result)
-
 })
