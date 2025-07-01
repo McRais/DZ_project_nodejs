@@ -14,18 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.jwtService = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-exports.jwtService = {
-    createJwt(user) {
+class jwtService {
+    static createJwt(user) {
         return __awaiter(this, void 0, void 0, function* () {
             const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET || '123', { expiresIn: "1h" });
             return { accessToken: token };
         });
-    },
-    /*async getUserIdFromToken(token:string){
-         try {
-             const result = jwt.verify(token, process.env.JWT_SECRET || '123');
-             return result.userId;
-         }
-         catch (error) {return null}
-    }*/
-};
+    }
+}
+exports.jwtService = jwtService;
