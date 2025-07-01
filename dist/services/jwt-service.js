@@ -14,18 +14,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.jwtService = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const secret = process.env.JWT_SECRET || "123";
 exports.jwtService = {
     createJwt(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET || "123", { expiresIn: "1d" });
+            const token = jsonwebtoken_1.default.sign({ userId: user.id }, secret, { expiresIn: "1d" });
             return { accessToken: token };
         });
+    },
+    getUserIdFromToken(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = jsonwebtoken_1.default.verify(token, secret);
+                if (typeof result != "string") {
+                    return result.userId;
+                } //need to find why jwt.verify can return a string
+            }
+            catch (error) {
+                return null;
+            }
+        });
     }
-    /*async getUserIdFromToken(token:string){
-         try {
-             const result = jwt.verify(token, process.env.JWT_SECRET || '123');
-             return result.userId;
-         }
-         catch (error) {return null}
-    }*/
 };
