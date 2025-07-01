@@ -1,5 +1,5 @@
 import {OutputUsersType} from "../models/types";
-import jwt from "jsonwebtoken";
+import jwt, {JwtPayload} from "jsonwebtoken";
 
 const secret = process.env.JWT_SECRET||"123";
 
@@ -13,7 +13,7 @@ export const jwtService = {
 
     async getUserIdFromToken(token:string){
          try {
-             const result:any = jwt.verify(token, secret);
+             const result = JSON.parse(jwt.verify(token, secret).toString());
              return result.userId
          }
          catch (error) {return null}
