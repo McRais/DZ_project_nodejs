@@ -17,11 +17,11 @@ const AuthBearerMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
         return res.sendStatus(401);
     }
     const token = req.headers.authorization.split(' ')[1];
-    const userId = yield jwt_service_1.jwtService.getUserIdFromToken(token); //should return string, not any
-    if (userId) {
-        const user = yield users_repository_1.usersRepo.getUser(userId);
+    const userDecodedToken = yield jwt_service_1.jwtService.getUserIdFromToken(token); //should return just JwtPayload
+    if (userDecodedToken && typeof userDecodedToken !== "string") {
+        const user = yield users_repository_1.usersRepo.getUser(userDecodedToken.id);
         if (user) {
-            req.user.userId = userId; //100% a mistake somewhere here
+            req.user.userId = userDecodedToken; //100% a mistake somewhere here
             next();
         }
     }

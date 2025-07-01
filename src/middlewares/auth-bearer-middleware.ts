@@ -6,12 +6,12 @@ export const AuthBearerMiddleware = async (req: Request, res: Response, next:Nex
     if (!req.headers.authorization) {return res.sendStatus(401)}
 
     const token = req.headers.authorization.split(' ')[1];
-    const userId = await jwtService.getUserIdFromToken(token); //should return string, not any
+    const userDecodedToken = await jwtService.getUserIdFromToken(token); //should return just JwtPayload
 
-    if (userId){
-        const user = await usersRepo.getUser(userId)
+    if (userDecodedToken && typeof userDecodedToken !== "string"){
+        const user = await usersRepo.getUser(userDecodedToken.id)
         if(user){
-            req.user.userId = userId;  //100% a mistake somewhere here
+            req.user.userId = userDecodedToken;  //100% a mistake somewhere here
             next()
         }
     }
