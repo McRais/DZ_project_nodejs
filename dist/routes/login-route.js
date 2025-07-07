@@ -37,3 +37,9 @@ exports.loginRoute.get('/me', auth_bearer_middleware_1.AuthBearerMiddleware, (re
     }
     return res.sendStatus(401);
 }));
+exports.loginRoute.post('/registration', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
+exports.loginRoute.post('/registration-confirmation', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
+exports.loginRoute.post('/registration-email-resending', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+}));
