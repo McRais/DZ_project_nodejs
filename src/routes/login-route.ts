@@ -28,3 +28,15 @@ loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response) => 
     }
     return res.sendStatus(401)
 })
+
+loginRoute.post('/registration', async (req:Request, res:Response) => {
+
+})
+
+loginRoute.post('/registration-confirmation', async (req:Request, res:Response) => {
+
+})
+
+loginRoute.post('/registration-email-resending', async (req:Request, res:Response) => {
+
+})
