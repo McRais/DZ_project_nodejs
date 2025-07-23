@@ -34,7 +34,7 @@ const kia = {
 bmw.showMaxSpeed.call(scooter);
 bmw.showMaxSpeed.apply(scooter);
 
-/*function foo(){
+function foo(){
     const x = 10
 
     return {
@@ -47,4 +47,13 @@ bmw.showMaxSpeed.apply(scooter);
         }
 
     }
-}*/
+}
+
+const obj2 = foo.call({x:20})
+
+const y = obj2.bar;
+const z = obj2.baz;
+
+y()
+z()
+
