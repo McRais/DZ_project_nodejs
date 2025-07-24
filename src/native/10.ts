@@ -16,7 +16,7 @@ function b() {
     a()
 }
 b() //window, если сделать "use strict" будет undefined
-*/
+*
 
 const bmw = {
     brand: "bmw",
@@ -57,3 +57,4 @@ const z = obj2.baz;
 y()
 z()
 
+*/
