@@ -17,7 +17,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 class EmailService {
     static RegisterUser(login, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            let email = yield nodemailer_1.default.createTransport({});
+            let mail = yield nodemailer_1.default.createTransport({});
         });
     }
 }
