@@ -17,7 +17,20 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 class EmailService {
     static RegisterUser(login, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            let mail = yield nodemailer_1.default.createTransport({});
+            let transport = nodemailer_1.default.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.USER,
+                    pass: process.env.PASS,
+                },
+            });
+            const mail = yield transport.sendMail({
+            /*from: '"Example Team" <team@example.com>', // sender address
+            to: "alice@example.com, bob@example.com", // list of receivers
+            subject: "Hello", // Subject line
+            text: "Hello world?", // plain text body
+            html: "<b>Hello world?</b>", // html body*/
+            });
         });
     }
 }
