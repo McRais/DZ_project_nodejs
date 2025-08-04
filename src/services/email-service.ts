@@ -10,8 +10,8 @@ export class EmailService {
             },
         })
         const mail = await transport.sendMail({
-            /*from: '"Example Team" <team@example.com>', // sender address
-            to: "alice@example.com, bob@example.com", // list of receivers
+            from: '"TestingMailService" <process.env.USER>',
+            to: email, // list of receivers
             subject: "Hello", // Subject line
             text: "Hello world?", // plain text body
             html: "<b>Hello world?</b>", // html body*/
