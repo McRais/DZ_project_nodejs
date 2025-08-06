@@ -14,6 +14,7 @@ const express_1 = require("express");
 const users_repository_1 = require("../repo/users-repository");
 const jwt_service_1 = require("../services/jwt-service");
 const auth_bearer_middleware_1 = require("../middlewares/auth-bearer-middleware");
+const email_service_1 = require("../services/email-service");
 exports.loginRoute = (0, express_1.Router)({});
 exports.loginRoute.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield users_repository_1.usersRepo.loginUser(req.body.loginOrEmail, req.body.password);
@@ -38,6 +39,7 @@ exports.loginRoute.get('/me', auth_bearer_middleware_1.AuthBearerMiddleware, (re
     return res.sendStatus(401);
 }));
 exports.loginRoute.post('/registration', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const registration = yield email_service_1.EmailService.RegisterUser("", "", "");
 }));
 exports.loginRoute.post('/registration-confirmation', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 }));
