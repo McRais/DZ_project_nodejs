@@ -3,6 +3,7 @@ import {LoginSuccessType, MyInfoType, RequestWithBody} from "../models/types";
 import {usersRepo} from "../repo/users-repository";
 import {jwtService} from "../services/jwt-service";
 import {AuthBearerMiddleware} from "../middlewares/auth-bearer-middleware";
+import {EmailService} from "../services/email-service";
 
 export const loginRoute = Router({});
 
@@ -30,7 +31,7 @@ loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response) => 
 })
 
 loginRoute.post('/registration', async (req:Request, res:Response) => {
-
+const registration = await EmailService.RegisterUser("","","")
 })
 
 loginRoute.post('/registration-confirmation', async (req:Request, res:Response) => {
