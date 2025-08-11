@@ -31,7 +31,7 @@ loginRoute.get('/me',AuthBearerMiddleware, async (req:Request, res:Response) => 
 })
 
 loginRoute.post('/registration', async (req:Request, res:Response) => {
-const registration = await EmailService.RegisterUser("","","")
+//const registration = await EmailService.RegisterUser("","","")
 })
 
 loginRoute.post('/registration-confirmation', async (req:Request, res:Response) => {
