@@ -1,6 +1,6 @@
 import request from 'supertest';
 
-/*describe('/users', () => {
+describe('/users', () => {
     beforeAll(async () => {
         await client.connect();
 
@@ -37,4 +37,4 @@ import request from 'supertest';
             expect(res.body.login).toBe('company');
         });
     });
-});*/
+});
