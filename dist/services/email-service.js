@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailService = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const users_repository_1 = require("../repo/users-repository");
 class EmailService {
     static RegisterUser(login, email, password) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -31,6 +32,7 @@ class EmailService {
                 text: "Hello world?", // plain text body
                 html: "<b>Hello world?</b>", // html body*/
             });
+            const user = yield users_repository_1.usersRepo.createUser(login, password, email, (new Date).toISOString());
         });
     }
 }
